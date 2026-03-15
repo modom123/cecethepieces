@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cecethepiece — Original Art</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0f0d0b;--ink2:#2c2825;--muted:#8a7f74;--muted2:#b5ada5;
+  --cream:#faf7f2;--warm:#f3ede3;--warm2:#ede4d6;--border:#e8e1d6;--border2:#f0e9df;
+  --amber:#c9720a;--amber2:#e88a14;--amber-light:#fdf3e1;--amber-glow:rgba(201,114,10,.08);
+  --teal:#0a8a7e;--teal-light:#e4f4f2;
+  --white:#ffffff;--green:#1a7a44;--coral:#c93a2f;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;overflow-x:hidden}
+*,a{cursor:default}
+a,button,.piece-card,.filter-btn,.nav-link,.cta-btn,.rental-card{cursor:pointer}
+
+/* ─── NAV ─── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 52px;display:flex;align-items:center;justify-content:space-between;height:66px;transition:all .4s}
+.nav.solid{background:rgba(250,247,242,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);box-shadow:0 2px 20px rgba(0,0,0,.04)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.38rem;font-weight:400;letter-spacing:.04em;color:var(--ink);background:none;border:none;padding:0}
+.nav-logo em{font-style:italic;color:var(--amber)}
+.nav-links{display:flex;align-items:center;gap:36px}
+.nav-link{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:500;background:none;border:none;padding:4px 0;position:relative;transition:color .2s}
+.nav-link::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:var(--amber);transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.nav-link:hover,.nav-link.active{color:var(--ink)}
+.nav-link.active::after,.nav-link:hover::after{transform:scaleX(1)}
+.nav-cta{background:var(--amber)!important;color:#fff!important;padding:8px 22px!important;border-radius:3px}
+.nav-cta::after{display:none!important}
+.nav-cta:hover{background:#a85c08!important}
+.nav-mobile{display:none;background:none;border:none;font-size:1.3rem;color:var(--ink)}
+
+/* ─── PAGE SYSTEM ─── */
+.page{display:none}.page.active{display:block}
+
+/* ─── LAYOUT ─── */
+.inner{max-width:1380px;margin:0 auto;padding:0 52px}
+.section{padding:88px 0}
+.section-sm{padding:56px 0}
+.section-label{font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.section-label::before{content:'';width:22px;height:1px;background:var(--amber)}
+.section-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,3.5vw,3rem);font-weight:300;color:var(--ink);line-height:1.1}
+.section-h em{font-style:italic;color:var(--amber)}
+.section-sub{font-size:.9rem;color:var(--muted);line-height:1.85;font-weight:300;max-width:500px;margin-top:12px}
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:44px}
+.view-all{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:500;background:none;border:none;display:flex;align-items:center;gap:8px;transition:gap .2s;white-space:nowrap}
+.view-all:hover{gap:14px}
+
+/* ─── BUTTONS ─── */
+.cta-btn{font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:13px 34px;border:none;transition:all .25s;display:inline-flex;align-items:center;gap:8px;text-decoration:none;border-radius:3px}
+.cta-primary{background:var(--amber);color:#fff;box-shadow:0 4px 20px rgba(201,114,10,.25)}
+.cta-primary:hover{background:#a85c08;transform:translateY(-1px);box-shadow:0 7px 28px rgba(201,114,10,.35)}
+.cta-secondary{background:var(--white);color:var(--ink);border:1.5px solid var(--border)}
+.cta-secondary:hover{border-color:var(--amber);color:var(--amber)}
+.cta-teal{background:var(--teal);color:#fff;box-shadow:0 4px 20px rgba(10,138,126,.2)}
+.cta-teal:hover{background:#087a6d;transform:translateY(-1px)}
+
+/* ─── PAGE HEADER (light) ─── */
+.page-header{background:var(--warm);padding:110px 0 72px;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 80% at 20% 60%,rgba(201,114,10,.07),transparent),radial-gradient(ellipse 30% 50% at 85% 30%,rgba(10,138,126,.04),transparent)}
+.page-header .inner{position:relative;z-index:1}
+.page-header-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5vw,4.2rem);font-weight:300;color:var(--ink);line-height:1.05;margin-top:10px}
+.page-header-h em{font-style:italic;color:var(--amber)}
+.page-header-sub{font-size:.88rem;color:var(--muted);max-width:520px;line-height:1.9;margin-top:12px;font-weight:300}
+
+/* ─── HERO ─── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 24px 80px;position:relative;overflow:hidden;background:var(--cream)}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(201,114,10,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 80% 80%,rgba(10,138,126,.04) 0%,transparent 60%)}
+.hero-grain{position:absolute;inset:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
+.hero-eyebrow{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:28px;display:flex;align-items:center;gap:14px;opacity:0;animation:fadeUp .8s .1s forwards}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:28px;height:1px;background:var(--amber)}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.4rem,8vw,6.5rem);font-weight:300;line-height:1.02;color:var(--ink);margin-bottom:30px;opacity:0;animation:fadeUp .9s .3s forwards}
+.hero-title em{font-style:italic;color:var(--amber)}
+.hero-sub{font-size:.96rem;color:var(--muted);max-width:460px;line-height:1.85;margin:0 auto 48px;opacity:0;animation:fadeUp .9s .5s forwards;font-weight:300}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .9s .65s forwards}
+.hero-scroll{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp .9s 1.1s forwards}
+.hero-scroll span{font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted2)}
+.scroll-line{width:1px;height:38px;background:linear-gradient(to bottom,var(--muted2),transparent);animation:scrollPulse 2s infinite}
+@keyframes scrollPulse{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ─── PIECES GRID ─── */
+.pieces-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px}
+.piece-card{background:var(--warm);overflow:hidden;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.25,.46,.45,.94),box-shadow .35s}
+.piece-card:hover{transform:translateY(-4px);z-index:2;box-shadow:0 16px 48px rgba(0,0,0,.09)}
+.piece-img-wrap{aspect-ratio:1;overflow:hidden;background:var(--border);position:relative}
+.piece-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .65s cubic-bezier(.25,.46,.45,.94)}
+.piece-card:hover .piece-img-wrap img{transform:scale(1.05)}
+.piece-no-img{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;opacity:.08}
+.piece-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,13,11,.65) 0%,transparent 52%);opacity:0;transition:opacity .3s;display:flex;align-items:flex-end;padding:20px}
+.piece-card:hover .piece-overlay{opacity:1}
+.overlay-buy{width:100%;padding:11px;background:var(--amber);color:#fff;font-family:'DM Sans',sans-serif;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;border:none;transition:background .2s}
+.overlay-buy:hover{background:#a85c08}
+.piece-badge{position:absolute;top:12px;left:12px;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:4px 9px;border-radius:2px}
+.badge-sold{background:rgba(201,58,47,.88);color:#fff}
+.badge-hold{background:rgba(201,114,10,.88);color:#fff}
+.badge-rent{background:rgba(10,138,126,.88);color:#fff}
+.piece-body{padding:18px 20px 22px;flex:1;display:flex;flex-direction:column}
+.piece-type{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:5px}
+.piece-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:var(--ink);line-height:1.2;margin-bottom:4px}
+.piece-dims{font-size:.68rem;color:var(--muted2);margin-bottom:8px}
+.piece-price{font-size:1.05rem;font-weight:500;color:var(--ink);margin-top:auto;padding-top:12px;border-top:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between}
+.sold-label{font-size:.62rem;color:var(--coral);font-weight:500}
+
+/* Skeleton */
+.skeleton{background:var(--warm);overflow:hidden;position:relative}
+.skeleton::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),transparent);animation:sk 1.6s infinite}
+@keyframes sk{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.sk-img{aspect-ratio:1;background:var(--warm2)}
+.sk-body{padding:18px 20px}
+.sk-line{height:11px;background:var(--warm2);margin-bottom:8px;border-radius:1px}
+.sk-line.w70{width:70%}.sk-line.w50{width:50%}.sk-line.w35{width:35%}
+
+/* Empty */
+.empty-state{grid-column:1/-1;text-align:center;padding:72px 24px}
+.empty-icon{font-size:3rem;margin-bottom:14px;opacity:.18}
+.empty-h{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--muted);margin-bottom:8px}
+.empty-sub{font-size:.84rem;color:var(--muted2)}
+
+/* ─── FILTERS ─── */
+.filters{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:36px}
+.filter-btn{font-family:'DM Sans',sans-serif;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;padding:7px 18px;border:1px solid var(--border);background:transparent;color:var(--muted);transition:all .2s;border-radius:3px}
+.filter-btn:hover{border-color:var(--amber);color:var(--amber)}
+.filter-btn.active{background:var(--amber);color:#fff;border-color:var(--amber)}
+.results-count{margin-left:auto;font-size:.7rem;color:var(--muted2)}
+
+/* ─── RENTAL CARDS ─── */
+.rental-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(296px,1fr));gap:2px;margin-top:40px}
+.rental-card{background:var(--warm);overflow:hidden;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.25,.46,.45,.94),box-shadow .35s}
+.rental-card:hover{transform:translateY(-4px);z-index:2;box-shadow:0 16px 48px rgba(0,0,0,.09)}
+.rental-thumb{aspect-ratio:4/3;overflow:hidden;background:var(--border);position:relative}
+.rental-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .65s cubic-bezier(.25,.46,.45,.94)}
+.rental-card:hover .rental-thumb img{transform:scale(1.04)}
+.rental-out-cover{position:absolute;inset:0;background:rgba(243,237,227,.7);display:flex;align-items:center;justify-content:center}
+.rental-out-tag{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;padding:7px 16px;background:var(--amber);color:#fff;border-radius:2px}
+.rental-body{padding:18px 20px 22px}
+.rental-tag{font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.rental-tag-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);flex-shrink:0}
+.rental-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;margin-bottom:4px;line-height:1.2;color:var(--ink)}
+.rental-dims{font-size:.66rem;color:var(--muted2);margin-bottom:10px}
+.rental-rates{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.rate-chip{font-size:.58rem;font-weight:600;padding:4px 10px;background:var(--teal-light);color:var(--teal);border:1px solid rgba(10,138,126,.2);border-radius:2px}
+.rental-btns{display:flex;gap:7px;padding-top:12px;border-top:1px solid var(--border2)}
+.rent-btn{font-family:'DM Sans',sans-serif;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:10px 14px;border:none;flex:1;text-align:center;transition:all .2s;border-radius:3px}
+.rent-btn-main{background:var(--teal);color:#fff}
+.rent-btn-main:hover{background:#087a6d}
+.rent-btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--border)}
+.rent-btn-ghost:hover{border-color:var(--teal);color:var(--teal)}
+
+/* ─── HOW IT WORKS ─── */
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.step{padding:36px 28px;border-right:1px solid var(--border);background:var(--white)}
+.step:last-child{border-right:none}
+.step-num{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--amber);opacity:.25;line-height:1;margin-bottom:14px}
+.step-icon{font-size:1.7rem;margin-bottom:12px}
+.step-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;margin-bottom:8px;color:var(--ink)}
+.step-desc{font-size:.76rem;color:var(--muted);line-height:1.8;font-weight:300}
+
+/* ─── VALUE PROP BAND (light) ─── */
+.value-band{background:var(--warm2);padding:72px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.value-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.value-item{padding:44px 36px;border-right:1px solid var(--border)}
+.value-item:last-child{border-right:none}
+.value-icon{font-size:1.8rem;margin-bottom:16px}
+.value-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:var(--ink);margin-bottom:10px}
+.value-desc{font-size:.8rem;color:var(--muted);line-height:1.85;font-weight:300}
+
+/* ─── ABOUT ─── */
+.about-split{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.about-quote-block{background:var(--warm2);padding:48px;border:1px solid var(--border);position:relative}
+.about-quote-block::before{content:'\201C';font-family:'Cormorant Garamond',serif;font-size:8rem;color:var(--amber);opacity:.12;position:absolute;top:-20px;left:24px;line-height:1}
+.about-quote{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;font-style:italic;color:var(--ink);line-height:1.4;position:relative;z-index:1}
+.about-quote em{color:var(--amber)}
+.about-attr{display:flex;align-items:center;gap:12px;margin-top:26px}
+.about-attr-line{width:28px;height:1px;background:var(--amber)}
+.about-attr-name{font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.about-text p{font-size:.9rem;color:var(--muted);line-height:1.92;margin-bottom:20px;font-weight:300}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.pill{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;padding:5px 14px;border:1px solid var(--border);color:var(--muted);border-radius:2px}
+
+/* ─── INSTAGRAM ─── */
+.ig-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:32px}
+.ig-cell{aspect-ratio:1;background:var(--warm2);overflow:hidden}
+.ig-cell img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.ig-cell:hover img{transform:scale(1.06)}
+.ig-cell-empty{display:flex;align-items:center;justify-content:center;font-size:1.8rem;opacity:.15}
+
+/* ─── CONTACT ─── */
+.quick-btn{display:block;width:100%;text-align:left;padding:12px 16px;border:1px solid var(--border2);background:var(--warm);font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);margin-bottom:8px;transition:all .25s;border-radius:3px}
+.quick-btn:hover{border-color:var(--amber);background:var(--amber-light);color:var(--amber)}
+.cf-field{margin-bottom:14px}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cf-label{display:block;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:7px}
+.cf-input,.cf-textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);outline:none;border-radius:3px;transition:border-color .2s;-webkit-appearance:none}
+.cf-input:focus,.cf-textarea:focus{border-color:var(--amber)}
+.cf-textarea{resize:vertical;min-height:110px}
+.cf-submit{background:var(--amber);color:#fff;font-family:'DM Sans',sans-serif;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding:14px 36px;border:none;transition:all .2s;width:100%;margin-top:8px;border-radius:3px}
+.cf-submit:hover{background:#a85c08}
+
+/* ─── ACCENT BAND (amber, light) ─── */
+.accent-band{background:var(--amber-light);border-top:1px solid rgba(201,114,10,.15);border-bottom:1px solid rgba(201,114,10,.15);padding:60px 0}
+
+/* ─── STAGER BAND (teal, light) ─── */
+.stager-band{background:var(--teal-light);border-top:1px solid rgba(10,138,126,.15);border-bottom:1px solid rgba(10,138,126,.15);padding:64px 0}
+
+/* ─── LIGHTBOX ─── */
+.lightbox{position:fixed;inset:0;z-index:300;background:rgba(250,247,242,.88);backdrop-filter:blur(24px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:24px}
+.lightbox.open{opacity:1;pointer-events:all}
+.lb-card{background:var(--white);border:1px solid var(--border);max-width:920px;width:100%;max-height:90vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;transform:translateY(14px) scale(.97);transition:transform .35s cubic-bezier(.34,1.56,.64,1);position:relative;box-shadow:0 24px 80px rgba(0,0,0,.12)}
+.lightbox.open .lb-card{transform:translateY(0) scale(1)}
+.lb-img{background:var(--warm);position:sticky;top:0;overflow:hidden}
+.lb-img img{width:100%;height:100%;object-fit:cover;display:block;min-height:340px}
+.lb-img-empty{min-height:340px;display:flex;align-items:center;justify-content:center;font-size:4rem;opacity:.08}
+.lb-body{padding:40px 36px;display:flex;flex-direction:column}
+.lb-close{position:absolute;top:14px;right:14px;width:34px;height:34px;background:var(--warm2);color:var(--ink);border:1px solid var(--border);font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:10;border-radius:3px}
+.lb-close:hover{background:var(--amber);color:#fff;border-color:var(--amber)}
+.lb-type{font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:10px}
+.lb-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;line-height:1.1;margin-bottom:8px}
+.lb-price{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--amber);margin-bottom:18px}
+.lb-price.sold{color:var(--muted2);font-size:1.1rem;text-decoration:line-through}
+.lb-sold-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(201,58,47,.1);color:var(--coral);border:1px solid rgba(201,58,47,.2);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:5px 12px;margin-bottom:14px;border-radius:2px}
+.lb-hr{height:1px;background:var(--border2);margin:18px 0}
+.lb-detail{font-size:.76rem;color:var(--muted);line-height:1.85;margin-bottom:4px}
+.lb-detail strong{color:var(--ink);font-weight:500}
+.lb-desc{font-size:.88rem;color:var(--ink2);line-height:1.85;margin-top:14px;font-weight:300}
+.lb-actions{margin-top:auto;padding-top:22px;display:flex;flex-direction:column;gap:10px}
+.lb-buy{padding:14px;background:var(--amber);color:#fff;border:none;font-family:'DM Sans',sans-serif;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;transition:all .2s;display:block;text-align:center;text-decoration:none;border-radius:3px}
+.lb-buy:hover{background:#a85c08}
+.lb-buy.sold{background:var(--warm2);color:var(--muted2);pointer-events:none}
+.lb-inquiry{padding:12px;background:transparent;color:var(--ink);border:1.5px solid var(--border);font-family:'DM Sans',sans-serif;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500;transition:all .2s;border-radius:3px}
+.lb-inquiry:hover{border-color:var(--amber);color:var(--amber)}
+.lb-share-row{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:4px}
+.lb-share-btn{background:none;border:none;font-size:.66rem;color:var(--muted);transition:color .2s}
+.lb-share-btn:hover{color:var(--amber)}
+
+/* ─── RENTAL MODAL ─── */
+.modal-bg{position:fixed;inset:0;z-index:400;background:rgba(250,247,242,.88);backdrop-filter:blur(24px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;padding:24px}
+.modal-bg.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--white);border:1px solid var(--border);max-width:560px;width:100%;max-height:92vh;overflow-y:auto;padding:44px;position:relative;transform:translateY(14px);transition:transform .4s cubic-bezier(.34,1.56,.64,1);border-radius:3px;box-shadow:0 20px 60px rgba(0,0,0,.1)}
+.modal-bg.open .modal-box{transform:translateY(0)}
+.modal-close{position:absolute;top:16px;right:16px;width:34px;height:34px;background:var(--warm2);color:var(--ink);border:1px solid var(--border);font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:3px}
+.modal-close:hover{background:var(--amber);color:#fff;border-color:var(--amber)}
+.event-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 20px}
+.event-btn{border:1.5px solid var(--border);padding:12px 8px;text-align:center;background:var(--warm);transition:all .2s;border-radius:3px}
+.event-btn:hover,.event-btn.on{border-color:var(--teal);background:var(--teal-light)}
+.event-btn .ei{font-size:1.3rem;margin-bottom:5px}
+.event-btn .en{font-size:.58rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink)}
+.mf{margin-bottom:13px}
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mlabel{display:block;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:6px}
+.minput,.mselect,.mtextarea{width:100%;padding:11px 14px;border:1.5px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--ink);outline:none;transition:border-color .2s;border-radius:3px;-webkit-appearance:none}
+.minput:focus,.mselect:focus,.mtextarea:focus{border-color:var(--teal)}
+.mtextarea{min-height:82px;resize:vertical}
+.msubmit{width:100%;padding:14px;background:var(--teal);color:#fff;font-family:'DM Sans',sans-serif;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;border:none;margin-top:8px;transition:background .2s;border-radius:3px}
+.msubmit:hover{background:#087a6d}
+
+/* ─── FOOTER ─── */
+footer{background:var(--warm2);border-top:1px solid var(--border);padding:56px 0 0}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:44px;padding-bottom:44px}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.22rem;font-weight:400;color:var(--ink);display:block;margin-bottom:10px;background:none;border:none;padding:0;text-align:left}
+.footer-logo em{font-style:italic;color:var(--amber)}
+.footer-tagline{font-size:.76rem;color:var(--muted);line-height:1.8;font-weight:300}
+.footer-socials{display:flex;gap:10px;margin-top:18px}
+.footer-soc{width:34px;height:34px;border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:.88rem;text-decoration:none;transition:all .2s;border-radius:3px}
+.footer-soc:hover{background:var(--amber);border-color:var(--amber)}
+.footer-col-head{font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted2);margin-bottom:18px}
+.footer-lnk{display:block;font-size:.78rem;color:var(--muted);text-decoration:none;margin-bottom:9px;transition:color .2s;background:none;border:none;text-align:left;padding:0;font-family:'DM Sans',sans-serif}
+.footer-lnk:hover{color:var(--amber)}
+.footer-bottom{border-top:1px solid var(--border);padding:22px 0;display:flex;justify-content:space-between;align-items:center}
+.footer-bottom span{font-size:.65rem;color:var(--muted2)}
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:26px;right:26px;z-index:999;background:var(--ink);color:#fff;padding:12px 22px;font-size:.74rem;font-weight:500;transform:translateY(14px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;box-shadow:0 8px 36px rgba(0,0,0,.16);border-radius:3px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--green)}
+
+/* ─── REVEAL ─── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .72s ease,transform .72s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1100px){.inner{padding:0 32px}.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){
+  .nav{padding:0 24px}.nav-links{display:none}.nav-mobile{display:block}
+  .pieces-grid,.rental-grid{grid-template-columns:repeat(2,1fr)}
+  .about-split{grid-template-columns:1fr;gap:40px}
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .value-grid{grid-template-columns:1fr}
+  .ig-grid{grid-template-columns:repeat(3,1fr)}
+  .lb-card{grid-template-columns:1fr}.lb-img{position:static;min-height:260px}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .mrow,.cf-row{grid-template-columns:1fr}
+  .section{padding:60px 0}
+}
+@media(max-width:540px){
+  .pieces-grid,.rental-grid{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column;align-items:center}
+  .hero-title{font-size:3rem}
+  .steps-grid{grid-template-columns:1fr}
+  .ig-grid{grid-template-columns:repeat(2,1fr)}
+  .event-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <button class="nav-logo" onclick="goTo('home')">cece<em>thepiece</em></button>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-link" onclick="goTo('home')" data-p="home">Home</button>
+    <button class="nav-link" onclick="goTo('shop')" data-p="shop">Shop</button>
+    <button class="nav-link" onclick="goTo('rentals')" data-p="rentals">Rentals</button>
+    <button class="nav-link" onclick="goTo('about')" data-p="about">About</button>
+    <button class="nav-link nav-cta" onclick="goTo('contact')" data-p="contact">Contact</button>
+  </div>
+  <button class="nav-mobile" onclick="toggleMenu()">☰</button>
+</nav>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="page" id="page-home">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grain"></div>
+    <div class="hero-eyebrow">Original Artwork by Cece</div>
+    <h1 class="hero-title">Pour. Flow.<br><em>Own Something</em><br>No One Else Has.</h1>
+    <p class="hero-sub">One-of-a-kind resin and mixed media pieces — no prints, no reproductions, no compromises. Each work exists exactly once.</p>
+    <div class="hero-btns">
+      <button class="cta-btn cta-primary" onclick="goTo('shop')">Browse the Collection →</button>
+      <button class="cta-btn cta-secondary" onclick="goTo('rentals')">Rent for an Event</button>
+    </div>
+    <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
+  </section>
+
+  <!-- Featured -->
+  <section class="section" style="background:var(--white)">
+    <div class="inner">
+      <div class="section-header reveal">
+        <div><div class="section-label">Just Listed</div><h2 class="section-h">New <em>Available</em> Work</h2></div>
+        <button class="view-all" onclick="goTo('shop')">View Full Collection <span>→</span></button>
+      </div>
+      <div class="pieces-grid" id="home-featured">
+        <div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+        <div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+        <div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Value props — light warm band -->
+  <section class="value-band">
+    <div class="inner">
+      <div class="value-grid reveal">
+        <div class="value-item">
+          <div class="value-icon">✦</div>
+          <div class="value-title">One of a Kind</div>
+          <div class="value-desc">No prints. No reproductions. When you own a cecethepiece work, nothing like it exists anywhere else in the world.</div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">🎪</div>
+          <div class="value-title">Available to Rent</div>
+          <div class="value-desc">Elevate your wedding, birthday, or staging project with statement art — without the long-term commitment.</div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">🎨</div>
+          <div class="value-title">Custom Commissions</div>
+          <div class="value-desc">Work directly with Cece to create something built around your space, palette, and vision. Trade pricing available.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rentals preview -->
+  <section class="section" style="background:var(--cream)">
+    <div class="inner">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center">
+        <div class="reveal">
+          <div class="section-label">Rent a Piece</div>
+          <h2 class="section-h" style="margin-bottom:16px">Art That <em>Transforms</em> Your Event</h2>
+          <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:24px;font-weight:300">Perfect for weddings, birthdays, house staging, and corporate events. Statement resin pieces that make spaces unforgettable — by the day, weekend, or week.</p>
+          <div class="pills" style="margin-bottom:28px">
+            <span class="pill">🎂 Birthdays</span>
+            <span class="pill">💍 Weddings</span>
+            <span class="pill">🏠 Staging</span>
+            <span class="pill">🎉 Corporate</span>
+          </div>
+          <button class="cta-btn cta-teal" onclick="goTo('rentals')">Browse Rentals →</button>
+        </div>
+        <div class="reveal" id="home-rental-preview" style="display:grid;grid-template-columns:1fr 1fr;gap:3px">
+          <div style="aspect-ratio:1;background:var(--warm2)"></div>
+          <div style="aspect-ratio:1;background:var(--warm2);opacity:.7"></div>
+          <div style="aspect-ratio:1;background:var(--warm2);opacity:.45"></div>
+          <div style="aspect-ratio:1;background:var(--warm2);opacity:.22"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote -->
+  <section class="section-sm" style="background:var(--warm)">
+    <div class="inner">
+      <div style="max-width:760px;margin:0 auto;text-align:center" class="reveal">
+        <div style="font-size:1rem;color:var(--amber);margin-bottom:20px">✦</div>
+        <blockquote style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.65rem,3vw,2.4rem);font-weight:300;line-height:1.38;color:var(--ink);margin-bottom:26px">"Every pour is <em style="font-style:italic;color:var(--amber)">unrepeatable.</em> The moment the resin touches the surface, something entirely new comes into the world."</blockquote>
+        <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:32px">
+          <div style="width:30px;height:1px;background:var(--amber)"></div>
+          <span style="font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)">Cece — cecethepiece</span>
+          <div style="width:30px;height:1px;background:var(--amber)"></div>
+        </div>
+        <button class="cta-btn cta-secondary" onclick="goTo('about')">Read Cece's Story →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instagram -->
+  <section class="section-sm" style="background:var(--white)">
+    <div class="inner">
+      <div style="text-align:center;margin-bottom:28px" class="reveal">
+        <div style="font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">@cecethepiece</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--ink)">Follow the <em style="font-style:italic;color:var(--amber)">Process</em></h2>
+      </div>
+      <div class="ig-grid reveal" id="home-ig">
+        <div class="ig-cell ig-cell-empty">🎨</div>
+        <div class="ig-cell ig-cell-empty">🎨</div>
+        <div class="ig-cell ig-cell-empty">🎨</div>
+        <div class="ig-cell ig-cell-empty">🎨</div>
+      </div>
+      <div style="text-align:center">
+        <a href="https://instagram.com/cecethepiece" target="_blank" class="cta-btn cta-secondary" style="display:inline-flex">📷 &nbsp;Follow on Instagram</a>
+      </div>
+    </div>
+  </section>
+</div><!-- /home -->
+
+<!-- ═══════════ SHOP ═══════════ -->
+<div class="page" id="page-shop">
+  <div class="page-header">
+    <div class="inner">
+      <div class="section-label">The Collection</div>
+      <h1 class="page-header-h">All <em>Original</em> Work</h1>
+      <p class="page-header-sub">Every piece made by hand. No prints, no reproductions. One exists — the one you see here.</p>
+    </div>
+  </div>
+  <section class="section" style="background:var(--white)">
+    <div class="inner">
+      <div class="filters reveal" id="shop-filters">
+        <button class="filter-btn active" onclick="shopFilter('all',this)">All</button>
+        <button class="filter-btn" onclick="shopFilter('available',this)">Available</button>
+        <button class="filter-btn" onclick="shopFilter('sold',this)">Sold</button>
+        <button class="filter-btn" onclick="shopTypeFilter('Resin Art',this)">Resin Art</button>
+        <button class="filter-btn" onclick="shopTypeFilter('Painting',this)">Painting</button>
+        <button class="filter-btn" onclick="shopTypeFilter('Mixed Media',this)">Mixed Media</button>
+        <button class="filter-btn" onclick="shopTypeFilter('Decorative Urn',this)">Memorial Urns</button>
+        <span class="results-count" id="shop-count"></span>
+      </div>
+      <div class="pieces-grid" id="shop-grid">
+        <div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+        <div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+        <div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+        <div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+      </div>
+    </div>
+  </section>
+  <!-- Commission strip -->
+  <section class="accent-band">
+    <div class="inner" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;color:var(--ink)">Don't see what you're looking for?</div>
+        <p style="font-size:.86rem;color:var(--muted);margin-top:6px;font-weight:300">Commission a custom piece built around your space and vision.</p>
+      </div>
+      <button class="cta-btn cta-primary" onclick="goTo('contact')">Request a Commission →</button>
+    </div>
+  </section>
+</div><!-- /shop -->
+
+<!-- ═══════════ RENTALS ═══════════ -->
+<div class="page" id="page-rentals">
+  <div class="page-header" style="background:var(--teal-light);border-bottom:1px solid rgba(10,138,126,.2)">
+    <div class="inner">
+      <div class="section-label" style="color:var(--teal)">Available to Rent</div>
+      <h1 class="page-header-h" style="color:var(--ink)">Rent a <em style="color:var(--teal)">Piece</em></h1>
+      <p class="page-header-sub">Perfect for weddings, birthdays, house staging & corporate events. Statement art that transforms any space — without the commitment of buying.</p>
+      <button class="cta-btn cta-teal" style="margin-top:24px;display:inline-flex" onclick="openRentalModal()">Request a Rental →</button>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <section class="section-sm" style="background:var(--white)">
+    <div class="inner">
+      <div style="text-align:center;margin-bottom:44px" class="reveal">
+        <div class="section-label" style="justify-content:center">Simple Process</div>
+        <h2 class="section-h">How It <em>Works</em></h2>
+      </div>
+      <div class="steps-grid reveal">
+        <div class="step"><div class="step-num">01</div><div class="step-icon">📅</div><div class="step-title">Pick a Piece</div><div class="step-desc">Browse available works and choose the one that fits your space and event.</div></div>
+        <div class="step"><div class="step-num">02</div><div class="step-icon">💳</div><div class="step-title">Book & Pay</div><div class="step-desc">Fill out the form. A Stripe payment link is sent within 24 hours to hold your dates.</div></div>
+        <div class="step"><div class="step-num">03</div><div class="step-icon">🚚</div><div class="step-title">We Deliver</div><div class="step-desc">Piece arrives ready to display. White glove delivery available on request.</div></div>
+        <div class="step"><div class="step-num">04</div><div class="step-icon">📦</div><div class="step-title">Return</div><div class="step-desc">Return after your event. Deposit refunded within 3 days of safe return.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rental pieces -->
+  <section class="section" style="background:var(--cream)">
+    <div class="inner">
+      <div class="section-header reveal">
+        <div><div class="section-label">Available Now</div><h2 class="section-h">Rentable <em>Pieces</em></h2></div>
+      </div>
+      <div class="filters reveal" id="rental-filters">
+        <button class="filter-btn active" onclick="rentalFilter('all',this)">All Events</button>
+        <button class="filter-btn" onclick="rentalFilter('Birthday',this)">🎂 Birthdays</button>
+        <button class="filter-btn" onclick="rentalFilter('Wedding',this)">💍 Weddings</button>
+        <button class="filter-btn" onclick="rentalFilter('House Staging',this)">🏠 Staging</button>
+        <button class="filter-btn" onclick="rentalFilter('Corporate Event',this)">🎉 Corporate</button>
+        <span class="results-count" id="rental-count"></span>
+      </div>
+      <div class="rental-grid" id="rental-grid">
+        <div class="skeleton"><div class="sk-img" style="aspect-ratio:4/3"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+        <div class="skeleton"><div class="sk-img" style="aspect-ratio:4/3"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+        <div class="skeleton"><div class="sk-img" style="aspect-ratio:4/3"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stager CTA — light teal -->
+  <section class="stager-band">
+    <div class="inner" style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+      <div class="reveal">
+        <div class="section-label" style="color:var(--teal)">Interior Designers & Stagers</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:300;color:var(--ink);line-height:1.15;margin-bottom:16px">Art That Makes <em style="font-style:italic;color:var(--teal)">Listings Sell</em></h2>
+        <p style="font-size:.88rem;color:var(--muted);line-height:1.9;font-weight:300">Recurring rental discounts, priority booking, and pieces that photograph beautifully. Statement art creates the emotional connection that closes the sale.</p>
+      </div>
+      <div class="reveal" style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:14px;padding:16px;background:var(--white);border:1px solid rgba(10,138,126,.2);border-radius:3px"><span style="font-size:1.2rem">🏷️</span><div><div style="font-size:.82rem;font-weight:500;color:var(--ink);margin-bottom:3px">Stager Program Rates</div><div style="font-size:.74rem;color:var(--muted)">Recurring discounts on weekly rentals for active stagers</div></div></div>
+        <div style="display:flex;gap:14px;padding:16px;background:var(--white);border:1px solid rgba(10,138,126,.2);border-radius:3px"><span style="font-size:1.2rem">⚡</span><div><div style="font-size:.82rem;font-weight:500;color:var(--ink);margin-bottom:3px">Priority Booking</div><div style="font-size:.74rem;color:var(--muted)">First access to new pieces before public listing</div></div></div>
+        <button class="cta-btn cta-teal" onclick="goTo('contact')" style="margin-top:4px">Enquire About the Stager Program →</button>
+      </div>
+    </div>
+  </section>
+</div><!-- /rentals -->
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<div class="page" id="page-about">
+  <div class="page-header">
+    <div class="inner">
+      <div class="section-label">The Artist</div>
+      <h1 class="page-header-h">About <em>Cece</em></h1>
+    </div>
+  </div>
+
+  <section class="section" style="background:var(--white)">
+    <div class="inner">
+      <div class="about-split">
+        <div class="reveal">
+          <div class="about-quote-block">
+            <blockquote class="about-quote">"Every pour is <em>unrepeatable.</em> The moment the resin touches the surface, something entirely new comes into the world."</blockquote>
+            <div class="about-attr"><div class="about-attr-line"></div><span class="about-attr-name">Cece — cecethepiece</span></div>
+          </div>
+          <div style="margin-top:24px;padding:24px 28px;background:var(--amber-light);border:1px solid rgba(201,114,10,.18);border-radius:3px">
+            <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:8px">For Designers</div>
+            <div style="font-size:.88rem;color:var(--ink2);line-height:1.85;font-weight:300">Trade pricing available — 30% off retail for interior design professionals. Custom commissions and rental programs welcome.</div>
+            <button class="cta-btn cta-primary" style="margin-top:16px;padding:10px 24px;font-size:.64rem" onclick="goTo('contact')">Apply for Trade Access →</button>
+          </div>
+        </div>
+        <div class="about-text reveal">
+          <p>I'm Cece — an independent artist working in resin, glass, and mixed media. My practice is rooted in process: the controlled chaos of materials in motion, the beauty of things you can't quite predict.</p>
+          <p>Every piece I make is completely original. I don't reproduce, I don't print, I don't re-create. When you own a cecethepiece work, you own something that exists nowhere else in the world — with a certificate of authenticity to prove it.</p>
+          <p>Based in Los Angeles, I work in small batches — sometimes a single piece, never more than a few at a time. Each one gets my full attention from first pour to final seal.</p>
+          <div class="pills">
+            <span class="pill">Resin Art</span><span class="pill">Painting</span><span class="pill">Memorial Urns</span>
+            <span class="pill">Mixed Media</span><span class="pill">Los Angeles</span><span class="pill">Trade Pricing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="section" style="background:var(--cream)">
+    <div class="inner">
+      <div style="text-align:center;margin-bottom:48px" class="reveal">
+        <div class="section-label" style="justify-content:center">How I Work</div>
+        <h2 class="section-h">The <em>Process</em></h2>
+      </div>
+      <div class="steps-grid reveal">
+        <div class="step"><div class="step-num">01</div><div class="step-icon">🧪</div><div class="step-title">Materials First</div><div class="step-desc">Epoxy resin, alcohol inks, pigment powders, gold leaf, glass — combinations that react in beautiful, unpredictable ways.</div></div>
+        <div class="step"><div class="step-num">02</div><div class="step-icon">⏳</div><div class="step-title">The Pour</div><div class="step-desc">Resin is poured, tilted, pushed. Heat tools coax movement. Every pour is a negotiation between intention and accident.</div></div>
+        <div class="step"><div class="step-num">03</div><div class="step-icon">✨</div><div class="step-title">The Cure</div><div class="step-desc">48–72 hours of curing time. No shortcuts. The chemistry needs time to do what chemistry does.</div></div>
+        <div class="step"><div class="step-num">04</div><div class="step-icon">✦</div><div class="step-title">The Seal</div><div class="step-desc">Sanded, sealed, sanded again. Glass-smooth and UV-resistant. Certificate of authenticity with every work.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Memorial Urns -->
+  <section class="section" style="background:var(--warm)">
+    <div class="inner" style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center">
+      <div class="reveal">
+        <div class="section-label">A Special Category</div>
+        <h2 class="section-h" style="margin-bottom:16px">Memorial <em>Urns</em></h2>
+        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:16px;font-weight:300">I create handcrafted memorial urns because I believe the way we honor our loved ones should be as unique as they were. No two urns are ever alike.</p>
+        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:28px;font-weight:300">Custom colors, personal touches, embedded botanicals and metals can be worked in. The result is something that truly belongs to a specific person and a specific story.</p>
+        <button class="cta-btn cta-primary" onclick="goTo('contact')">Inquire About a Custom Urn →</button>
+      </div>
+      <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:3px" id="urn-grid">
+        <div style="aspect-ratio:1;background:var(--warm2)"></div>
+        <div style="aspect-ratio:1;background:var(--warm2);opacity:.7"></div>
+        <div style="aspect-ratio:1;background:var(--warm2);opacity:.45"></div>
+        <div style="aspect-ratio:1;background:var(--warm2);opacity:.22"></div>
+      </div>
+    </div>
+  </section>
+</div><!-- /about -->
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<div class="page" id="page-contact">
+  <div class="page-header">
+    <div class="inner">
+      <div class="section-label">Get in Touch</div>
+      <h1 class="page-header-h">Let's <em>Talk</em></h1>
+      <p class="page-header-sub">Questions about a piece, shipping, trade pricing, rental booking, or commissioning something custom.</p>
+    </div>
+  </div>
+  <section class="section" style="background:var(--white)">
+    <div class="inner" style="display:grid;grid-template-columns:1fr 1.5fr;gap:80px;align-items:start">
+      <div class="reveal">
+        <a href="mailto:hello@cecethepiece.com" style="display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--border2);text-decoration:none;color:var(--ink);transition:color .2s" onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='var(--ink)'">
+          <span style="font-size:1.2rem">✉️</span><div><div style="font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Email</div><div style="font-size:.88rem">hello@cecethepiece.com</div></div>
+        </a>
+        <a href="https://instagram.com/cecethepiece" target="_blank" style="display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--border2);text-decoration:none;color:var(--ink);transition:color .2s" onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='var(--ink)'">
+          <span style="font-size:1.2rem">📷</span><div><div style="font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Instagram</div><div style="font-size:.88rem">@cecethepiece</div></div>
+        </a>
+        <a href="https://tiktok.com/@cecethepiece" target="_blank" style="display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--border2);text-decoration:none;color:var(--ink);transition:color .2s" onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='var(--ink)'">
+          <span style="font-size:1.2rem">🎵</span><div><div style="font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px">TikTok</div><div style="font-size:.88rem">@cecethepiece</div></div>
+        </a>
+        <div style="margin-top:32px">
+          <div style="font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:14px">Quick Inquiries</div>
+          <button onclick="prefillContact('commission')" class="quick-btn">🎨 Commission a custom piece</button>
+          <button onclick="prefillContact('rental')" class="quick-btn">🎪 Ask about a rental</button>
+          <button onclick="prefillContact('trade')" class="quick-btn">🏷️ Trade / designer pricing</button>
+          <button onclick="prefillContact('urn')" class="quick-btn">🕊️ Custom memorial urn</button>
+          <button onclick="prefillContact('stager')" class="quick-btn">🏠 Stager program inquiry</button>
+        </div>
+      </div>
+      <div class="reveal">
+        <form onsubmit="submitContact(event)">
+          <div class="cf-row">
+            <div class="cf-field"><label class="cf-label">Your Name *</label><input class="cf-input" id="cf-name" placeholder="First & last name" required></div>
+            <div class="cf-field"><label class="cf-label">Email *</label><input class="cf-input" id="cf-email" type="email" placeholder="your@email.com" required></div>
+          </div>
+          <div class="cf-field"><label class="cf-label">Subject</label><input class="cf-input" id="cf-subject" placeholder="e.g. Commission inquiry, Question about a piece..."></div>
+          <div class="cf-field"><label class="cf-label">Message *</label><textarea class="cf-textarea" id="cf-msg" placeholder="Tell me about your space, what you're looking for, or which piece caught your eye..." required></textarea></div>
+          <button type="submit" class="cf-submit">Send Message →</button>
+          <div style="font-size:.7rem;color:var(--muted2);text-align:center;margin-top:10px">Typical response within 24–48 hours</div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div><!-- /contact -->
+
+<!-- FOOTER -->
+<footer id="siteFooter" style="display:none">
+  <div class="inner">
+    <div class="footer-grid">
+      <div>
+        <button class="footer-logo" onclick="goTo('home')">cece<em>thepiece</em></button>
+        <p class="footer-tagline">Original resin and mixed media artwork. Every piece made by hand. No prints. No reproductions.</p>
+        <div class="footer-socials">
+          <a href="https://instagram.com/cecethepiece" target="_blank" class="footer-soc">📷</a>
+          <a href="https://tiktok.com/@cecethepiece" target="_blank" class="footer-soc">🎵</a>
+          <a href="mailto:hello@cecethepiece.com" class="footer-soc">✉️</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-head">Shop</div>
+        <button class="footer-lnk" onclick="goTo('shop')">All Pieces</button>
+        <button class="footer-lnk" onclick="goTo('shop');setTimeout(()=>shopFilter('available',null),100)">Available Now</button>
+        <button class="footer-lnk" onclick="goTo('shop');setTimeout(()=>shopTypeFilter('Resin Art',null),100)">Resin Art</button>
+        <button class="footer-lnk" onclick="goTo('shop');setTimeout(()=>shopTypeFilter('Decorative Urn',null),100)">Memorial Urns</button>
+      </div>
+      <div>
+        <div class="footer-col-head">Rentals</div>
+        <button class="footer-lnk" onclick="goTo('rentals')">Browse Rentals</button>
+        <button class="footer-lnk" onclick="goTo('rentals')">Weddings</button>
+        <button class="footer-lnk" onclick="goTo('rentals')">House Staging</button>
+        <button class="footer-lnk" onclick="goTo('rentals')">Birthdays</button>
+      </div>
+      <div>
+        <div class="footer-col-head">Info</div>
+        <button class="footer-lnk" onclick="goTo('about')">About Cece</button>
+        <button class="footer-lnk" onclick="goTo('contact')">Contact</button>
+        <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('commission'),100)">Commission a Piece</button>
+        <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('trade'),100)">Trade Pricing</button>
+      </div>
+    </div>
+  </div>
+  <div class="inner"><div class="footer-bottom"><span>© 2025 cecethepiece. All rights reserved.</span><span>Original work. No prints. No reproductions.</span></div></div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLbOutside(event)">
+  <div class="lb-card">
+    <button class="lb-close" onclick="closeLb()">✕</button>
+    <div class="lb-img"><img id="lb-img" src="" alt=""><div class="lb-img-empty" id="lb-img-empty" style="display:none">🖼</div></div>
+    <div class="lb-body">
+      <div class="lb-type" id="lb-type"></div>
+      <h2 class="lb-title" id="lb-title"></h2>
+      <div class="lb-price" id="lb-price"></div>
+      <div class="lb-sold-tag" id="lb-sold-tag" style="display:none">✕ &nbsp;This Piece is Sold</div>
+      <div class="lb-hr"></div>
+      <div class="lb-detail" id="lb-dims"></div>
+      <div class="lb-detail" id="lb-mats"></div>
+      <div class="lb-desc" id="lb-desc"></div>
+      <div class="lb-actions">
+        <a class="lb-buy" id="lb-buy" href="#">Purchase This Piece</a>
+        <button class="lb-inquiry" onclick="lbInquire()">✉ &nbsp;Inquire About This Piece</button>
+        <div class="lb-share-row">
+          <button class="lb-share-btn" onclick="lbCopy()">🔗 Copy Link</button>
+          <span style="opacity:.3">|</span>
+          <button class="lb-share-btn" onclick="lbShare()">Share</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RENTAL MODAL -->
+<div class="modal-bg" id="rentalModal" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeRentalModal()">✕</button>
+    <div style="font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);margin-bottom:8px">Rental Request</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:300;color:var(--ink);margin-bottom:4px">Request a <em style="font-style:italic;color:var(--teal)">Rental</em></h2>
+    <p style="font-size:.8rem;color:var(--muted);line-height:1.7;margin-bottom:4px">Cece will get back to you within 24 hours with availability and a payment link.</p>
+    <div class="event-grid" id="event-grid">
+      <div class="event-btn on" onclick="pickEvent('Birthday',this)"><div class="ei">🎂</div><div class="en">Birthday</div></div>
+      <div class="event-btn" onclick="pickEvent('Wedding',this)"><div class="ei">💍</div><div class="en">Wedding</div></div>
+      <div class="event-btn" onclick="pickEvent('House Staging',this)"><div class="ei">🏠</div><div class="en">Staging</div></div>
+      <div class="event-btn" onclick="pickEvent('Corporate Event',this)"><div class="ei">🎉</div><div class="en">Corporate</div></div>
+      <div class="event-btn" onclick="pickEvent('Art Exhibition',this)"><div class="ei">🎨</div><div class="en">Exhibition</div></div>
+      <div class="event-btn" onclick="pickEvent('Other',this)"><div class="ei">✦</div><div class="en">Other</div></div>
+    </div>
+    <div class="mrow">
+      <div class="mf"><label class="mlabel">Your Name *</label><input class="minput" id="rm-name" placeholder="Full name"></div>
+      <div class="mf"><label class="mlabel">Email *</label><input class="minput" id="rm-email" type="email" placeholder="your@email.com"></div>
+    </div>
+    <div class="mf"><label class="mlabel">Phone (optional)</label><input class="minput" id="rm-phone" placeholder="(555) 000-0000"></div>
+    <div class="mf"><label class="mlabel">Which Piece?</label>
+      <select class="mselect" id="rm-piece"><option value="">Not sure yet — show me options</option></select>
+    </div>
+    <div class="mrow">
+      <div class="mf"><label class="mlabel">Start Date</label><input class="minput" type="date" id="rm-start"></div>
+      <div class="mf"><label class="mlabel">End Date</label><input class="minput" type="date" id="rm-end"></div>
+    </div>
+    <div class="mf"><label class="mlabel">Rental Period</label>
+      <select class="mselect" id="rm-period">
+        <option value="day">Per Day</option><option value="weekend">Per Weekend</option>
+        <option value="week">Per Week</option><option value="event">Flat Event Rate</option>
+      </select>
+    </div>
+    <div class="mf"><label class="mlabel">Tell me about your event</label>
+      <textarea class="mtextarea" id="rm-notes" placeholder="Venue, guests, dimensions, color palette..."></textarea>
+    </div>
+    <button class="msubmit" onclick="submitRental()">Send Rental Request →</button>
+    <div style="font-size:.66rem;color:var(--muted2);text-align:center;margin-top:12px;line-height:1.6">Response within 24 hours · Refundable deposit holds your dates</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzc2ljb3h6eGNmaWpkbHZ0cHFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MzM3NDAsImV4cCI6MjA4OTAwOTc0MH0.g7OlsyUsSv05u7ikmjyt2sOT8aWFGNPwKU65KcATlWU';
+const CONFIGURED = true;
+
+let allPieces = [], activePiece = null, selectedEvent = 'Birthday', currentPage = 'home';
+let _sf = 'all', _st = null;
+
+// ── DATA ──
+async function fetchPieces() {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/pieces?select=*&order=created_at.desc`,
+      {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+    if (!r.ok) throw new Error();
+    return await r.json();
+  } catch(e) { return sampleData(); }
+}
+
+function sampleData(){return[
+  {id:'s1',title:'Golden Hour Flow',type:'Resin Art',price:'480',status:'available',for_rent:true,rent_day:'80',rent_weekend:'130',rent_event:'150',dimensions:'16" × 20"',materials:'Epoxy resin, alcohol inks, gold leaf',description:'A slow sunrise captured in resin — warm ambers bleeding into champagne with veins of 24k gold leaf.'},
+  {id:'s2',title:'Midnight Ocean',type:'Resin Art',price:'620',status:'available',for_rent:true,rent_weekend:'160',rent_week:'240',dimensions:'24" × 24"',materials:'Epoxy resin, pigment powders, iridescent flakes',description:'Deep navy and teal collide in this large-format piece evoking the deep ocean at midnight.'},
+  {id:'s3',title:'Ember & Ash',type:'Mixed Media',price:'390',status:'sold',dimensions:'12" × 16"',materials:'Resin, acrylic, metallic pigments',description:''},
+  {id:'s4',title:'Serenity Urn No. 7',type:'Decorative Urn',price:'350',status:'available',dimensions:'10" tall',materials:'Resin, glass, dried botanicals',description:'A memorial urn crafted with care — embedded with dried florals and a soft iridescent finish.'},
+  {id:'s5',title:'Desert Bloom',type:'Painting',price:'540',status:'available',for_rent:true,rent_day:'90',rent_event:'160',dimensions:'18" × 24"',materials:'Acrylic, resin topcoat, sand texture',description:'Warm terracotta and sage inspired by the California high desert.'},
+  {id:'s6',title:'Crystal Cave',type:'Resin Art',price:'720',status:'available',dimensions:'30" × 20"',materials:'Epoxy resin, geode-style crystals, metallic pigments',description:''},
+];}
+
+// ── ROUTING ──
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+  document.getElementById('page-'+page)?.classList.add('active');
+  document.querySelector(`[data-p="${page}"]`)?.classList.add('active');
+  currentPage = page;
+  window.scrollTo({top:0,behavior:'smooth'});
+  document.getElementById('siteFooter').style.display='block';
+  document.getElementById('navLinks').style.cssText='';
+  if(page==='home')    renderHome();
+  if(page==='shop')    renderShop();
+  if(page==='rentals') renderRentals();
+  if(page==='about')   renderAbout();
+  setTimeout(initReveal,80);
+}
+
+// ── NAV ──
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('solid',window.scrollY>20);
+});
+function toggleMenu(){
+  const nl=document.getElementById('navLinks');
+  const isOpen=nl.style.position==='fixed';
+  nl.style.cssText=isOpen?'':'display:flex;flex-direction:column;position:fixed;top:66px;left:0;right:0;background:rgba(250,247,242,.97);backdrop-filter:blur(18px);padding:20px 24px 28px;border-bottom:1px solid var(--border);z-index:99;gap:16px;';
+}
+
+// ── CARDS ──
+function pieceCardHTML(p){
+  const isSold=(p.status||'available')==='sold';
+  const isHold=(p.status||'available')==='hold';
+  const isRentable=p.for_rent&&!isSold;
+  const badge=isSold?'<div class="piece-badge badge-sold">Sold</div>':isHold?'<div class="piece-badge badge-hold">On Hold</div>':isRentable?'<div class="piece-badge badge-rent">Rentable</div>':'';
+  const img=p.image?`<img src="${p.image}" alt="${p.title}" loading="lazy">`:'<div class="piece-no-img">🖼</div>';
+  const overlay=isSold?'':`<div class="piece-overlay"><button class="overlay-buy" onclick="event.stopPropagation();openPiece('${p.id}')">View Piece →</button></div>`;
+  return`<div class="piece-card" onclick="openPiece('${p.id}')">
+    <div class="piece-img-wrap">${img}${badge}${overlay}</div>
+    <div class="piece-body">
+      <div class="piece-type">${p.type||'Original Art'}</div>
+      <div class="piece-name">${p.title}</div>
+      <div class="piece-dims">${p.dimensions||''}</div>
+      <div class="piece-price">
+        <span class="${isSold?'sold-label':''}">${p.price?'$'+Number(p.price).toLocaleString():'Inquire'}</span>
+        ${isSold?'<span class="sold-label">Sold</span>':''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function rentalCardHTML(p){
+  const isOut=p.status==='on-rental';
+  const rates=[];
+  if(p.rent_day)     rates.push('$'+p.rent_day+'/day');
+  if(p.rent_weekend) rates.push('$'+p.rent_weekend+'/wknd');
+  if(p.rent_week)    rates.push('$'+p.rent_week+'/week');
+  if(p.rent_event)   rates.push('$'+p.rent_event+' event');
+  return`<div class="rental-card">
+    <div class="rental-thumb">
+      ${p.image?`<img src="${p.image}" alt="${p.title}" loading="lazy">`:'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;opacity:.08">🖼</div>'}
+      ${isOut?'<div class="rental-out-cover"><div class="rental-out-tag">Currently on Rental</div></div>':''}
+    </div>
+    <div class="rental-body">
+      <div class="rental-tag"><div class="rental-tag-dot"></div>Rentable · ${p.type||'Original Art'}</div>
+      <div class="rental-name">${p.title}</div>
+      <div class="rental-dims">${p.dimensions||''}</div>
+      <div class="rental-rates">${rates.map(r=>`<span class="rate-chip">${r}</span>`).join('')}${p.rent_deposit?`<span style="font-size:.6rem;color:var(--muted2);align-self:center">· $${p.rent_deposit} dep.</span>`:''}</div>
+      <div class="rental-btns">
+        <button class="rent-btn rent-btn-main" onclick="openRentalModal('${p.id}')" ${isOut?'disabled style="opacity:.5"':''}>${isOut?'Currently Out':'Request to Rent →'}</button>
+        <button class="rent-btn rent-btn-ghost" onclick="openPiece('${p.id}')">View</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── RENDER HOME ──
+function renderHome(){
+  const avail=allPieces.filter(p=>(p.status||'available')==='available').slice(0,3);
+  const fg=document.getElementById('home-featured');
+  fg.innerHTML=avail.length?avail.map(pieceCardHTML).join(''):'<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted);font-size:.9rem">No pieces currently available — check back soon!</div>';
+  const rentable=allPieces.filter(p=>p.for_rent).slice(0,4);
+  const rpg=document.getElementById('home-rental-preview');
+  if(rentable.length) rpg.innerHTML=rentable.map(p=>`<div style="aspect-ratio:1;overflow:hidden;background:var(--warm2)">${p.image?`<img src="${p.image}" style="width:100%;height:100%;object-fit:cover;display:block" alt="">`:''}</div>`).join('');
+  const ig=document.getElementById('home-ig');
+  const recent=allPieces.slice(0,4);
+  ig.innerHTML=recent.length?recent.map(p=>`<div class="ig-cell" onclick="openPiece('${p.id}')">${p.image?`<img src="${p.image}" alt="" loading="lazy">`:'<div class="ig-cell-empty">🎨</div>'}</div>`).join(''):document.getElementById('home-ig').innerHTML;
+}
+
+// ── RENDER SHOP ──
+function renderShop(){
+  let list=allPieces;
+  if(_sf==='available') list=list.filter(p=>(p.status||'available')==='available');
+  else if(_sf==='sold') list=list.filter(p=>p.status==='sold');
+  if(_st) list=list.filter(p=>p.type===_st);
+  document.getElementById('shop-count').textContent=list.length+' piece'+(list.length!==1?'s':'');
+  document.getElementById('shop-grid').innerHTML=list.length?list.map(pieceCardHTML).join(''):`<div class="empty-state"><div class="empty-icon">🎨</div><div class="empty-h">No pieces found</div><div class="empty-sub">Try a different filter, or check back soon.</div></div>`;
+}
+
+function shopFilter(f,btn){
+  _sf=f;_st=null;
+  document.querySelectorAll('#shop-filters .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else{const btns=document.querySelectorAll('#shop-filters .filter-btn');if(f==='available')btns[1]?.classList.add('active');else btns[0]?.classList.add('active');}
+  renderShop();
+}
+function shopTypeFilter(type,btn){
+  _sf='all';_st=type;
+  document.querySelectorAll('#shop-filters .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderShop();
+}
+
+// ── RENDER RENTALS ──
+function renderRentals(){
+  const rentable=allPieces.filter(p=>p.for_rent);
+  document.getElementById('rental-count').textContent=rentable.length+' piece'+(rentable.length!==1?'s':'')+' available';
+  document.getElementById('rental-grid').innerHTML=rentable.length?rentable.map(rentalCardHTML).join(''):'<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);font-size:.9rem">No pieces available to rent right now — <button onclick="goTo(\'contact\')" style="background:none;border:none;color:var(--teal);font-size:.9rem;cursor:pointer">get in touch</button> for custom arrangements.</div>';
+  const sel=document.getElementById('rm-piece');
+  if(sel){sel.innerHTML='<option value="">Not sure yet — show me options</option>'+allPieces.filter(p=>p.for_rent&&p.status!=='on-rental').map(p=>{const r=[];if(p.rent_day)r.push('$'+p.rent_day+'/day');if(p.rent_weekend)r.push('$'+p.rent_weekend+'/wknd');if(p.rent_event)r.push('$'+p.rent_event+' event');return`<option value="${p.id}">${p.title}${r.length?' — '+r[0]:''}`;}).join('');}
+}
+
+function rentalFilter(f,btn){
+  document.querySelectorAll('#rental-filters .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else document.querySelectorAll('#rental-filters .filter-btn')[0]?.classList.add('active');
+  renderRentals();
+}
+
+// ── RENDER ABOUT ──
+function renderAbout(){
+  const urns=allPieces.filter(p=>p.type==='Decorative Urn').slice(0,4);
+  const ug=document.getElementById('urn-grid');
+  if(urns.length&&ug) ug.innerHTML=urns.map(p=>`<div style="aspect-ratio:1;overflow:hidden;background:var(--warm2)">${p.image?`<img src="${p.image}" style="width:100%;height:100%;object-fit:cover;display:block" alt="">`:''}</div>`).join('');
+}
+
+// ── LIGHTBOX ──
+function openPiece(id){
+  const p=allPieces.find(x=>String(x.id)===String(id));if(!p)return;
+  activePiece=p;
+  const isSold=(p.status||'available')==='sold';
+  const img=document.getElementById('lb-img');
+  const empty=document.getElementById('lb-img-empty');
+  if(p.image){img.src=p.image;img.style.display='';empty.style.display='none';}
+  else{img.style.display='none';empty.style.display='flex';}
+  document.getElementById('lb-type').textContent=p.type||'Original Art';
+  document.getElementById('lb-title').textContent=p.title;
+  const prEl=document.getElementById('lb-price');
+  prEl.textContent=p.price?'$'+Number(p.price).toLocaleString():'Price on inquiry';
+  prEl.className='lb-price'+(isSold?' sold':'');
+  document.getElementById('lb-sold-tag').style.display=isSold?'inline-flex':'none';
+  const dimsEl=document.getElementById('lb-dims');
+  dimsEl.innerHTML=p.dimensions?`<strong>Dimensions:</strong> ${p.dimensions}`:'';
+  dimsEl.style.display=p.dimensions?'':'none';
+  const matsEl=document.getElementById('lb-mats');
+  matsEl.innerHTML=p.materials?`<strong>Materials:</strong> ${p.materials}`:'';
+  matsEl.style.display=p.materials?'':'none';
+  document.getElementById('lb-desc').textContent=p.description||'An original, one-of-a-kind work by Cece. Certificate of authenticity included.';
+  const buyBtn=document.getElementById('lb-buy');
+  if(isSold){buyBtn.textContent='This Piece is Sold';buyBtn.className='lb-buy sold';buyBtn.href='#';buyBtn.onclick=e=>e.preventDefault();}
+  else{buyBtn.textContent=p.payment_link?'Purchase This Piece →':'Inquire to Purchase →';buyBtn.className='lb-buy';buyBtn.href=p.payment_link||`mailto:hello@cecethepiece.com?subject=Purchase inquiry: "${p.title}"&body=Hi Cece! I'm interested in "${p.title}" ($${p.price}).`;buyBtn.target=p.payment_link?'_blank':'';buyBtn.onclick=null;}
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLb(){document.getElementById('lightbox').classList.remove('open');document.body.style.overflow='';activePiece=null;}
+function closeLbOutside(e){if(e.target.id==='lightbox')closeLb();}
+async function lbInquire(){
+  if(!activePiece)return;
+  // Write inquiry to Supabase so Hub sees it as a lead
+  if(CONFIGURED){
+    try{
+      await fetch(`${SUPABASE_URL}/rest/v1/orders`,{
+        method:'POST',
+        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+        body:JSON.stringify({piece_id:activePiece.id,piece_title:activePiece.title,price:activePiece.price,type:'inquiry',status:'pending',source:'website',created_at:new Date().toISOString()})
+      });
+    }catch(e){}
+  }
+  const s=encodeURIComponent(`Inquiry: "${activePiece.title}"`);
+  const b=encodeURIComponent(`Hi Cece,\n\nI'm interested in "${activePiece.title}"${activePiece.price?' ($'+activePiece.price+')':''}.\n\nThank you!`);
+  window.open(`mailto:hello@cecethepiece.com?subject=${s}&body=${b}`);
+}
+function lbCopy(){navigator.clipboard.writeText(window.location.href).then(()=>showToast('Link copied!',true));}
+function lbShare(){if(!activePiece)return;if(navigator.share)navigator.share({title:activePiece.title+' — cecethepiece',url:window.location.href});else lbCopy();}
+
+// ── RENTAL MODAL ──
+function openRentalModal(pieceId){
+  renderRentals();
+  const today=new Date(),next=new Date(today);next.setDate(today.getDate()+7);
+  document.getElementById('rm-start').value=today.toISOString().slice(0,10);
+  document.getElementById('rm-end').value=next.toISOString().slice(0,10);
+  if(pieceId){const s=document.getElementById('rm-piece');if(s)s.value=pieceId;}
+  document.getElementById('rentalModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeRentalModal(){document.getElementById('rentalModal').classList.remove('open');document.body.style.overflow='';}
+function closeModalOutside(e){if(e.target.id==='rentalModal')closeRentalModal();}
+function pickEvent(type,el){selectedEvent=type;document.querySelectorAll('.event-btn').forEach(b=>b.classList.remove('on'));el.classList.add('on');}
+
+async function submitRental(){
+  const name=document.getElementById('rm-name').value.trim();
+  const email=document.getElementById('rm-email').value.trim();
+  if(!name){showToast('Please enter your name.');return;}
+  if(!email){showToast('Please enter your email.');return;}
+  const phone=document.getElementById('rm-phone').value.trim();
+  const pieceId=document.getElementById('rm-piece').value;
+  const start=document.getElementById('rm-start').value;
+  const end=document.getElementById('rm-end').value;
+  const period=document.getElementById('rm-period').value;
+  const notes=document.getElementById('rm-notes').value.trim();
+  const piece=allPieces.find(p=>p.id===pieceId);
+  const pMap={day:'Per Day',weekend:'Per Weekend',week:'Per Week',event:'Flat Event Rate'};
+  const sf=start?new Date(start).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'TBD';
+  const ef=end?new Date(end).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'TBD';
+  if(CONFIGURED){try{await fetch(`${SUPABASE_URL}/rest/v1/rental_bookings`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({renter_name:name,renter_email:email,renter_phone:phone,piece_id:pieceId||null,event_type:selectedEvent,rental_period:period,start_date:start||null,end_date:end||null,status:'pending',notes,amount:null})});}catch(e){}}
+  const s=encodeURIComponent(`Rental Request — ${selectedEvent} — ${name}`);
+  const b=encodeURIComponent(`New rental request!\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone||'Not provided'}\n\nEvent: ${selectedEvent}\nPiece: ${piece?piece.title:'Not specified'}\nDates: ${sf} → ${ef}\nPeriod: ${pMap[period]||period}\n\nNotes:\n${notes||'None'}`);
+  window.open(`mailto:hello@cecethepiece.com?subject=${s}&body=${b}`);
+  closeRentalModal();
+  showToast('✅ Request sent! Cece will reply within 24 hours.',true);
+  ['rm-name','rm-phone','rm-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+
+// ── CONTACT ──
+const prefills={
+  commission:{sub:'Commission Inquiry',msg:"Hi Cece,\n\nI'm interested in commissioning a custom piece.\n\n• Size: \n• Color palette: \n• Space it's going in: \n• Budget range: \n\nLooking forward to hearing from you!"},
+  rental:{sub:'Rental Inquiry',msg:"Hi Cece,\n\nI'm interested in renting a piece for an upcoming event.\n\n• Event type: \n• Date: \n• Venue: \n• Duration: \n\nPlease let me know what's available!"},
+  trade:{sub:'Trade Pricing Inquiry',msg:"Hi Cece,\n\nI'm an interior design professional interested in trade pricing.\n\n• My firm/studio: \n• Project types: \n• What I'm looking for: "},
+  urn:{sub:'Custom Memorial Urn Inquiry',msg:"Hi Cece,\n\nI'm interested in a custom memorial urn.\n\n• Colors or themes: \n• Timeline: \n• Special inclusions: \n\nThank you for creating such meaningful work."},
+  stager:{sub:'Stager Program Inquiry',msg:"Hi Cece,\n\nI'm a home stager interested in your rental program.\n\n• My market area: \n• How often I stage: \n• What I'm looking for: "},
+};
+
+function prefillContact(type){
+  const t=prefills[type];if(!t)return;
+  document.getElementById('cf-subject').value=t.sub;
+  document.getElementById('cf-msg').value=t.msg;
+  document.getElementById('cf-name').focus();
+  showToast('Template loaded — fill in your details!',true);
+}
+
+function submitContact(e){
+  e.preventDefault();
+  const name=document.getElementById('cf-name').value;
+  const email=document.getElementById('cf-email').value;
+  const sub=document.getElementById('cf-subject').value||'Website Inquiry';
+  const msg=document.getElementById('cf-msg').value;
+  window.open(`mailto:hello@cecethepiece.com?subject=${encodeURIComponent(sub+' — from '+name)}&body=${encodeURIComponent('From: '+name+' <'+email+'>\n\n'+msg)}`);
+  showToast('Opening your email app...',true);
+}
+
+// ── REVEAL ──
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+  },{threshold:.07});
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el=>obs.observe(el));
+}
+
+// ── TOAST ──
+function showToast(msg,success=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(success?' success':'');
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+// ── KEYBOARD ──
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLb();closeRentalModal();}});
+
+// ── AUTO REFRESH ──
+setInterval(async()=>{
+  const fresh=await fetchPieces();
+  if(JSON.stringify(fresh)!==JSON.stringify(allPieces)){
+    allPieces=fresh;
+    if(currentPage==='home')    renderHome();
+    if(currentPage==='shop')    renderShop();
+    if(currentPage==='rentals') renderRentals();
+    if(currentPage==='about')   renderAbout();
+  }
+},30000);
+
+// ── BOOT ──
+(async function(){
+  allPieces=await fetchPieces()||[];
+  goTo('home');
+})();
+</script>
+</body>
+</html>
