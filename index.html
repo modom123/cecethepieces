@@ -8,7 +8,7 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecepieces — public website)
-  LAST UPDATED: 2026-09-10_1947 UTC
+  LAST UPDATED: 2026-09-10_2036 UTC
   CHANGE: 2026-09-10_1839 — Added a discreet "Team Login" footer link
           that opens the Business Hub at amazinhelp.com.
           2026-09-10_1918 — Renamed "Memorial Urns" to "Memorial Pieces"
@@ -24,6 +24,10 @@
           Pieces" to "cecepieces" (title, logos, headings, copy). Left
           the @cecethepiece social handles, hello@cecethepiece.com email,
           and #cecethepiece hashtags unchanged (real external accounts).
+          2026-09-10_2036 — Added a lead-capture inquiry form (name,
+          email, phone, message) that saves the lead to the hub's Orders
+          so the Sales agent gets contact info. Contact-form messages now
+          persist to the hub too. Rental dropdown shows the weekly rate.
   ────────────────────────────────────────────────────────────────
 -->
 
@@ -860,7 +864,7 @@ footer::before{display:none}
       <div class="lb-desc" id="lb-desc"></div>
       <div class="lb-actions">
         <a class="lb-buy" id="lb-buy" href="#">Purchase This Piece</a>
-        <button class="lb-inquiry" onclick="lbInquire()">✉ &nbsp;Inquire About This Piece</button>
+        <button class="lb-inquiry" onclick="openInquiry()">✉ &nbsp;Inquire About This Piece</button>
         <div class="lb-share-row">
           <button class="lb-share-btn" onclick="lbCopy()">🔗 Copy Link</button>
           <span style="opacity:.3">|</span>
@@ -912,6 +916,24 @@ footer::before{display:none}
   </div>
 </div>
 
+<!-- INQUIRY MODAL -->
+<div class="modal-bg" id="inquiryModal" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeInquiry()">✕</button>
+    <div style="font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--purple2);margin-bottom:8px">Inquiry</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:300;color:var(--ink);margin-bottom:4px">Inquire About <em id="inq-piece-name" style="font-style:italic;color:var(--purple2)">this piece</em></h2>
+    <p style="font-size:.8rem;color:var(--muted);line-height:1.7;margin-bottom:16px">Leave your details and Cece will personally reply within 24 hours.</p>
+    <div class="mrow">
+      <div class="mf"><label class="mlabel">Your Name *</label><input class="minput" id="inq-name" placeholder="Full name"></div>
+      <div class="mf"><label class="mlabel">Email *</label><input class="minput" id="inq-email" type="email" placeholder="your@email.com"></div>
+    </div>
+    <div class="mf"><label class="mlabel">Phone (optional)</label><input class="minput" id="inq-phone" placeholder="(555) 000-0000"></div>
+    <div class="mf"><label class="mlabel">Message</label><textarea class="mtextarea" id="inq-msg" placeholder="Any questions, timeline, or where you're picturing it..."></textarea></div>
+    <button class="msubmit" onclick="submitInquiry()">Send Inquiry →</button>
+    <div style="font-size:.66rem;color:var(--muted2);text-align:center;margin-top:12px;line-height:1.6">Personal reply within 24 hours · No obligation</div>
+  </div>
+</div>
+
 <!-- HUB LOGIN -->
 <div class="hub-login" id="hubLogin" onclick="if(event.target.id==='hubLogin')closeHubLogin()">
   <form class="hub-login-card" id="hubLoginForm" autocomplete="on">
@@ -935,7 +957,7 @@ const SUPABASE_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzc2ljb3h6eGNmaWpkbHZ0cHFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MzM3NDAsImV4cCI6MjA4OTAwOTc0MH0.g7OlsyUsSv05u7ikmjyt2sOT8aWFGNPwKU65KcATlWU';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v2.0';
+const SITE_VERSION  = 'v2.1';
 const SITE_BUILD    = '2026-09-10';
 const SITE_LABEL    = 'Rebrand → cecepieces · Variation gallery · On-site Hub Login';
 // ─────────────────────────────────────────────────────────────
@@ -1248,7 +1270,37 @@ function openRentalModal(pieceId){
   document.body.style.overflow='hidden';
 }
 function closeRentalModal(){document.getElementById('rentalModal').classList.remove('open');document.body.style.overflow='';}
-function closeModalOutside(e){if(e.target.id==='rentalModal')closeRentalModal();}
+function closeModalOutside(e){if(e.target.id==='rentalModal')closeRentalModal();if(e.target.id==='inquiryModal')closeInquiry();}
+
+// ── PIECE INQUIRY (lead capture → hub Orders → Sales agent) ──
+let inquiryPiece=null;
+function openInquiry(){
+  inquiryPiece=activePiece;
+  document.getElementById('inq-piece-name').textContent=inquiryPiece?inquiryPiece.title:'this piece';
+  closeLb();
+  document.getElementById('inquiryModal').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('inq-name').focus(),60);
+}
+function closeInquiry(){document.getElementById('inquiryModal').classList.remove('open');document.body.style.overflow='';}
+async function submitInquiry(){
+  const name=document.getElementById('inq-name').value.trim();
+  const email=document.getElementById('inq-email').value.trim();
+  if(!name){showToast('Please enter your name.');return;}
+  if(!email){showToast('Please enter your email.');return;}
+  const phone=document.getElementById('inq-phone').value.trim();
+  const msg=document.getElementById('inq-msg').value.trim();
+  const p=inquiryPiece;
+  const notes=(phone?('Phone: '+phone+'\n'):'')+(msg||'');
+  if(CONFIGURED){try{await fetch(`${SUPABASE_URL}/rest/v1/orders`,{
+    method:'POST',
+    headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+    body:JSON.stringify({piece_id:p?p.id:null,piece_title:p?p.title:'General inquiry',price:p?p.price:null,type:'inquiry',status:'pending',source:'website',customer_name:name,customer_email:email,notes,created_at:new Date().toISOString()})
+  });}catch(e){}}
+  closeInquiry();
+  showToast('✅ Inquiry sent! Cece will reply within 24 hours.',true);
+  ['inq-name','inq-email','inq-phone','inq-msg'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
 function pickEvent(type,el){selectedEvent=type;document.querySelectorAll('.event-btn').forEach(b=>b.classList.remove('on'));el.classList.add('on');}
 
 async function submitRental(){
@@ -1298,8 +1350,14 @@ function submitContact(e){
   const email=document.getElementById('cf-email').value;
   const sub=document.getElementById('cf-subject').value||'Website Inquiry';
   const msg=document.getElementById('cf-msg').value;
+  // Persist the lead to the hub so it reaches the CRM + Sales agent (not just email).
+  if(CONFIGURED){try{fetch(`${SUPABASE_URL}/rest/v1/orders`,{
+    method:'POST',
+    headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},
+    body:JSON.stringify({piece_title:sub,type:'inquiry',status:'pending',source:'website contact form',customer_name:name,customer_email:email,notes:msg,created_at:new Date().toISOString()})
+  }).catch(()=>{});}catch(e){}}
   window.open(`mailto:hello@cecethepiece.com?subject=${encodeURIComponent(sub+' — from '+name)}&body=${encodeURIComponent('From: '+name+' <'+email+'>\n\n'+msg)}`);
-  showToast('Opening your email app...',true);
+  showToast('✅ Message sent! Cece will reply within 24 hours.',true);
 }
 
 // ── REVEAL ──
