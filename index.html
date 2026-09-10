@@ -1088,7 +1088,7 @@ function renderRentals(){
   document.getElementById('rental-count').textContent=rentable.length+' piece'+(rentable.length!==1?'s':'')+' available';
   document.getElementById('rental-grid').innerHTML=rentable.length?rentable.map(rentalCardHTML).join(''):'<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);font-size:.9rem">No pieces available to rent right now — <button onclick="goTo(\'contact\')" style="background:none;border:none;color:var(--blue2);font-size:.9rem;cursor:pointer">get in touch</button> for custom arrangements.</div>';
   const sel=document.getElementById('rm-piece');
-  if(sel){sel.innerHTML='<option value="">Not sure yet — show me options</option>'+allPieces.filter(p=>p.for_rent&&p.status!=='on-rental').map(p=>{const r=[];if(p.rent_day)r.push('$'+p.rent_day+'/day');if(p.rent_weekend)r.push('$'+p.rent_weekend+'/wknd');if(p.rent_event)r.push('$'+p.rent_event+' event');return`<option value="${p.id}">${p.title}${r.length?' — '+r[0]:''}`;}).join('');}
+  if(sel){sel.innerHTML='<option value="">Not sure yet — show me options</option>'+allPieces.filter(p=>p.for_rent&&p.status!=='on-rental').map(p=>{const r=[];if(p.rent_day)r.push('$'+p.rent_day+'/day');if(p.rent_weekend)r.push('$'+p.rent_weekend+'/wknd');if(p.rent_week)r.push('$'+p.rent_week+'/week');if(p.rent_event)r.push('$'+p.rent_event+' event');return`<option value="${p.id}">${p.title}${r.length?' — '+r[0]:''}`;}).join('');}
 }
 
 function rentalFilter(f,btn){
