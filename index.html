@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cece's Pieces — Original Art</title>
+
+<!--
+  ────────────────────────────────────────────────────────────────
+  FILE: index.html  (Cece's Pieces — public website)
+  LAST UPDATED: 2026-09-10_1839 UTC
+  CHANGE: Added a discreet "Team Login" link (footer + mobile menu)
+          that opens the Business Hub at amazinhelp.com, where team
+          members sign in with their Supabase Auth account.
+  ────────────────────────────────────────────────────────────────
+-->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -771,6 +782,7 @@ footer::before{display:none}
         <button class="footer-lnk" onclick="goTo('contact')">Contact</button>
         <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('commission'),100)">Commission a Piece</button>
         <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('trade'),100)">Trade Pricing</button>
+        <a class="footer-lnk" href="https://amazinhelp.com">Team Login →</a>
       </div>
     </div>
   </div>
