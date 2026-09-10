@@ -8,10 +8,18 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (Cece's Pieces — public website)
-  LAST UPDATED: 2026-09-10_1839 UTC
-  CHANGE: Added a discreet "Team Login" link (footer + mobile menu)
-          that opens the Business Hub at amazinhelp.com, where team
-          members sign in with their Supabase Auth account.
+  LAST UPDATED: 2026-09-10_1918 UTC
+  CHANGE: 2026-09-10_1839 — Added a discreet "Team Login" footer link
+          that opens the Business Hub at amazinhelp.com.
+          2026-09-10_1918 — Renamed "Memorial Urns" to "Memorial Pieces"
+          (still matches legacy "Decorative Urn" data). Fixed the broken
+          "Every pour" quote markup. Added a variation gallery to the
+          piece view: a main image plus clickable / draggable thumbnails
+          for each variation, with graceful fallback to a single image.
+          2026-09-10_1941 — Replaced the external amazinhelp.com login
+          link with an on-site "Hub Login" page. It signs in via Supabase
+          Auth and hands the session to the hub (HUB_URL) so the team
+          lands signed in — no "amazinhelp" shown before login.
   ────────────────────────────────────────────────────────────────
 -->
 
@@ -54,7 +62,7 @@
   /* ── Green palette for About page ── */
   --green-bg:#f2faf4;       /* soft sage white — main about bg */
   --green-surface:#e4f5e8;  /* light green — header, quote block */
-  --green-deep:#ceecd5;     /* richer green — process band, urns */
+  --green-deep:#ceecd5;     /* richer green — process band, memorial pieces */
   --green-accent:#1e7a40;   /* forest green — headings, buttons */
   --green-mid:#2ea653;      /* medium green — hover, secondary */
   --green-border:rgba(30,122,64,.18);
@@ -175,6 +183,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .badge-sold{background:rgba(192,0,74,.1);color:var(--danger);border:1px solid rgba(192,0,74,.2)}
 .badge-hold{background:var(--lav-soft);color:var(--lav3);border:1px solid var(--lav-border)}
 .badge-rent{background:var(--lav-soft);color:var(--lav);border:1px solid var(--lav-border)}
+.piece-var-chip{position:absolute;bottom:12px;left:12px;font-size:.52rem;letter-spacing:.08em;font-weight:700;padding:4px 9px;border-radius:20px;background:rgba(255,255,255,.9);color:var(--purple2);box-shadow:0 2px 8px rgba(139,63,255,.15);z-index:2}
 .piece-body{padding:18px 20px 22px;flex:1;display:flex;flex-direction:column;background:var(--light)}
 .piece-type{font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lav3);font-weight:600;margin-bottom:5px}
 .piece-name{font-family:'Playfair Display',serif;font-size:1.22rem;font-weight:400;color:var(--ink2);line-height:1.2;margin-bottom:4px}
@@ -277,9 +286,41 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .lightbox.open{opacity:1;pointer-events:all}
 .lb-card{background:rgba(255,255,255,.65);border:1px solid var(--pink-border2);max-width:920px;width:100%;max-height:90vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;transform:translateY(14px) scale(.97);transition:transform .35s cubic-bezier(.34,1.56,.64,1);position:relative;box-shadow:0 32px 80px rgba(139,63,255,.2);border-radius:6px}
 .lightbox.open .lb-card{transform:translateY(0) scale(1)}
-.lb-img{background:var(--surface3);position:sticky;top:0;overflow:hidden}
-.lb-img img{width:100%;height:100%;object-fit:cover;display:block;min-height:340px}
+.lb-media{background:var(--surface3);position:sticky;top:0;display:flex;flex-direction:column}
+.lb-img{position:relative;overflow:hidden;flex:1;background:var(--surface3)}
+.lb-img img{width:100%;height:100%;object-fit:cover;display:block;min-height:340px;touch-action:pan-y;user-select:none;-webkit-user-drag:none}
 .lb-img-empty{min-height:340px;display:flex;align-items:center;justify-content:center;font-size:4rem;opacity:.08}
+/* Variation gallery */
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.85);color:var(--ink2);font-size:1.4rem;line-height:1;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(139,63,255,.18);z-index:2;transition:background .2s,transform .2s}
+.lb-nav:hover{background:#fff;transform:translateY(-50%) scale(1.06)}
+.lb-prev{left:10px}.lb-next{right:10px}
+.lb-var-badge{position:absolute;bottom:10px;right:10px;background:rgba(26,20,45,.62);color:#fff;font-size:.62rem;letter-spacing:.09em;padding:4px 10px;border-radius:20px;z-index:2;display:none}
+.lb-var-hint{position:absolute;bottom:10px;left:10px;background:rgba(255,255,255,.85);color:var(--ink2);font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:4px 9px;border-radius:20px;z-index:2;display:none}
+.lb-media.has-vars .lb-nav,.lb-media.has-vars .lb-var-badge,.lb-media.has-vars .lb-var-hint{display:flex}
+.lb-thumbs{display:none;gap:8px;padding:10px;overflow-x:auto;background:var(--surface3);border-top:1px solid var(--pink-border2)}
+.lb-media.has-vars .lb-thumbs{display:flex}
+.lb-thumb{flex:0 0 auto;width:58px;height:58px;border-radius:5px;overflow:hidden;border:2px solid transparent;cursor:pointer;background:var(--surface2);padding:0;transition:border-color .2s,transform .15s}
+.lb-thumb:hover{transform:translateY(-2px)}
+.lb-thumb img{width:100%;height:100%;object-fit:cover;display:block;min-height:0}
+.lb-thumb.active{border-color:var(--purple2)}
+.lb-thumb-label{font-size:.5rem}
+/* HUB LOGIN */
+.hub-login{position:fixed;inset:0;z-index:400;background:rgba(240,236,255,.92);backdrop-filter:blur(22px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .28s}
+.hub-login.open{opacity:1;pointer-events:all}
+.hub-login-card{background:#fff;border:1px solid var(--pink-border2);border-radius:10px;width:min(400px,100%);padding:36px 30px;box-shadow:0 32px 80px rgba(139,63,255,.22);position:relative}
+.hub-login-close{position:absolute;top:12px;right:12px;background:none;border:none;font-size:1rem;color:var(--muted);cursor:pointer}
+.hub-login-logo{text-align:center;font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--ink)}
+.hub-login-logo em{font-style:italic;color:var(--purple2)}
+.hub-login-sub{text-align:center;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:6px 0 24px}
+.hub-login-label{display:block;font-size:.66rem;font-weight:600;color:var(--ink2);margin-bottom:5px}
+.hub-login-input{width:100%;border:1.5px solid var(--pink-border2);border-radius:8px;padding:11px 13px;font-size:.85rem;font-family:inherit;margin-bottom:15px;background:#fff;color:var(--ink)}
+.hub-login-input:focus{outline:none;border-color:var(--purple2)}
+.hub-login-btn{width:100%;border:none;border-radius:8px;padding:12px;font-size:.82rem;font-weight:700;letter-spacing:.04em;cursor:pointer;background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;transition:filter .18s}
+.hub-login-btn:hover{filter:brightness(1.06)}
+.hub-login-btn:disabled{opacity:.6;cursor:default}
+.hub-login-err{background:#fdeceb;color:#c0392b;border:1px solid #f5c6c2;border-radius:8px;padding:9px 12px;font-size:.72rem;margin-bottom:15px;display:none}
+.hub-login-err.show{display:block}
+.hub-login-foot{text-align:center;font-size:.64rem;color:var(--muted);margin-top:18px;line-height:1.6}
 .lb-body{padding:36px 32px;display:flex;flex-direction:column}
 .lb-close{position:absolute;top:14px;right:14px;width:32px;height:32px;background:var(--surface);border:1px solid var(--lav-border);border-radius:4px;font-size:.8rem;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:10}
 .lb-close:hover{background:var(--lav);color:#fff;border-color:var(--lav)}
@@ -353,7 +394,7 @@ footer::before{display:none}
   .steps-grid{grid-template-columns:1fr 1fr}
   .value-grid{grid-template-columns:1fr}
   .ig-grid{grid-template-columns:repeat(3,1fr)}
-  .lb-card{grid-template-columns:1fr}.lb-img{position:static;min-height:260px}
+  .lb-card{grid-template-columns:1fr}.lb-media{position:static}.lb-img{min-height:260px}
   .footer-grid{grid-template-columns:1fr 1fr}
   .mrow,.cf-row{grid-template-columns:1fr}
   .section{padding:60px 0}
@@ -493,7 +534,7 @@ footer::before{display:none}
     <div class="inner">
       <div style="max-width:760px;margin:0 auto;text-align:center" class="reveal">
         <div style="font-size:1rem;color:var(--purple2);margin-bottom:20px">✦</div>
-        <blockquote style="font-family:'Playfair Display',serif;font-size:clamp(1.65rem,3vw,2.4rem);font-weight:300;line-height:1.38;color:var(--ink-on-dark);">margin-bottom:26px">"Every pour is <em style="font-style:italic;color:var(--purple2)">unrepeatable.</em> The moment the resin touches the surface, something entirely new comes into the world."</blockquote>
+        <blockquote style="font-family:'Playfair Display',serif;font-size:clamp(1.65rem,3vw,2.4rem);font-weight:300;line-height:1.38;color:var(--ink-on-dark);margin-bottom:26px">"Every pour is <em style="font-style:italic;color:var(--purple2)">unrepeatable.</em> The moment the resin touches the surface, something entirely new comes into the world."</blockquote>
         <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:32px">
           <div style="width:30px;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink))"></div>
           <span style="font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2)">Cece — Cece's Pieces</span>
@@ -542,7 +583,7 @@ footer::before{display:none}
         <button class="filter-btn" onclick="shopTypeFilter('Resin Art',this)">Resin Art</button>
         <button class="filter-btn" onclick="shopTypeFilter('Painting',this)">Painting</button>
         <button class="filter-btn" onclick="shopTypeFilter('Mixed Media',this)">Mixed Media</button>
-        <button class="filter-btn" onclick="shopTypeFilter('Decorative Urn',this)">Memorial Urns</button>
+        <button class="filter-btn" onclick="shopTypeFilter('Memorial Piece',this)">Memorial Pieces</button>
         <span class="results-count" id="shop-count"></span>
       </div>
       <div class="pieces-grid" id="shop-grid">
@@ -659,7 +700,7 @@ footer::before{display:none}
           <p>Every piece I make is completely original. I don't reproduce, I don't print, I don't re-create. When you own a Cece's Pieces work, you own something that exists nowhere else in the world — with a certificate of authenticity to prove it.</p>
           <p>Based in Los Angeles, I work in small batches — sometimes a single piece, never more than a few at a time. Each one gets my full attention from first pour to final seal.</p>
           <div class="pills">
-            <span class="pill">Resin Art</span><span class="pill">Painting</span><span class="pill">Memorial Urns</span>
+            <span class="pill">Resin Art</span><span class="pill">Painting</span><span class="pill">Memorial Pieces</span>
             <span class="pill">Mixed Media</span><span class="pill">Los Angeles</span><span class="pill">Trade Pricing</span>
           </div>
         </div>
@@ -683,15 +724,15 @@ footer::before{display:none}
     </div>
   </section>
 
-  <!-- Memorial Urns -->
+  <!-- Memorial Pieces -->
   <section class="section" style="background:var(--green-bg)">
     <div class="inner" style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center">
       <div class="reveal">
         <div class="section-label" style="color:var(--green-accent)">A Special Category</div>
-        <h2 class="section-h" style="color:var(--ink2);margin-bottom:16px">Memorial <em style="font-style:italic;background:linear-gradient(135deg,var(--green-accent),var(--green-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Urns</em></h2>
-        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:16px;font-weight:400">I create handcrafted memorial urns because I believe the way we honor our loved ones should be as unique as they were. No two urns are ever alike.</p>
+        <h2 class="section-h" style="color:var(--ink2);margin-bottom:16px">Memorial <em style="font-style:italic;background:linear-gradient(135deg,var(--green-accent),var(--green-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pieces</em></h2>
+        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:16px;font-weight:400">I create handcrafted memorial pieces because I believe the way we honor our loved ones should be as unique as they were. No two are ever alike.</p>
         <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:28px;font-weight:400">Custom colors, personal touches, embedded botanicals and metals can be worked in. The result is something that truly belongs to a specific person and a specific story.</p>
-        <button class="cta-btn" onclick="goTo('contact')" style="background:linear-gradient(135deg,var(--green-accent),var(--green-mid));color:#fff;box-shadow:0 4px 20px var(--green-glow)">Inquire About a Custom Urn →</button>
+        <button class="cta-btn" onclick="goTo('contact')" style="background:linear-gradient(135deg,var(--green-accent),var(--green-mid));color:#fff;box-shadow:0 4px 20px var(--green-glow)">Inquire About a Custom Memorial Piece →</button>
       </div>
       <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:3px" id="urn-grid">
         <div style="aspect-ratio:1;background:var(--green-surface)"></div>
@@ -729,7 +770,7 @@ footer::before{display:none}
           <button onclick="prefillContact('commission')" class="quick-btn">🎨 Commission a custom piece</button>
           <button onclick="prefillContact('rental')" class="quick-btn">🎪 Ask about a rental</button>
           <button onclick="prefillContact('trade')" class="quick-btn">🏷️ Trade / designer pricing</button>
-          <button onclick="prefillContact('urn')" class="quick-btn">🕊️ Custom memorial urn</button>
+          <button onclick="prefillContact('urn')" class="quick-btn">🕊️ Custom memorial piece</button>
           <button onclick="prefillContact('stager')" class="quick-btn">🏠 Stager program inquiry</button>
         </div>
       </div>
@@ -767,7 +808,7 @@ footer::before{display:none}
         <button class="footer-lnk" onclick="goTo('shop')">All Pieces</button>
         <button class="footer-lnk" onclick="goTo('shop');setTimeout(()=>shopFilter('available',null),100)">Available Now</button>
         <button class="footer-lnk" onclick="goTo('shop');setTimeout(()=>shopTypeFilter('Resin Art',null),100)">Resin Art</button>
-        <button class="footer-lnk" onclick="goTo('shop');setTimeout(()=>shopTypeFilter('Decorative Urn',null),100)">Memorial Urns</button>
+        <button class="footer-lnk" onclick="goTo('shop');setTimeout(()=>shopTypeFilter('Memorial Piece',null),100)">Memorial Pieces</button>
       </div>
       <div>
         <div class="footer-col-head">Rentals</div>
@@ -782,7 +823,7 @@ footer::before{display:none}
         <button class="footer-lnk" onclick="goTo('contact')">Contact</button>
         <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('commission'),100)">Commission a Piece</button>
         <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('trade'),100)">Trade Pricing</button>
-        <a class="footer-lnk" href="https://amazinhelp.com">Team Login →</a>
+        <button class="footer-lnk" onclick="openHubLogin()">Hub Login →</button>
       </div>
     </div>
   </div>
@@ -793,7 +834,17 @@ footer::before{display:none}
 <div class="lightbox" id="lightbox" onclick="closeLbOutside(event)">
   <div class="lb-card">
     <button class="lb-close" onclick="closeLb()">✕</button>
-    <div class="lb-img"><img id="lb-img" src="" alt=""><div class="lb-img-empty" id="lb-img-empty" style="display:none">🖼</div></div>
+    <div class="lb-media" id="lb-media">
+      <div class="lb-img" id="lb-img-wrap">
+        <img id="lb-img" src="" alt="">
+        <div class="lb-img-empty" id="lb-img-empty" style="display:none">🖼</div>
+        <button class="lb-nav lb-prev" type="button" aria-label="Previous variation" onclick="lbStep(-1)">‹</button>
+        <button class="lb-nav lb-next" type="button" aria-label="Next variation" onclick="lbStep(1)">›</button>
+        <div class="lb-var-hint">Drag or tap to explore</div>
+        <div class="lb-var-badge" id="lb-var-badge">1 / 1</div>
+      </div>
+      <div class="lb-thumbs" id="lb-thumbs"></div>
+    </div>
     <div class="lb-body">
       <div class="lb-type" id="lb-type"></div>
       <h2 class="lb-title" id="lb-title"></h2>
@@ -857,6 +908,22 @@ footer::before{display:none}
   </div>
 </div>
 
+<!-- HUB LOGIN -->
+<div class="hub-login" id="hubLogin" onclick="if(event.target.id==='hubLogin')closeHubLogin()">
+  <form class="hub-login-card" id="hubLoginForm" autocomplete="on">
+    <button class="hub-login-close" type="button" onclick="closeHubLogin()">✕</button>
+    <div class="hub-login-logo">cece's<em>pieces</em></div>
+    <div class="hub-login-sub">Business Hub · Team Sign In</div>
+    <div class="hub-login-err" id="hubLoginErr"></div>
+    <label class="hub-login-label" for="hubEmail">Email</label>
+    <input class="hub-login-input" id="hubEmail" type="email" autocomplete="username" placeholder="you@example.com" required>
+    <label class="hub-login-label" for="hubPassword">Password</label>
+    <input class="hub-login-input" id="hubPassword" type="password" autocomplete="current-password" placeholder="••••••••" required>
+    <button class="hub-login-btn" id="hubLoginBtn" type="submit">Sign In to the Hub →</button>
+    <div class="hub-login-foot">For Cece &amp; the IEBC team. Ask your consultant to set up your account.</div>
+  </form>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -864,14 +931,20 @@ const SUPABASE_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzc2ljb3h6eGNmaWpkbHZ0cHFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MzM3NDAsImV4cCI6MjA4OTAwOTc0MH0.g7OlsyUsSv05u7ikmjyt2sOT8aWFGNPwKU65KcATlWU';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v1.7';
-const SITE_BUILD    = '2026-03-27';
-const SITE_LABEL    = 'Green about · Blue shop · Pink rentals · Lavender home';
+const SITE_VERSION  = 'v1.9';
+const SITE_BUILD    = '2026-09-10';
+const SITE_LABEL    = 'Variation gallery · On-site Hub Login';
 // ─────────────────────────────────────────────────────────────
 const CONFIGURED = true;
 
+// Where the Business Hub is hosted. The team logs in on THIS site (below);
+// on success we hand the session to the hub so they land signed in. To move
+// the hub to a branded address later, change only this line.
+const HUB_URL = 'https://amazinhelp.com';
+
 let allPieces = [], activePiece = null, selectedEvent = 'Birthday', currentPage = 'home';
 let _sf = 'all', _st = null;
+let lbGallery = [], lbIndex = 0;
 
 // ── DATA ──
 async function fetchPieces() {
@@ -887,7 +960,7 @@ function sampleData(){return[
   {id:'s1',title:'Golden Hour Flow',type:'Resin Art',price:'480',status:'available',for_rent:true,rent_day:'80',rent_weekend:'130',rent_event:'150',dimensions:'16" × 20"',materials:'Epoxy resin, alcohol inks, gold leaf',description:'A slow sunrise captured in resin — warm ambers bleeding into champagne with veins of 24k gold leaf.'},
   {id:'s2',title:'Midnight Ocean',type:'Resin Art',price:'620',status:'available',for_rent:true,rent_weekend:'160',rent_week:'240',dimensions:'24" × 24"',materials:'Epoxy resin, pigment powders, iridescent flakes',description:'Deep navy and teal collide in this large-format piece evoking the deep ocean at midnight.'},
   {id:'s3',title:'Ember & Ash',type:'Mixed Media',price:'390',status:'sold',dimensions:'12" × 16"',materials:'Resin, acrylic, metallic pigments',description:''},
-  {id:'s4',title:'Serenity Urn No. 7',type:'Decorative Urn',price:'350',status:'available',dimensions:'10" tall',materials:'Resin, glass, dried botanicals',description:'A memorial urn crafted with care — embedded with dried florals and a soft iridescent finish.'},
+  {id:'s4',title:'Serenity Memorial No. 7',type:'Memorial Piece',price:'350',status:'available',dimensions:'10" tall',materials:'Resin, glass, dried botanicals',description:'A memorial piece crafted with care — embedded with dried florals and a soft iridescent finish.'},
   {id:'s5',title:'Desert Bloom',type:'Painting',price:'540',status:'available',for_rent:true,rent_day:'90',rent_event:'160',dimensions:'18" × 24"',materials:'Acrylic, resin topcoat, sand texture',description:'Warm terracotta and sage inspired by the California high desert.'},
   {id:'s6',title:'Crystal Cave',type:'Resin Art',price:'720',status:'available',dimensions:'30" × 20"',materials:'Epoxy resin, geode-style crystals, metallic pigments',description:''},
 ];}
@@ -926,9 +999,11 @@ function pieceCardHTML(p){
   const isRentable=p.for_rent&&!isSold;
   const badge=isSold?'<div class="piece-badge badge-sold">Sold</div>':isHold?'<div class="piece-badge badge-hold">On Hold</div>':isRentable?'<div class="piece-badge badge-rent">Rentable</div>':'';
   const img=p.image?`<img src="${p.image}" alt="${p.title}" loading="lazy">`:'<div class="piece-no-img">🖼</div>';
+  const varCount=normalizeVariations(p).length;
+  const varChip=varCount?`<div class="piece-var-chip">◑ ${varCount+1} looks</div>`:'';
   const overlay=isSold?'':`<div class="piece-overlay"><button class="overlay-buy" onclick="event.stopPropagation();openPiece('${p.id}')">View Piece →</button></div>`;
   return`<div class="piece-card" onclick="openPiece('${p.id}')">
-    <div class="piece-img-wrap">${img}${badge}${overlay}</div>
+    <div class="piece-img-wrap">${img}${badge}${varChip}${overlay}</div>
     <div class="piece-body">
       <div class="piece-type">${p.type||'Original Art'}</div>
       <div class="piece-name">${p.title}</div>
@@ -984,7 +1059,7 @@ function renderShop(){
   let list=allPieces;
   if(_sf==='available') list=list.filter(p=>(p.status||'available')==='available');
   else if(_sf==='sold') list=list.filter(p=>p.status==='sold');
-  if(_st) list=list.filter(p=>p.type===_st);
+  if(_st) list=list.filter(p=> _st==='Memorial Piece' ? (p.type==='Memorial Piece'||p.type==='Decorative Urn') : p.type===_st);
   document.getElementById('shop-count').textContent=list.length+' piece'+(list.length!==1?'s':'');
   document.getElementById('shop-grid').innerHTML=list.length?list.map(pieceCardHTML).join(''):`<div class="empty-state"><div class="empty-icon">🎨</div><div class="empty-h">No pieces found</div><div class="empty-sub">Try a different filter, or check back soon.</div></div>`;
 }
@@ -1021,20 +1096,61 @@ function rentalFilter(f,btn){
 
 // ── RENDER ABOUT ──
 function renderAbout(){
-  const urns=allPieces.filter(p=>p.type==='Decorative Urn').slice(0,4);
+  const urns=allPieces.filter(p=>p.type==='Memorial Piece'||p.type==='Decorative Urn').slice(0,4);
   const ug=document.getElementById('urn-grid');
   if(urns.length&&ug) ug.innerHTML=urns.map(p=>`<div style="aspect-ratio:1;overflow:hidden;background:var(--surface2)">${p.image?`<img src="${p.image}" style="width:100%;height:100%;object-fit:cover;display:block" alt="">`:''}</div>`).join('');
 }
 
 // ── LIGHTBOX ──
+// ── VARIATION GALLERY ──
+// Normalizes a piece's variations into a gallery: main image first, then
+// each variation. Variations may be plain URLs or {image|src,label} objects.
+function normalizeVariations(p){
+  let v=p.variations;
+  if(typeof v==='string'){ try{ v=JSON.parse(v); }catch(e){ v=[]; } }
+  return Array.isArray(v)?v:[];
+}
+function buildLbGallery(p){
+  lbGallery=[]; lbIndex=0;
+  if(p.image) lbGallery.push({src:p.image,label:'Original'});
+  normalizeVariations(p).forEach((v,i)=>{
+    const src=typeof v==='string'?v:(v.image||v.src||'');
+    const label=(v&&v.label)?v.label:('Variation '+(i+1));
+    if(src) lbGallery.push({src,label});
+  });
+  const media=document.getElementById('lb-media');
+  const thumbs=document.getElementById('lb-thumbs');
+  const img=document.getElementById('lb-img');
+  const empty=document.getElementById('lb-img-empty');
+  const hasVars=lbGallery.length>1;
+  media.classList.toggle('has-vars',hasVars);
+  if(!lbGallery.length){
+    img.style.display='none'; empty.style.display='flex';
+    thumbs.innerHTML=''; document.getElementById('lb-var-badge').textContent='';
+    return;
+  }
+  thumbs.innerHTML=hasVars?lbGallery.map((g,i)=>
+    `<button class="lb-thumb" type="button" onclick="setLbImage(${i})" title="${String(g.label).replace(/"/g,'&quot;')}"><img src="${g.src}" alt=""></button>`
+  ).join(''):'';
+  setLbImage(0);
+}
+function setLbImage(i){
+  if(!lbGallery.length) return;
+  lbIndex=(i+lbGallery.length)%lbGallery.length;
+  const g=lbGallery[lbIndex];
+  const img=document.getElementById('lb-img');
+  const empty=document.getElementById('lb-img-empty');
+  img.src=g.src; img.alt=g.label||''; img.style.display=''; empty.style.display='none';
+  document.getElementById('lb-var-badge').textContent=(lbIndex+1)+' / '+lbGallery.length;
+  document.querySelectorAll('#lb-thumbs .lb-thumb').forEach((t,idx)=>t.classList.toggle('active',idx===lbIndex));
+}
+function lbStep(d){ if(lbGallery.length>1) setLbImage(lbIndex+d); }
+
 function openPiece(id){
   const p=allPieces.find(x=>String(x.id)===String(id));if(!p)return;
   activePiece=p;
   const isSold=(p.status||'available')==='sold';
-  const img=document.getElementById('lb-img');
-  const empty=document.getElementById('lb-img-empty');
-  if(p.image){img.src=p.image;img.style.display='';empty.style.display='none';}
-  else{img.style.display='none';empty.style.display='flex';}
+  buildLbGallery(p);
   document.getElementById('lb-type').textContent=p.type||'Original Art';
   document.getElementById('lb-title').textContent=p.title;
   const prEl=document.getElementById('lb-price');
@@ -1074,6 +1190,48 @@ async function lbInquire(){
 }
 function lbCopy(){navigator.clipboard.writeText(window.location.href).then(()=>showToast('Link copied!',true));}
 function lbShare(){if(!activePiece)return;if(navigator.share)navigator.share({title:activePiece.title+" — Cece's Pieces",url:window.location.href});else lbCopy();}
+
+// ── HUB LOGIN ──
+// The team signs in here (on Cece's own site) with their Supabase Auth
+// account. On success we forward to the hub with the session in the URL
+// fragment; the hub reads it, stores it, and lands signed in — no second login.
+function openHubLogin(){
+  const o=document.getElementById('hubLogin');
+  document.getElementById('hubLoginErr').classList.remove('show');
+  o.classList.add('open'); document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('hubEmail').focus(),60);
+}
+function closeHubLogin(){
+  document.getElementById('hubLogin').classList.remove('open');
+  document.body.style.overflow='';
+}
+async function hubSignIn(email,password){
+  const r=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`,{
+    method:'POST',
+    headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({email:(email||'').trim(),password:password||''})
+  });
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(data.error_description||data.msg||data.error||'Sign-in failed');
+  return data;
+}
+async function onHubLoginSubmit(e){
+  e.preventDefault();
+  const btn=document.getElementById('hubLoginBtn');
+  const err=document.getElementById('hubLoginErr');
+  err.classList.remove('show');
+  btn.disabled=true; btn.textContent='Signing in…';
+  try{
+    const session=await hubSignIn(document.getElementById('hubEmail').value,document.getElementById('hubPassword').value);
+    document.getElementById('hubPassword').value='';
+    // Hand the session to the hub via the URL fragment (never sent to servers).
+    window.location.href=HUB_URL+'#hubsess='+encodeURIComponent(JSON.stringify(session));
+  }catch(ex){
+    err.textContent=ex.message||'Sign-in failed. Check your email and password.';
+    err.classList.add('show');
+    btn.disabled=false; btn.textContent='Sign In to the Hub →';
+  }
+}
 
 // ── RENTAL MODAL ──
 function openRentalModal(pieceId){
@@ -1118,7 +1276,7 @@ const prefills={
   commission:{sub:'Commission Inquiry',msg:"Hi Cece,\n\nI'm interested in commissioning a custom piece.\n\n• Size: \n• Color palette: \n• Space it's going in: \n• Budget range: \n\nLooking forward to hearing from you!"},
   rental:{sub:'Rental Inquiry',msg:"Hi Cece,\n\nI'm interested in renting a piece for an upcoming event.\n\n• Event type: \n• Date: \n• Venue: \n• Duration: \n\nPlease let me know what's available!"},
   trade:{sub:'Trade Pricing Inquiry',msg:"Hi Cece,\n\nI'm an interior design professional interested in trade pricing.\n\n• My firm/studio: \n• Project types: \n• What I'm looking for: "},
-  urn:{sub:'Custom Memorial Urn Inquiry',msg:"Hi Cece,\n\nI'm interested in a custom memorial urn.\n\n• Colors or themes: \n• Timeline: \n• Special inclusions: \n\nThank you for creating such meaningful work."},
+  urn:{sub:'Custom Memorial Piece Inquiry',msg:"Hi Cece,\n\nI'm interested in a custom memorial piece.\n\n• Colors or themes: \n• Timeline: \n• Special inclusions: \n\nThank you for creating such meaningful work."},
   stager:{sub:'Stager Program Inquiry',msg:"Hi Cece,\n\nI'm a home stager interested in your rental program.\n\n• My market area: \n• How often I stage: \n• What I'm looking for: "},
 };
 
@@ -1156,7 +1314,29 @@ function showToast(msg,success=false){
 }
 
 // ── KEYBOARD ──
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLb();closeRentalModal();}});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeLb();closeRentalModal();closeHubLogin();}
+  if(document.getElementById('lightbox').classList.contains('open')){
+    if(e.key==='ArrowLeft') lbStep(-1);
+    if(e.key==='ArrowRight') lbStep(1);
+  }
+});
+document.getElementById('hubLoginForm').addEventListener('submit',onHubLoginSubmit);
+
+// ── VARIATION DRAG / SWIPE ──
+(function setupLbDrag(){
+  const wrap=document.getElementById('lb-img-wrap');
+  if(!wrap) return;
+  let startX=null;
+  wrap.addEventListener('pointerdown',e=>{ startX=e.clientX; });
+  wrap.addEventListener('pointerup',e=>{
+    if(startX===null) return;
+    const dx=e.clientX-startX; startX=null;
+    if(Math.abs(dx)>40) lbStep(dx<0?1:-1);
+  });
+  wrap.addEventListener('pointercancel',()=>{ startX=null; });
+  wrap.addEventListener('dragstart',e=>e.preventDefault());
+})();
 
 // ── AUTO REFRESH ──
 setInterval(async()=>{
