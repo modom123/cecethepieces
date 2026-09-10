@@ -16,6 +16,10 @@
           "Every pour" quote markup. Added a variation gallery to the
           piece view: a main image plus clickable / draggable thumbnails
           for each variation, with graceful fallback to a single image.
+          2026-09-10_1941 — Replaced the external amazinhelp.com login
+          link with an on-site "Hub Login" page. It signs in via Supabase
+          Auth and hands the session to the hub (HUB_URL) so the team
+          lands signed in — no "amazinhelp" shown before login.
   ────────────────────────────────────────────────────────────────
 -->
 
@@ -300,6 +304,23 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .lb-thumb img{width:100%;height:100%;object-fit:cover;display:block;min-height:0}
 .lb-thumb.active{border-color:var(--purple2)}
 .lb-thumb-label{font-size:.5rem}
+/* HUB LOGIN */
+.hub-login{position:fixed;inset:0;z-index:400;background:rgba(240,236,255,.92);backdrop-filter:blur(22px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .28s}
+.hub-login.open{opacity:1;pointer-events:all}
+.hub-login-card{background:#fff;border:1px solid var(--pink-border2);border-radius:10px;width:min(400px,100%);padding:36px 30px;box-shadow:0 32px 80px rgba(139,63,255,.22);position:relative}
+.hub-login-close{position:absolute;top:12px;right:12px;background:none;border:none;font-size:1rem;color:var(--muted);cursor:pointer}
+.hub-login-logo{text-align:center;font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--ink)}
+.hub-login-logo em{font-style:italic;color:var(--purple2)}
+.hub-login-sub{text-align:center;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:6px 0 24px}
+.hub-login-label{display:block;font-size:.66rem;font-weight:600;color:var(--ink2);margin-bottom:5px}
+.hub-login-input{width:100%;border:1.5px solid var(--pink-border2);border-radius:8px;padding:11px 13px;font-size:.85rem;font-family:inherit;margin-bottom:15px;background:#fff;color:var(--ink)}
+.hub-login-input:focus{outline:none;border-color:var(--purple2)}
+.hub-login-btn{width:100%;border:none;border-radius:8px;padding:12px;font-size:.82rem;font-weight:700;letter-spacing:.04em;cursor:pointer;background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;transition:filter .18s}
+.hub-login-btn:hover{filter:brightness(1.06)}
+.hub-login-btn:disabled{opacity:.6;cursor:default}
+.hub-login-err{background:#fdeceb;color:#c0392b;border:1px solid #f5c6c2;border-radius:8px;padding:9px 12px;font-size:.72rem;margin-bottom:15px;display:none}
+.hub-login-err.show{display:block}
+.hub-login-foot{text-align:center;font-size:.64rem;color:var(--muted);margin-top:18px;line-height:1.6}
 .lb-body{padding:36px 32px;display:flex;flex-direction:column}
 .lb-close{position:absolute;top:14px;right:14px;width:32px;height:32px;background:var(--surface);border:1px solid var(--lav-border);border-radius:4px;font-size:.8rem;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:10}
 .lb-close:hover{background:var(--lav);color:#fff;border-color:var(--lav)}
@@ -802,7 +823,7 @@ footer::before{display:none}
         <button class="footer-lnk" onclick="goTo('contact')">Contact</button>
         <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('commission'),100)">Commission a Piece</button>
         <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('trade'),100)">Trade Pricing</button>
-        <a class="footer-lnk" href="https://amazinhelp.com">Team Login →</a>
+        <button class="footer-lnk" onclick="openHubLogin()">Hub Login →</button>
       </div>
     </div>
   </div>
@@ -887,6 +908,22 @@ footer::before{display:none}
   </div>
 </div>
 
+<!-- HUB LOGIN -->
+<div class="hub-login" id="hubLogin" onclick="if(event.target.id==='hubLogin')closeHubLogin()">
+  <form class="hub-login-card" id="hubLoginForm" autocomplete="on">
+    <button class="hub-login-close" type="button" onclick="closeHubLogin()">✕</button>
+    <div class="hub-login-logo">cece's<em>pieces</em></div>
+    <div class="hub-login-sub">Business Hub · Team Sign In</div>
+    <div class="hub-login-err" id="hubLoginErr"></div>
+    <label class="hub-login-label" for="hubEmail">Email</label>
+    <input class="hub-login-input" id="hubEmail" type="email" autocomplete="username" placeholder="you@example.com" required>
+    <label class="hub-login-label" for="hubPassword">Password</label>
+    <input class="hub-login-input" id="hubPassword" type="password" autocomplete="current-password" placeholder="••••••••" required>
+    <button class="hub-login-btn" id="hubLoginBtn" type="submit">Sign In to the Hub →</button>
+    <div class="hub-login-foot">For Cece &amp; the IEBC team. Ask your consultant to set up your account.</div>
+  </form>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -894,11 +931,16 @@ const SUPABASE_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzc2ljb3h6eGNmaWpkbHZ0cHFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MzM3NDAsImV4cCI6MjA4OTAwOTc0MH0.g7OlsyUsSv05u7ikmjyt2sOT8aWFGNPwKU65KcATlWU';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v1.8';
+const SITE_VERSION  = 'v1.9';
 const SITE_BUILD    = '2026-09-10';
-const SITE_LABEL    = 'Green about · Blue shop · Pink rentals · Lavender home · Variation gallery';
+const SITE_LABEL    = 'Variation gallery · On-site Hub Login';
 // ─────────────────────────────────────────────────────────────
 const CONFIGURED = true;
+
+// Where the Business Hub is hosted. The team logs in on THIS site (below);
+// on success we hand the session to the hub so they land signed in. To move
+// the hub to a branded address later, change only this line.
+const HUB_URL = 'https://amazinhelp.com';
 
 let allPieces = [], activePiece = null, selectedEvent = 'Birthday', currentPage = 'home';
 let _sf = 'all', _st = null;
@@ -1149,6 +1191,48 @@ async function lbInquire(){
 function lbCopy(){navigator.clipboard.writeText(window.location.href).then(()=>showToast('Link copied!',true));}
 function lbShare(){if(!activePiece)return;if(navigator.share)navigator.share({title:activePiece.title+" — Cece's Pieces",url:window.location.href});else lbCopy();}
 
+// ── HUB LOGIN ──
+// The team signs in here (on Cece's own site) with their Supabase Auth
+// account. On success we forward to the hub with the session in the URL
+// fragment; the hub reads it, stores it, and lands signed in — no second login.
+function openHubLogin(){
+  const o=document.getElementById('hubLogin');
+  document.getElementById('hubLoginErr').classList.remove('show');
+  o.classList.add('open'); document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('hubEmail').focus(),60);
+}
+function closeHubLogin(){
+  document.getElementById('hubLogin').classList.remove('open');
+  document.body.style.overflow='';
+}
+async function hubSignIn(email,password){
+  const r=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`,{
+    method:'POST',
+    headers:{apikey:SUPABASE_KEY,'Content-Type':'application/json'},
+    body:JSON.stringify({email:(email||'').trim(),password:password||''})
+  });
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(data.error_description||data.msg||data.error||'Sign-in failed');
+  return data;
+}
+async function onHubLoginSubmit(e){
+  e.preventDefault();
+  const btn=document.getElementById('hubLoginBtn');
+  const err=document.getElementById('hubLoginErr');
+  err.classList.remove('show');
+  btn.disabled=true; btn.textContent='Signing in…';
+  try{
+    const session=await hubSignIn(document.getElementById('hubEmail').value,document.getElementById('hubPassword').value);
+    document.getElementById('hubPassword').value='';
+    // Hand the session to the hub via the URL fragment (never sent to servers).
+    window.location.href=HUB_URL+'#hubsess='+encodeURIComponent(JSON.stringify(session));
+  }catch(ex){
+    err.textContent=ex.message||'Sign-in failed. Check your email and password.';
+    err.classList.add('show');
+    btn.disabled=false; btn.textContent='Sign In to the Hub →';
+  }
+}
+
 // ── RENTAL MODAL ──
 function openRentalModal(pieceId){
   renderRentals();
@@ -1231,12 +1315,13 @@ function showToast(msg,success=false){
 
 // ── KEYBOARD ──
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeLb();closeRentalModal();}
+  if(e.key==='Escape'){closeLb();closeRentalModal();closeHubLogin();}
   if(document.getElementById('lightbox').classList.contains('open')){
     if(e.key==='ArrowLeft') lbStep(-1);
     if(e.key==='ArrowRight') lbStep(1);
   }
 });
+document.getElementById('hubLoginForm').addEventListener('submit',onHubLoginSubmit);
 
 // ── VARIATION DRAG / SWIPE ──
 (function setupLbDrag(){
