@@ -966,7 +966,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const STRIPE_CHECKOUT_URL = '';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v2.5';
+const SITE_VERSION  = 'v2.6';
 const SITE_BUILD    = '2026-09-11';
 const SITE_LABEL    = 'Stripe checkout · Secure leads · Variation gallery';
 // ─────────────────────────────────────────────────────────────
@@ -1018,6 +1018,33 @@ function sampleData(){
    materials:'Epoxy resin, real beach sand & shells — set of coasters',
    description:'A set of coasters carrying the same emerald shoreline as the memorial blocks — real sand, tiny shells, a curl of white surf, and an optional gold name.',
    image:B+'IMG_4044.jpeg',variations:[]},
+  {id:'cat-panel',title:'Geode Statement Panel',type:'Statement Panel',price:'1145',status:'available',for_rent:true,
+   materials:'Epoxy resin, mica pigments, crushed glass & crystal geodes on a large panel',
+   description:'A large-format geode pour — rivers of colour split open by silver-and-gold crystal caverns. A statement wall piece that also makes a showstopping wedding or event backdrop (available to rent).',
+   image:B+'81746D25-6F5A-426B-8BB6-6EC446155E6D.jpeg',
+   variations:[{image:B+'IMG_4085.jpeg',label:'Blush & Silver'},{image:B+'IMG_4082.jpeg',label:'Blue & Silver'},{image:B+'IMG_4081.jpeg',label:'Coral & Gold'},{image:B+'IMG_4080.jpeg',label:'Black & Silver'}]},
+  {id:'cat-keychain',title:'Cremation Ash Keychain',type:'Memorial Piece',price:'45',status:'available',
+   materials:'Epoxy resin with cremation ash & crystal, metal keyring',
+   description:'A geode keepsake keychain holding a loved one’s ashes with tiny crystals — carry them with you everywhere. Heart or round, in several colours.',
+   image:B+'IMG_4091.jpeg',
+   variations:[{image:B+'IMG_4095.jpeg',label:'Rose Red'},{image:B+'IMG_4097.jpeg',label:'Emerald'},{image:B+'IMG_4098.jpeg',label:'Amethyst'}]},
+  {id:'cat-dad',title:'DAD Memorial Keepsake',type:'Memorial Piece',price:'150',status:'available',
+   materials:'Epoxy resin with cremation ash, raised DAD lettering',
+   description:'A hexagon keepsake swirled with cremation ash and finished with a raised “DAD” in gold or silver — a quiet tribute for a shelf or desk.',
+   image:B+'IMG_4046.jpeg',
+   variations:[{image:B+'IMG_4047.jpeg',label:'Silver Lettering'}]},
+  {id:'cat-lavender',title:'Lavender Ash Ornament',type:'Memorial Piece',price:'150',status:'available',
+   materials:'Epoxy resin, pressed lavender & cremation ash, hanging cord',
+   description:'A round hanging ornament with real pressed lavender and a whisper of ash suspended in clear resin — light-catching and gentle.',
+   image:B+'IMG_4063.jpeg',variations:[]},
+  {id:'cat-floral',title:'Floral Preservation Block',type:'Memorial Piece',price:'150',status:'available',
+   materials:'Epoxy resin preserving your real flowers, personalized lettering',
+   description:'Send me your wedding or anniversary bouquet and I’ll preserve it forever inside a crystal-clear resin block, personalized with names and a date. Made to order.',
+   image:B+'IMG_4069.jpeg',variations:[]},
+  {id:'cat-ornaments',title:'Personalized Ornament',type:'Seasonal Gift',price:'55',status:'available',
+   materials:'Resin ornament with personalized name & character, ribbon',
+   description:'Personalized keepsake ornaments — a name, a character, a little glitter. Perfect for stockings, gift tags and the tree.',
+   image:B+'IMG_4066.jpeg',variations:[]},
 ];}
 
 // ── ROUTING ──
