@@ -8,7 +8,7 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecepieces — public website)
-  LAST UPDATED: 2026-09-11_0448 UTC
+  LAST UPDATED: 2026-09-11_0642 UTC
   CHANGE: 2026-09-10_1839 — Added a discreet "Team Login" footer link
           that opens the Business Hub at amazinhelp.com.
           2026-09-10_1918 — Renamed "Memorial Urns" to "Memorial Pieces"
@@ -592,6 +592,8 @@ footer::before{display:none}
         <button class="filter-btn" onclick="shopTypeFilter('Painting',this)">Painting</button>
         <button class="filter-btn" onclick="shopTypeFilter('Mixed Media',this)">Mixed Media</button>
         <button class="filter-btn" onclick="shopTypeFilter('Memorial Piece',this)">Memorial Pieces</button>
+        <button class="filter-btn" onclick="shopTypeFilter('Statement Panel',this)">Statement Panels</button>
+        <button class="filter-btn" onclick="shopTypeFilter('Seasonal Gift',this)">Seasonal &amp; Gifts</button>
         <span class="results-count" id="shop-count"></span>
       </div>
       <div class="pieces-grid" id="shop-grid">
@@ -964,7 +966,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const STRIPE_CHECKOUT_URL = '';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v2.2';
+const SITE_VERSION  = 'v2.3';
 const SITE_BUILD    = '2026-09-11';
 const SITE_LABEL    = 'Stripe checkout · Secure leads · Variation gallery';
 // ─────────────────────────────────────────────────────────────
