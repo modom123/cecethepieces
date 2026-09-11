@@ -966,7 +966,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const STRIPE_CHECKOUT_URL = '';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v2.4';
+const SITE_VERSION  = 'v2.5';
 const SITE_BUILD    = '2026-09-11';
 const SITE_LABEL    = 'Stripe checkout · Secure leads · Variation gallery';
 // ─────────────────────────────────────────────────────────────
@@ -1003,7 +1003,12 @@ function sampleData(){
    materials:'Walnut wood, epoxy resin, alcohol inks, gold leaf, druzy crystal',
    description:'A live-edge walnut river runs through a pour of deep resin, opening into a heart of blue-and-silver druzy crystal like a geode split by hand. Gilded botanical leaves climb the border. Poured one at a time — no two are ever alike.',
    image:B+'IMG_4026.jpeg',
-   variations:[{image:B+'IMG_4027.jpeg',label:'Golden'},{image:B+'IMG_4028.jpeg',label:'Ivory & Gold'},{image:B+'IMG_4029.jpeg',label:'Blush'},{image:B+'IMG_4024.jpeg',label:'Teal (Square)'},{image:B+'IMG_4034.jpeg',label:'Silver (Framed)'}]},
+   variations:[{image:B+'IMG_4027.jpeg',label:'Golden'},{image:B+'IMG_4028.jpeg',label:'Ivory & Gold'},{image:B+'IMG_4029.jpeg',label:'Blush'},{image:B+'IMG_4024.jpeg',label:'Teal (Square)'}]},
+  {id:'cat-framed',title:'Resin River Wall Art — Framed',type:'Resin Art',price:'550',status:'available',
+   materials:'Walnut & epoxy resin on a framed panel, druzy crystal, metallic leaf',
+   description:'The Resin River composition on a larger framed panel — a live-edge walnut river and a druzy geode heart set behind a sleek metallic frame, ready to hang as a statement wall piece.',
+   image:B+'IMG_4034.jpeg',
+   variations:[{image:B+'IMG_4033.jpeg',label:'Teal & Silver'},{image:B+'IMG_4035.jpeg',label:'Ivory Float'}]},
   {id:'cat-block',title:'Beach Shore Memorial Block',type:'Memorial Piece',price:'150',status:'available',
    materials:'Epoxy resin, real beach sand, seashells & sea glass',
    description:'A single ocean wave caught mid-break above real beach sand, tiny shells and a piece of sea glass — a quiet keepsake. Can be personalized with a name and dates. Choose an Emerald, Amethyst, or Black tide.',
