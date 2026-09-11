@@ -966,7 +966,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 // secure checkout. Leave blank and the Buy button falls back to Inquire.
 // After you deploy the function, set this to:
 //   https://tssicoxzxcfijdlvtpqm.supabase.co/functions/v1/create-checkout
-const STRIPE_CHECKOUT_URL = '';
+const STRIPE_CHECKOUT_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co/functions/v1/create-checkout';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
 const SITE_VERSION  = 'v2.7';
@@ -1381,8 +1381,8 @@ async function startCheckout(pieceId){
     });
     const d=await r.json().catch(()=>({}));
     if(r.ok && d.url){ window.location.href=d.url; }
-    else { showToast(d.error||'Checkout is unavailable right now — please use Inquire.'); }
-  }catch(e){ showToast('Checkout error — please use Inquire to purchase.'); }
+    else { showToast(d.error||'Checkout is unavailable right now — send an inquiry and Cece will help you buy.'); openInquiry(); }
+  }catch(e){ showToast('Checkout error — send an inquiry and Cece will help you buy.'); openInquiry(); }
 }
 
 // ── PIECE INQUIRY (lead capture → hub Orders → Sales agent) ──
