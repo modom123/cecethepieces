@@ -966,7 +966,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const STRIPE_CHECKOUT_URL = '';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v2.3';
+const SITE_VERSION  = 'v2.4';
 const SITE_BUILD    = '2026-09-11';
 const SITE_LABEL    = 'Stripe checkout · Secure leads · Variation gallery';
 // ─────────────────────────────────────────────────────────────
@@ -987,17 +987,32 @@ async function fetchPieces() {
     const r = await fetch(`${SUPABASE_URL}/rest/v1/pieces?select=*&order=created_at.desc`,
       {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
     if (!r.ok) throw new Error();
-    return await r.json();
+    const rows = await r.json();
+    // Show the curated catalog until the database has its own pieces.
+    return (rows && rows.length) ? rows : sampleData();
   } catch(e) { return sampleData(); }
 }
 
-function sampleData(){return[
-  {id:'s1',title:'Golden Hour Flow',type:'Resin Art',price:'480',status:'available',for_rent:true,rent_day:'80',rent_weekend:'130',rent_event:'150',dimensions:'16" × 20"',materials:'Epoxy resin, alcohol inks, gold leaf',description:'A slow sunrise captured in resin — warm ambers bleeding into champagne with veins of 24k gold leaf.'},
-  {id:'s2',title:'Midnight Ocean',type:'Resin Art',price:'620',status:'available',for_rent:true,rent_weekend:'160',rent_week:'240',dimensions:'24" × 24"',materials:'Epoxy resin, pigment powders, iridescent flakes',description:'Deep navy and teal collide in this large-format piece evoking the deep ocean at midnight.'},
-  {id:'s3',title:'Ember & Ash',type:'Mixed Media',price:'390',status:'sold',dimensions:'12" × 16"',materials:'Resin, acrylic, metallic pigments',description:''},
-  {id:'s4',title:'Serenity Memorial No. 7',type:'Memorial Piece',price:'350',status:'available',dimensions:'10" tall',materials:'Resin, glass, dried botanicals',description:'A memorial piece crafted with care — embedded with dried florals and a soft iridescent finish.'},
-  {id:'s5',title:'Desert Bloom',type:'Painting',price:'540',status:'available',for_rent:true,rent_day:'90',rent_event:'160',dimensions:'18" × 24"',materials:'Acrylic, resin topcoat, sand texture',description:'Warm terracotta and sage inspired by the California high desert.'},
-  {id:'s6',title:'Crystal Cave',type:'Resin Art',price:'720',status:'available',dimensions:'30" × 20"',materials:'Epoxy resin, geode-style crystals, metallic pigments',description:''},
+// ── CATALOG SEED ──
+// The real cecepieces catalog, shown until the Supabase database has its own
+// rows. Photos load straight from this repo; colorways are drag/click variations.
+function sampleData(){
+  const B='https://raw.githubusercontent.com/modom123/cecethepieces/main/';
+  return[
+  {id:'cat-plaque',title:'Resin River Wall Plaque',type:'Resin Art',price:'225',status:'available',
+   materials:'Walnut wood, epoxy resin, alcohol inks, gold leaf, druzy crystal',
+   description:'A live-edge walnut river runs through a pour of deep resin, opening into a heart of blue-and-silver druzy crystal like a geode split by hand. Gilded botanical leaves climb the border. Poured one at a time — no two are ever alike.',
+   image:B+'IMG_4026.jpeg',
+   variations:[{image:B+'IMG_4027.jpeg',label:'Golden'},{image:B+'IMG_4028.jpeg',label:'Ivory & Gold'},{image:B+'IMG_4029.jpeg',label:'Blush'},{image:B+'IMG_4024.jpeg',label:'Teal (Square)'},{image:B+'IMG_4034.jpeg',label:'Silver (Framed)'}]},
+  {id:'cat-block',title:'Beach Shore Memorial Block',type:'Memorial Piece',price:'150',status:'available',
+   materials:'Epoxy resin, real beach sand, seashells & sea glass',
+   description:'A single ocean wave caught mid-break above real beach sand, tiny shells and a piece of sea glass — a quiet keepsake. Can be personalized with a name and dates. Choose an Emerald, Amethyst, or Black tide.',
+   image:B+'IMG_4036.jpeg',
+   variations:[{image:B+'IMG_4037.jpeg',label:'Amethyst'},{image:B+'IMG_4038.jpeg',label:'Black'}]},
+  {id:'cat-coasters',title:'Emerald Beach Memorial Coasters',type:'Memorial Piece',price:'150',status:'available',
+   materials:'Epoxy resin, real beach sand & shells — set of coasters',
+   description:'A set of coasters carrying the same emerald shoreline as the memorial blocks — real sand, tiny shells, a curl of white surf, and an optional gold name.',
+   image:B+'IMG_4044.jpeg',variations:[]},
 ];}
 
 // ── ROUTING ──
