@@ -956,10 +956,17 @@ footer::before{display:none}
 const SUPABASE_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzc2ljb3h6eGNmaWpkbHZ0cHFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MzM3NDAsImV4cCI6MjA4OTAwOTc0MH0.g7OlsyUsSv05u7ikmjyt2sOT8aWFGNPwKU65KcATlWU';
 
+// Stripe Checkout — the deployed create-checkout Edge Function URL.
+// When set, priced pieces get a real "Buy Now" button that opens Stripe
+// secure checkout. Leave blank and the Buy button falls back to Inquire.
+// After you deploy the function, set this to:
+//   https://tssicoxzxcfijdlvtpqm.supabase.co/functions/v1/create-checkout
+const STRIPE_CHECKOUT_URL = '';
+
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v2.1';
-const SITE_BUILD    = '2026-09-10';
-const SITE_LABEL    = 'Rebrand → cecepieces · Variation gallery · On-site Hub Login';
+const SITE_VERSION  = 'v2.2';
+const SITE_BUILD    = '2026-09-11';
+const SITE_LABEL    = 'Stripe checkout · Secure leads · Variation gallery';
 // ─────────────────────────────────────────────────────────────
 const CONFIGURED = true;
 
@@ -1191,8 +1198,18 @@ function openPiece(id){
   matsEl.style.display=p.materials?'':'none';
   document.getElementById('lb-desc').textContent=p.description||'An original, one-of-a-kind work by Cece. Certificate of authenticity included.';
   const buyBtn=document.getElementById('lb-buy');
-  if(isSold){buyBtn.textContent='This Piece is Sold';buyBtn.className='lb-buy sold';buyBtn.href='#';buyBtn.onclick=e=>e.preventDefault();}
-  else{buyBtn.textContent=p.payment_link?'Purchase This Piece →':'Inquire to Purchase →';buyBtn.className='lb-buy';buyBtn.href=p.payment_link||`mailto:hello@cecethepiece.com?subject=Purchase inquiry: "${p.title}"&body=Hi Cece! I'm interested in "${p.title}" ($${p.price}).`;buyBtn.target=p.payment_link?'_blank':'';buyBtn.onclick=null;}
+  buyBtn.className='lb-buy'; buyBtn.target='';
+  if(isSold){
+    buyBtn.textContent='This Piece is Sold';buyBtn.className='lb-buy sold';buyBtn.href='#';buyBtn.onclick=e=>e.preventDefault();
+  } else if(STRIPE_CHECKOUT_URL && p.price){
+    // Real Stripe checkout (price validated server-side by the Edge Function)
+    buyBtn.textContent=`Buy Now — $${Number(p.price).toLocaleString()} →`;buyBtn.href='#';
+    buyBtn.onclick=e=>{e.preventDefault();startCheckout(p.id);};
+  } else if(p.payment_link){
+    buyBtn.textContent='Purchase This Piece →';buyBtn.href=p.payment_link;buyBtn.target='_blank';buyBtn.onclick=null;
+  } else {
+    buyBtn.textContent='Inquire to Purchase →';buyBtn.href='#';buyBtn.onclick=e=>{e.preventDefault();openInquiry();};
+  }
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -1271,6 +1288,23 @@ function openRentalModal(pieceId){
 }
 function closeRentalModal(){document.getElementById('rentalModal').classList.remove('open');document.body.style.overflow='';}
 function closeModalOutside(e){if(e.target.id==='rentalModal')closeRentalModal();if(e.target.id==='inquiryModal')closeInquiry();}
+
+// ── STRIPE CHECKOUT ──
+// Ask the create-checkout Edge Function for a secure Stripe session, then go.
+async function startCheckout(pieceId){
+  if(!STRIPE_CHECKOUT_URL){ openInquiry(); return; }
+  showToast('Taking you to secure checkout…',true);
+  try{
+    const r=await fetch(STRIPE_CHECKOUT_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json',apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`},
+      body:JSON.stringify({piece_id:pieceId})
+    });
+    const d=await r.json().catch(()=>({}));
+    if(r.ok && d.url){ window.location.href=d.url; }
+    else { showToast(d.error||'Checkout is unavailable right now — please use Inquire.'); }
+  }catch(e){ showToast('Checkout error — please use Inquire to purchase.'); }
+}
 
 // ── PIECE INQUIRY (lead capture → hub Orders → Sales agent) ──
 let inquiryPiece=null;
@@ -1419,6 +1453,10 @@ setInterval(async()=>{
   // Render version stamp in footer
   const vs = document.getElementById('site-version-stamp');
   if (vs) vs.textContent = `Website ${SITE_VERSION} · ${SITE_BUILD}`;
+  // Thank-you after returning from Stripe checkout
+  const co=new URLSearchParams(location.search).get('checkout');
+  if(co==='success'){ setTimeout(()=>showToast('🎉 Thank you! Your order is confirmed — Cece will be in touch about delivery.',true),400); }
+  if(co){ history.replaceState(null,'',location.pathname); }
 })();
 </script>
 </body>
