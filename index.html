@@ -8,7 +8,7 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecepieces — public website)
-  LAST UPDATED: 2026-09-10_2036 UTC
+  LAST UPDATED: 2026-09-11_0448 UTC
   CHANGE: 2026-09-10_1839 — Added a discreet "Team Login" footer link
           that opens the Business Hub at amazinhelp.com.
           2026-09-10_1918 — Renamed "Memorial Urns" to "Memorial Pieces"
@@ -1205,7 +1205,7 @@ async function lbInquire(){
     try{
       await fetch(`${SUPABASE_URL}/rest/v1/orders`,{
         method:'POST',
-        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},
         body:JSON.stringify({piece_id:activePiece.id,piece_title:activePiece.title,price:activePiece.price,type:'inquiry',status:'pending',source:'website',created_at:new Date().toISOString()})
       });
     }catch(e){}
@@ -1294,7 +1294,7 @@ async function submitInquiry(){
   const notes=(phone?('Phone: '+phone+'\n'):'')+(msg||'');
   if(CONFIGURED){try{await fetch(`${SUPABASE_URL}/rest/v1/orders`,{
     method:'POST',
-    headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+    headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},
     body:JSON.stringify({piece_id:p?p.id:null,piece_title:p?p.title:'General inquiry',price:p?p.price:null,type:'inquiry',status:'pending',source:'website',customer_name:name,customer_email:email,notes,created_at:new Date().toISOString()})
   });}catch(e){}}
   closeInquiry();
@@ -1318,7 +1318,7 @@ async function submitRental(){
   const pMap={day:'Per Day',weekend:'Per Weekend',week:'Per Week',event:'Flat Event Rate'};
   const sf=start?new Date(start).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'TBD';
   const ef=end?new Date(end).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}):'TBD';
-  if(CONFIGURED){try{await fetch(`${SUPABASE_URL}/rest/v1/rental_bookings`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({renter_name:name,renter_email:email,renter_phone:phone,piece_id:pieceId||null,event_type:selectedEvent,rental_period:period,start_date:start||null,end_date:end||null,status:'pending',notes,amount:null})});}catch(e){}}
+  if(CONFIGURED){try{await fetch(`${SUPABASE_URL}/rest/v1/rental_bookings`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({renter_name:name,renter_email:email,renter_phone:phone,piece_id:pieceId||null,event_type:selectedEvent,rental_period:period,start_date:start||null,end_date:end||null,status:'pending',notes,amount:null})});}catch(e){}}
   const s=encodeURIComponent(`Rental Request — ${selectedEvent} — ${name}`);
   const b=encodeURIComponent(`New rental request!\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone||'Not provided'}\n\nEvent: ${selectedEvent}\nPiece: ${piece?piece.title:'Not specified'}\nDates: ${sf} → ${ef}\nPeriod: ${pMap[period]||period}\n\nNotes:\n${notes||'None'}`);
   window.open(`mailto:hello@cecethepiece.com?subject=${s}&body=${b}`);
