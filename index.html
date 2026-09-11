@@ -8,9 +8,12 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecepieces — public website)
-  LAST UPDATED: 2026-09-11_0642 UTC
-  CHANGE: 2026-09-10_1839 — Added a discreet "Team Login" footer link
-          that opens the Business Hub at amazinhelp.com.
+  LAST UPDATED: 2026-09-11_1300 UTC
+  CHANGE: 2026-09-11_1300 — Hub now hosted on Vercel. Login hand-off points
+          at https://cecepieceshub.vercel.app (was amazinhelp.com), so
+          "Hub Login" lands the team inside the actual hub, signed in.
+          2026-09-10_1839 — Added a discreet "Team Login" footer link
+          that opens the Business Hub.
           2026-09-10_1918 — Renamed "Memorial Urns" to "Memorial Pieces"
           (still matches legacy "Decorative Urn" data). Fixed the broken
           "Every pour" quote markup. Added a variation gallery to the
@@ -966,16 +969,17 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const STRIPE_CHECKOUT_URL = '';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v2.6';
+const SITE_VERSION  = 'v2.7';
 const SITE_BUILD    = '2026-09-11';
-const SITE_LABEL    = 'Stripe checkout · Secure leads · Variation gallery';
+const SITE_LABEL    = 'Hub on Vercel · Stripe checkout · Secure leads';
 // ─────────────────────────────────────────────────────────────
 const CONFIGURED = true;
 
-// Where the Business Hub is hosted. The team logs in on THIS site (below);
-// on success we hand the session to the hub so they land signed in. To move
-// the hub to a branded address later, change only this line.
-const HUB_URL = 'https://amazinhelp.com';
+// Where the Business Hub is hosted (Vercel). The team logs in on THIS site
+// (below); on success we hand the session to the hub via the URL #hash so they
+// land signed straight in. To move the hub to a branded address later, change
+// only this line to match your Vercel project's URL.
+const HUB_URL = 'https://cecepieceshub.vercel.app';
 
 let allPieces = [], activePiece = null, selectedEvent = 'Birthday', currentPage = 'home';
 let _sf = 'all', _st = null;
