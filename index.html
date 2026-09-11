@@ -1153,13 +1153,27 @@ function renderHome(){
 }
 
 // ── RENDER SHOP ──
+// Pieces are grouped by category (medium) in a set order so the shop never
+// looks random. Any unknown category sorts to the end.
+const CAT_ORDER=['Resin Art','Statement Panel','Memorial Piece','Seasonal Gift','Painting','Mixed Media','Drawing','Sculpture','Photography'];
+const CAT_LABEL={'Resin Art':'Resin Art','Statement Panel':'Statement Panels','Memorial Piece':'Memorial Pieces','Seasonal Gift':'Seasonal & Gifts','Painting':'Paintings','Mixed Media':'Mixed Media','Drawing':'Drawings','Sculpture':'Sculpture','Photography':'Photography'};
+function catKey(p){return p.type==='Decorative Urn'?'Memorial Piece':(p.type||'Other');}
+function catRank(t){const i=CAT_ORDER.indexOf(t);return i<0?CAT_ORDER.length:i;}
+function catHeadHTML(label){return `<div class="shop-cat-head" style="grid-column:1/-1;font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--ink2);margin:22px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--light-border)">${label}</div>`;}
 function renderShop(){
   let list=allPieces;
   if(_sf==='available') list=list.filter(p=>(p.status||'available')==='available');
   else if(_sf==='sold') list=list.filter(p=>p.status==='sold');
   if(_st) list=list.filter(p=> _st==='Memorial Piece' ? (p.type==='Memorial Piece'||p.type==='Decorative Urn') : p.type===_st);
   document.getElementById('shop-count').textContent=list.length+' piece'+(list.length!==1?'s':'');
-  document.getElementById('shop-grid').innerHTML=list.length?list.map(pieceCardHTML).join(''):`<div class="empty-state"><div class="empty-icon">🎨</div><div class="empty-h">No pieces found</div><div class="empty-sub">Try a different filter, or check back soon.</div></div>`;
+  const grid=document.getElementById('shop-grid');
+  if(!list.length){ grid.innerHTML=`<div class="empty-state"><div class="empty-icon">🎨</div><div class="empty-h">No pieces found</div><div class="empty-sub">Try a different filter, or check back soon.</div></div>`; return; }
+  // A single category selected → flat grid; otherwise group under category headings.
+  if(_st){ grid.innerHTML=list.map(pieceCardHTML).join(''); return; }
+  const groups={};
+  list.forEach(p=>{const k=catKey(p);(groups[k]=groups[k]||[]).push(p);});
+  const keys=Object.keys(groups).sort((a,b)=>catRank(a)-catRank(b)||a.localeCompare(b));
+  grid.innerHTML=keys.map(k=>catHeadHTML(CAT_LABEL[k]||k)+groups[k].map(pieceCardHTML).join('')).join('');
 }
 
 function shopFilter(f,btn){
