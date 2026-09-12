@@ -939,6 +939,40 @@ footer::before{display:none}
   <div class="inner"><div class="footer-bottom"><span>© 2026 cecepieces. All rights reserved.</span><span id="site-version-stamp" style="font-size:.6rem;color:var(--muted2)"></span><span>Original work. No prints. No reproductions.</span></div></div>
 </footer>
 
+<!-- PANEL SPLASH -->
+<style>
+  .panel-splash{position:fixed;inset:0;z-index:500;background:#0d0b14;display:flex;opacity:0;pointer-events:none;transition:opacity .35s}
+  .panel-splash.open{opacity:1;pointer-events:auto}
+  .ps-stage{position:absolute;inset:0;overflow:hidden}
+  #ps-stage-imgs{position:absolute;inset:0}
+  .ps-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.07);transition:opacity 1.1s ease, transform 7s ease}
+  .ps-img.on{opacity:1;transform:scale(1)}
+  .ps-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,11,20,.28) 0%,rgba(13,11,20,.12) 38%,rgba(13,11,20,.85) 100%)}
+  .ps-copy{position:absolute;left:0;right:0;bottom:120px;text-align:center;padding:0 24px;color:#fff;z-index:2}
+  .ps-kicker{font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-bottom:12px}
+  .ps-title{font-family:'Playfair Display',serif;font-weight:300;font-size:clamp(1.6rem,4.6vw,2.9rem);margin:0 0 10px;text-shadow:0 2px 30px rgba(0,0,0,.55)}
+  .ps-sub{font-size:.95rem;color:rgba(255,255,255,.92);max-width:540px;margin:0 auto;line-height:1.7}
+  .ps-skip{position:absolute;top:20px;right:20px;z-index:3;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);color:#fff;font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;padding:9px 15px;border-radius:6px;cursor:pointer;backdrop-filter:blur(6px)}
+  .ps-dots{position:absolute;left:0;right:0;bottom:94px;display:flex;gap:8px;justify-content:center;z-index:3}
+  .ps-dot{width:26px;height:3px;border-radius:2px;border:none;background:rgba(255,255,255,.35);cursor:pointer;padding:0}
+  .ps-dot.on{background:#fff}
+  .ps-actions{position:absolute;left:0;right:0;bottom:36px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;z-index:3;padding:0 24px}
+  .ps-cta{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;font-family:'Jost',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding:14px 30px;border-radius:6px;cursor:pointer;box-shadow:0 8px 30px rgba(124,92,191,.5)}
+  .ps-cta.pulse{animation:psPulse 1.5s ease-in-out infinite}
+  @keyframes psPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+  .ps-cta2{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;font-family:'Jost',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:14px 24px;border-radius:6px;cursor:pointer;backdrop-filter:blur(6px)}
+</style>
+<div class="panel-splash" id="panelSplash">
+  <div class="ps-stage"><div id="ps-stage-imgs"></div><div class="ps-scrim"></div></div>
+  <div class="ps-copy"><div class="ps-kicker">Cece Statement Panels</div><h2 class="ps-title" id="ps-title"></h2><p class="ps-sub" id="ps-sub"></p></div>
+  <button class="ps-skip" onclick="splashContinue()">Skip →</button>
+  <div class="ps-dots" id="ps-dots"></div>
+  <div class="ps-actions">
+    <button class="ps-cta" id="ps-cta" onclick="splashContinue()">View this Panel →</button>
+    <button class="ps-cta2" onclick="splashRent()">Rent for an Event</button>
+  </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLbOutside(event)">
   <div class="lb-card">
@@ -1354,8 +1388,45 @@ function setLbImage(i){
 }
 function lbStep(d){ if(lbGallery.length>1) setLbImage(lbIndex+d); }
 
-function openPiece(id){
+// ── PANEL SPLASH — a dynamic showcase that plays before a Statement Panel opens ──
+const PANEL_CORP_URL='https://raw.githubusercontent.com/modom123/cecethepieces/main/geode-panels-corporate_2026-09-12_0550.jpeg';
+const PANEL_HOME_URL='https://raw.githubusercontent.com/modom123/cecethepieces/main/geode-panels-in-home_2026-09-12_0547.jpeg';
+let panelImgOk={corp:false,home:false};
+[['corp',PANEL_CORP_URL],['home',PANEL_HOME_URL]].forEach(function(pair){var im=new Image();im.onload=function(){panelImgOk[pair[0]]=true;};im.src=pair[1];});
+function panelSlides(){
+  var s=[];
+  if(panelImgOk.corp) s.push({img:PANEL_CORP_URL,title:'From boardrooms to lobbies.',sub:'A one-of-a-kind geode statement panel that commands any corporate space.'});
+  if(panelImgOk.home)  s.push({img:PANEL_HOME_URL,title:'To living rooms & kitchens.',sub:'Poured by hand to fit your home — no two are ever alike.'});
+  return s;
+}
+let splashPieceId=null, splashSlides=[], splashIdx=0, splashTimer=null;
+function openPanelSplash(id){
+  var slides=panelSlides(); if(!slides.length){ openPiece(id,true); return; }
+  splashPieceId=id; splashSlides=slides; splashIdx=0;
+  document.getElementById('ps-stage-imgs').innerHTML=slides.map(function(s){return '<img class="ps-img" src="'+s.img+'" alt="Cece statement panel in a real space">';}).join('');
+  document.getElementById('ps-dots').innerHTML=slides.map(function(_,i){return '<button class="ps-dot" aria-label="slide" onclick="splashGo('+i+')"></button>';}).join('');
+  document.getElementById('ps-cta').classList.remove('pulse');
+  document.getElementById('panelSplash').classList.add('open');
+  document.body.style.overflow='hidden';
+  splashGo(0);
+}
+function splashGo(i){
+  splashIdx=i;
+  document.querySelectorAll('#ps-stage-imgs .ps-img').forEach(function(im,k){ im.classList.toggle('on',k===i); });
+  document.getElementById('ps-title').textContent=splashSlides[i].title;
+  document.getElementById('ps-sub').textContent=splashSlides[i].sub;
+  document.querySelectorAll('#ps-dots .ps-dot').forEach(function(d,k){ d.classList.toggle('on',k===i); });
+  clearTimeout(splashTimer);
+  if(i<splashSlides.length-1){ splashTimer=setTimeout(function(){ splashGo(i+1); },3600); }
+  else { document.getElementById('ps-cta').classList.add('pulse'); }
+}
+function splashContinue(){ closePanelSplash(); if(splashPieceId) openPiece(splashPieceId,true); }
+function splashRent(){ closePanelSplash(); openRentalModal(); }
+function closePanelSplash(){ clearTimeout(splashTimer); document.getElementById('panelSplash').classList.remove('open'); document.body.style.overflow=''; }
+
+function openPiece(id, skipSplash){
   const p=allPieces.find(x=>String(x.id)===String(id));if(!p)return;
+  if(!skipSplash && p.type==='Statement Panel' && panelSlides().length){ openPanelSplash(id); return; }
   activePiece=p;
   const isSold=(p.status||'available')==='sold';
   buildLbGallery(p);
