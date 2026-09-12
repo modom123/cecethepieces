@@ -648,59 +648,72 @@ footer::before{display:none}
 
   <!-- Staged Settings showcase -->
   <section class="section" style="background:var(--pink-surface);border-top:1px solid var(--pink-border);border-bottom:1px solid var(--pink-border)">
+    <style>
+  .scene-block .scene-fig{margin:0;cursor:pointer;display:block}
+  .scene-thumb{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)}
+  .scene-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .15s}
+  .scene-check{position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.9);border:1.5px solid var(--pink-accent);color:var(--pink-accent);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .scene-pick:checked + .scene-thumb{outline:2.5px solid var(--pink-accent);outline-offset:1px}
+  .scene-pick:not(:checked) + .scene-thumb img{opacity:.5}
+  .scene-pick:not(:checked) + .scene-thumb .scene-check{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.2);color:transparent}
+  .scene-hint{font-size:.72rem;color:var(--muted);margin:2px 0 14px}
+</style>
     <div class="inner">
       <div style="text-align:center;margin-bottom:44px" class="reveal">
         <div class="section-label" style="justify-content:center;color:var(--pink-accent)">See It Styled</div>
         <h2 class="section-h">Staged <em>Settings</em></h2>
-        <p style="font-size:.92rem;color:var(--muted);max-width:600px;margin:12px auto 0;line-height:1.8">Three ready-made looks to picture the art in your space. Rent a whole scene for your event or listing — or mix and match the pieces.</p>
+        <p style="font-size:.92rem;color:var(--muted);max-width:600px;margin:12px auto 0;line-height:1.8">Three ready-made looks to picture the art in your space. Tap the pieces you like in a scene, then send them straight into a rental request — or mix and match.</p>
       </div>
 
-      <div class="reveal" style="margin-bottom:48px">
+      <div class="reveal scene-block" data-scene="wedding" style="margin-bottom:48px">
         <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px">
           <span style="font-size:1.5rem">💍</span>
           <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--ink2);margin:0">A Blush &amp; Gold Wedding</h3>
         </div>
-        <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 18px">Soft blush pours, gilded botanicals and a crystal-geode backdrop set the scene for the ceremony and reception — a showstopping focal point behind the sweetheart table, guest book, or vow exchange.</p>
+        <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 4px">Soft blush pours, gilded botanicals and a crystal-geode backdrop set the scene for the ceremony and reception — a showstopping focal point behind the sweetheart table, guest book, or vow exchange.</p>
+        <div class="scene-hint">Tap a piece to include or remove it, then request the ones you want.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/81746D25-6F5A-426B-8BB6-6EC446155E6D.jpeg" alt="Geode Statement Panel backdrop" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Geode Statement Backdrop</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4085.jpeg" alt="Blush and silver panel" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush &amp; Silver Panel</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4029.jpeg" alt="Blush resin river plaque" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush River Plaque</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4028.jpeg" alt="Ivory and gold plaque" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory &amp; Gold Plaque</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4069.jpeg" alt="Floral preservation block" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Floral Keepsake</figcaption></figure>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Geode Statement Backdrop" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/81746D25-6F5A-426B-8BB6-6EC446155E6D.jpeg" alt="Geode Statement Backdrop" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Geode Statement Backdrop</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Blush &amp; Silver Panel" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4085.jpeg" alt="Blush &amp; Silver Panel" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush &amp; Silver Panel</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Blush River Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4029.jpeg" alt="Blush River Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush River Plaque</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Ivory &amp; Gold Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4028.jpeg" alt="Ivory &amp; Gold Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory &amp; Gold Plaque</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Floral Keepsake" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4069.jpeg" alt="Floral Keepsake" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Floral Keepsake</figcaption></label>
         </div>
-        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="openRentalModal()">Request this setting →</button>
+        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'Wedding','A Blush &amp; Gold Wedding')">Add selected pieces to a rental request →</button>
       </div>
 
-      <div class="reveal" style="margin-bottom:48px">
+      <div class="reveal scene-block" data-scene="house" style="margin-bottom:48px">
         <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px">
           <span style="font-size:1.5rem">🏡</span>
           <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--ink2);margin:0">A House on the Market</h3>
         </div>
-        <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 18px">Warm, homey statement art that helps buyers picture themselves living there — framed river wood over the mantel, a landscape block on the shelf, a botanical frame in the entry. Staging pieces that photograph beautifully for listings.</p>
+        <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 4px">Warm, homey statement art that helps buyers picture themselves living there — framed river wood over the mantel, a landscape block on the shelf, a botanical frame in the entry. Staging pieces that photograph beautifully for listings.</p>
+        <div class="scene-hint">Tap a piece to include or remove it, then request the ones you want.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed resin river wall art" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Wall Art</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4026.jpeg" alt="Resin river wall plaque" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">River Wall Plaque</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/forest-landscape-block_2026-09-11_1302.jpeg" alt="Forest landscape block" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Forest Landscape Block</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4035.jpeg" alt="Ivory float framed art" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory Float Framed</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/botanical-memory-frame_2026-09-11_1302.jpeg" alt="Botanical memory frame" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Botanical Memory Frame</figcaption></figure>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Framed River Wall Art" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed River Wall Art" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Wall Art</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="River Wall Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4026.jpeg" alt="River Wall Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">River Wall Plaque</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Forest Landscape Block" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/forest-landscape-block_2026-09-11_1302.jpeg" alt="Forest Landscape Block" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Forest Landscape Block</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Ivory Float Framed" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4035.jpeg" alt="Ivory Float Framed" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory Float Framed</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Botanical Memory Frame" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/botanical-memory-frame_2026-09-11_1302.jpeg" alt="Botanical Memory Frame" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Botanical Memory Frame</figcaption></label>
         </div>
-        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="openRentalModal()">Request this setting →</button>
+        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'House Staging','A House on the Market')">Add selected pieces to a rental request →</button>
       </div>
 
-      <div class="reveal">
+      <div class="reveal scene-block" data-scene="corporate">
         <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px">
           <span style="font-size:1.5rem">🥂</span>
           <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--ink2);margin:0">A Corporate Dinner</h3>
         </div>
-        <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 18px">Polished, modern statement panels in teal, blue and silver to anchor a gala, awards night, or client dinner — a sophisticated backdrop for the head table, stage, or step-and-repeat.</p>
+        <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 4px">Polished, modern statement panels in teal, blue and silver to anchor a gala, awards night, or client dinner — a sophisticated backdrop for the head table, stage, or step-and-repeat.</p>
+        <div class="scene-hint">Tap a piece to include or remove it, then request the ones you want.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4082.jpeg" alt="Blue and silver statement panel" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blue &amp; Silver Panel</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4080.jpeg" alt="Black and silver statement panel" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Black &amp; Silver Panel</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4033.jpeg" alt="Teal and silver framed art" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Silver Framed</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4030.jpeg" alt="Teal and gold plaque" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Gold Plaque</figcaption></figure>
-          <figure style="margin:0"><div style="aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed resin river wall art" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Art</figcaption></figure>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Blue &amp; Silver Panel" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4082.jpeg" alt="Blue &amp; Silver Panel" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blue &amp; Silver Panel</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Black &amp; Silver Panel" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4080.jpeg" alt="Black &amp; Silver Panel" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Black &amp; Silver Panel</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Teal &amp; Silver Framed" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4033.jpeg" alt="Teal &amp; Silver Framed" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Silver Framed</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Teal &amp; Gold Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4030.jpeg" alt="Teal &amp; Gold Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Gold Plaque</figcaption></label>
+          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Framed River Art" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed River Art" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Art</figcaption></label>
         </div>
-        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="openRentalModal()">Request this setting →</button>
+        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'Corporate Event','A Corporate Dinner')">Add selected pieces to a rental request →</button>
       </div>
     </div>
   </section>
@@ -1472,6 +1485,18 @@ async function submitInquiry(){
   closeInquiry();
   showToast('✅ Inquiry sent! Cece will reply within 24 hours.',true);
   ['inq-name','inq-email','inq-phone','inq-msg'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+// Staged Settings → prefill a rental request with the pieces the visitor selected.
+function requestSetting(btn, eventType, sceneTitle){
+  const block = btn.closest('.scene-block');
+  const picks = block ? Array.from(block.querySelectorAll('.scene-pick:checked')).map(c=>c.dataset.title) : [];
+  openRentalModal();
+  selectedEvent = eventType;
+  document.querySelectorAll('#event-grid .event-btn').forEach(b=>{ const oc=b.getAttribute('onclick')||''; b.classList.toggle('on', oc.indexOf("'"+eventType+"'")>=0); });
+  const ta=document.getElementById('rm-notes');
+  const head = `Interested in the "${sceneTitle}" setting.` + (picks.length? ` Pieces I'd like: ${picks.join(', ')}.` : '') + `\n\n`;
+  ta.value = head + (ta.value||'');
+  try{ ta.focus(); }catch(e){}
 }
 function pickEvent(type,el){selectedEvent=type;document.querySelectorAll('.event-btn').forEach(b=>b.classList.remove('on'));el.classList.add('on');}
 
