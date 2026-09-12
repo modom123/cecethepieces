@@ -969,6 +969,9 @@ footer::before{display:none}
   .panel-splash.ps-warm .ps-kicker{color:rgba(233,200,138,.9)}
   /* Soft, reverent theme for the Memorial Keepsakes splash */
   .panel-splash.ps-soft{background:#171226}
+  /* Memorial slides are single pieces — show the whole keepsake (no crop) */
+  .panel-splash.ps-soft .ps-img{object-fit:contain;transform:scale(1)}
+  .panel-splash.ps-soft .ps-img.on{transform:scale(1.02)}
   .panel-splash.ps-soft .ps-scrim{background:linear-gradient(180deg,rgba(23,18,38,.30) 0%,rgba(23,18,38,.14) 38%,rgba(23,18,38,.86) 100%)}
   .panel-splash.ps-soft .ps-cta{background:linear-gradient(135deg,#5c3fa0,#7c5cbf);box-shadow:0 8px 30px rgba(124,92,191,.5)}
   .panel-splash.ps-soft .ps-dot.on{background:#d9c9f5}
