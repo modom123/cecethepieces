@@ -967,6 +967,12 @@ footer::before{display:none}
   .panel-splash.ps-warm .ps-cta{background:linear-gradient(135deg,#6f4a2c,#b3854e);box-shadow:0 8px 30px rgba(120,80,40,.5)}
   .panel-splash.ps-warm .ps-dot.on{background:#e9c88a}
   .panel-splash.ps-warm .ps-kicker{color:rgba(233,200,138,.9)}
+  /* Soft, reverent theme for the Memorial Keepsakes splash */
+  .panel-splash.ps-soft{background:#171226}
+  .panel-splash.ps-soft .ps-scrim{background:linear-gradient(180deg,rgba(23,18,38,.30) 0%,rgba(23,18,38,.14) 38%,rgba(23,18,38,.86) 100%)}
+  .panel-splash.ps-soft .ps-cta{background:linear-gradient(135deg,#5c3fa0,#7c5cbf);box-shadow:0 8px 30px rgba(124,92,191,.5)}
+  .panel-splash.ps-soft .ps-dot.on{background:#d9c9f5}
+  .panel-splash.ps-soft .ps-kicker{color:rgba(217,201,245,.9)}
 </style>
 <div class="panel-splash" id="panelSplash">
   <div class="ps-stage"><div id="ps-stage-imgs"></div><div class="ps-scrim"></div></div>
@@ -1419,6 +1425,14 @@ const WALLART_SHOTS=[
   {img:SPLASH_BASE+'IMG_4030.jpeg',title:'Warm walnut & gold.',sub:'Rustic, organic, grounding — the outdoors brought in.'},
   {img:SPLASH_BASE+'IMG_4026.jpeg',title:'No two rivers alike.',sub:'Every Resin River wall piece is a one-of-a-kind original — never a print.'}
 ];
+const MEMORIAL_SHOTS=[
+  {img:SPLASH_BASE+'IMG_4091.jpeg',title:'Keep them close.',sub:'A geode keepsake holding a loved one’s ashes — carried with you, always.'},
+  {img:SPLASH_BASE+'IMG_4041.jpeg',title:'Their name in the tide.',sub:'A beach shore block of real sand and shells, personalized with a name and dates.'},
+  {img:SPLASH_BASE+'IMG_4044.jpeg',title:'A set to gather around.',sub:'Emerald beach memorial coasters — the same shoreline, for the whole family.'},
+  {img:SPLASH_BASE+'IMG_4069.jpeg',title:'A bloom that lasts.',sub:'Your wedding or anniversary flowers, preserved forever in clear resin.'},
+  {img:SPLASH_BASE+'IMG_4063.jpeg',title:'Softly remembered.',sub:'Real pressed lavender and a whisper of ash, caught in light.'},
+  {img:SPLASH_BASE+'IMG_4046.jpeg',title:'For Dad.',sub:'A quiet tribute — their own ash, held in a keepsake for the shelf.'}
+];
 function panelSlides(){
   var s=PANEL_SHOTS.slice();
   if(splashImgOk.home) s.push({img:PANEL_HOME_URL,title:'In your home.',sub:'A living-room feature wall, a kitchen backsplash, a lit bar.'});
@@ -1437,6 +1451,7 @@ function wallArtSlides(){
 function splashConfigFor(p){
   if(p.type==='Statement Panel') return {slides:panelSlides(), theme:'', kicker:'Cece Statement Panels', cta:'View this Panel →'};
   if(p.type==='Resin Art' && /wall|plaque|river/i.test(p.title||'')) return {slides:wallArtSlides(), theme:'ps-warm', kicker:'Cece Resin River Wall Art', cta:'View this Piece →'};
+  if(p.type==='Memorial Piece') return {slides:MEMORIAL_SHOTS, theme:'ps-soft', kicker:'Cece Memorial Keepsakes', cta:'View this Keepsake →'};
   return null;
 }
 let splashPieceId=null, splashSlides=[], splashIdx=0, splashTimer=null;
@@ -1445,7 +1460,7 @@ function openPanelSplash(id){
   var cfg=splashConfigFor(p); if(!cfg || !cfg.slides.length){ openPiece(id,true); return; }
   splashPieceId=id; splashSlides=cfg.slides; splashIdx=0;
   var box=document.getElementById('panelSplash');
-  box.classList.toggle('ps-warm', cfg.theme==='ps-warm');
+  box.classList.remove('ps-warm','ps-soft'); if(cfg.theme) box.classList.add(cfg.theme);
   document.getElementById('ps-kicker').textContent=cfg.kicker;
   document.getElementById('ps-cta').textContent=cfg.cta;
   document.getElementById('ps-rent').style.display=p.for_rent?'':'none';
