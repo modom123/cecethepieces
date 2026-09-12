@@ -8,8 +8,14 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecepieces — public website)
-  LAST UPDATED: 2026-09-11_1300 UTC
-  CHANGE: 2026-09-11_1300 — Hub now hosted on Vercel. Login hand-off points
+  LAST UPDATED: 2026-09-12_0725 UTC
+  CHANGE: 2026-09-12_0725 — Added a Mixed-Media splash (ocean/teal theme,
+          "Cece Mixed-Media Originals") on the same engine as the panel,
+          wall-art and memorial splashes. New "Ocean Islands — Resin & Moss"
+          catalog piece (type Mixed Media). Splash seeds with real geode
+          shots and adds a living-room lifestyle slide from the uploaded
+          Gemini_Generated_Image_391xt6391xt6391x.jpg.
+          2026-09-11_1300 — Hub now hosted on Vercel. Login hand-off points
           at https://cece-hub.vercel.app (was amazinhelp.com), so
           "Hub Login" lands the team inside the actual hub, signed in.
           2026-09-10_1839 — Added a discreet "Team Login" footer link
@@ -976,6 +982,12 @@ footer::before{display:none}
   .panel-splash.ps-soft .ps-cta{background:linear-gradient(135deg,#5c3fa0,#7c5cbf);box-shadow:0 8px 30px rgba(124,92,191,.5)}
   .panel-splash.ps-soft .ps-dot.on{background:#d9c9f5}
   .panel-splash.ps-soft .ps-kicker{color:rgba(217,201,245,.9)}
+  /* ── Mixed-media ocean theme: deep teal, aqua accents ── */
+  .panel-splash.ps-ocean{background:#061c22}
+  .panel-splash.ps-ocean .ps-scrim{background:linear-gradient(180deg,rgba(6,28,34,.28) 0%,rgba(6,28,34,.12) 38%,rgba(6,28,34,.88) 100%)}
+  .panel-splash.ps-ocean .ps-cta{background:linear-gradient(135deg,#0e7c8b,#3fb6c9);box-shadow:0 8px 30px rgba(63,182,201,.5)}
+  .panel-splash.ps-ocean .ps-dot.on{background:#8fe3ef}
+  .panel-splash.ps-ocean .ps-kicker{color:rgba(143,227,239,.9)}
 </style>
 <div class="panel-splash" id="panelSplash">
   <div class="ps-stage"><div id="ps-stage-imgs"></div><div class="ps-scrim"></div></div>
@@ -1199,6 +1211,10 @@ function sampleData(){
    materials:'Round wood frame, real pressed flowers & feathers, glass keepsake vial, resin',
    description:'Real pressed flowers, delicate feathers and a tiny glass keepsake vial arranged inside a round wooden frame — a botanical memory kept under glass. Made to order from your own blooms and mementos.',
    image:B+'botanical-memory-frame_2026-09-11_1302.jpeg',variations:[]},
+  {id:'cat-ocean',title:'Ocean Islands — Resin & Moss',type:'Mixed Media',price:'1450',status:'available',for_rent:true,
+   materials:'Epoxy resin, preserved moss & lichen, gold leaf, crushed minerals on a large panel',
+   description:'An aerial view of an emerald archipelago — islands of preserved moss and gold rimmed by rivers of blue-green resin. A true mixed-media original, made to order in your size and palette (and available to rent as an event backdrop).',
+   image:B+'Gemini_Generated_Image_391xt6391xt6391x.jpg',variations:[]},
   {id:'cat-forest',title:'Forest Landscape Block',type:'Resin Art',price:'145',status:'available',
    materials:'Hand-painted forest landscape sealed in a clear epoxy resin block',
    description:'A hand-painted evergreen forest at golden hour — pines mirrored in a still river under a blush sky — sealed inside a crystal-clear resin block that catches the light from every side.',
@@ -1414,8 +1430,10 @@ const PANEL_SEA_URL=SPLASH_BASE+'Gemini_Generated_Image_iv6n3tiv6n3tiv6n.jpg';
 // Resin River Wall Art lifestyle collages (cozy home + office/study)
 const WALLART_HOME_URL=SPLASH_BASE+'Gemini_Generated_Image_upnib3upnib3upni.jpg';
 const WALLART_OFFICE_URL=SPLASH_BASE+'Gemini_Generated_Image_2wam6y2wam6y2wam.jpg';
-let splashImgOk={corp:false,home:false,lux:false,sea:false,wa_home:false,wa_office:false};
-[['corp',PANEL_CORP_URL],['home',PANEL_HOME_URL],['lux',PANEL_LUX_URL],['sea',PANEL_SEA_URL],['wa_home',WALLART_HOME_URL],['wa_office',WALLART_OFFICE_URL]].forEach(function(pair){var im=new Image();im.onload=function(){splashImgOk[pair[0]]=true;};im.src=pair[1];});
+// Mixed-media lifestyle collage (ocean/island resin piece in a bright modern home)
+const MIXEDMEDIA_HOME_URL=SPLASH_BASE+'Gemini_Generated_Image_391xt6391xt6391x.jpg';
+let splashImgOk={corp:false,home:false,lux:false,sea:false,wa_home:false,wa_office:false,mm_home:false};
+[['corp',PANEL_CORP_URL],['home',PANEL_HOME_URL],['lux',PANEL_LUX_URL],['sea',PANEL_SEA_URL],['wa_home',WALLART_HOME_URL],['wa_office',WALLART_OFFICE_URL],['mm_home',MIXEDMEDIA_HOME_URL]].forEach(function(pair){var im=new Image();im.onload=function(){splashImgOk[pair[0]]=true;};im.src=pair[1];});
 const PANEL_SHOTS=[
   {img:SPLASH_BASE+'IMG_4085.jpeg',title:'Blush & Silver.',sub:'A geode statement panel — rivers of colour split open by crystal caverns.'},
   {img:SPLASH_BASE+'IMG_4082.jpeg',title:'Blue & Silver.',sub:'Poured by hand, one at a time. No two are ever alike.'},
@@ -1436,6 +1454,15 @@ const MEMORIAL_SHOTS=[
   {img:SPLASH_BASE+'IMG_4063.jpeg',title:'Softly remembered.',sub:'Real pressed lavender and a whisper of ash, caught in light.'},
   {img:SPLASH_BASE+'IMG_4046.jpeg',title:'For Dad.',sub:'A quiet tribute — their own ash, held in a keepsake for the shelf.'}
 ];
+const MIXEDMEDIA_SHOTS=[
+  {img:SPLASH_BASE+'81746D25-6F5A-426B-8BB6-6EC446155E6D.jpeg',title:'Islands in resin.',sub:'Emerald tide pools and gilded shorelines, poured by hand — mixed media at architectural scale.'},
+  {img:SPLASH_BASE+'IMG_4082.jpeg',title:'The ocean, held still.',sub:'Deep blues and silver veins, real minerals set into clear resin. No two pours alike.'}
+];
+function mixedMediaSlides(){
+  var s=MIXEDMEDIA_SHOTS.slice();
+  if(splashImgOk.mm_home) s.push({img:MIXEDMEDIA_HOME_URL,title:'In your home.',sub:'A living-room centrepiece that turns a bare wall into a window on the sea.'});
+  return s;
+}
 function panelSlides(){
   var s=PANEL_SHOTS.slice();
   if(splashImgOk.home) s.push({img:PANEL_HOME_URL,title:'In your home.',sub:'A living-room feature wall, a kitchen backsplash, a lit bar.'});
@@ -1455,6 +1482,7 @@ function splashConfigFor(p){
   if(p.type==='Statement Panel') return {slides:panelSlides(), theme:'', kicker:'Cece Statement Panels', cta:'View this Panel →'};
   if(p.type==='Resin Art' && /wall|plaque|river/i.test(p.title||'')) return {slides:wallArtSlides(), theme:'ps-warm', kicker:'Cece Resin River Wall Art', cta:'View this Piece →'};
   if(p.type==='Memorial Piece') return {slides:MEMORIAL_SHOTS, theme:'ps-soft', kicker:'Cece Memorial Keepsakes', cta:'View this Keepsake →'};
+  if(p.type==='Mixed Media') return {slides:mixedMediaSlides(), theme:'ps-ocean', kicker:'Cece Mixed-Media Originals', cta:'View this Piece →'};
   return null;
 }
 let splashPieceId=null, splashSlides=[], splashIdx=0, splashTimer=null;
