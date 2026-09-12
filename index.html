@@ -807,10 +807,10 @@ footer::before{display:none}
         <div class="about-text reveal">
           <p>I'm Cece — an independent artist working in resin, glass, and mixed media. My practice is rooted in process: the controlled chaos of materials in motion, the beauty of things you can't quite predict.</p>
           <p>Every piece I make is completely original. I don't reproduce, I don't print, I don't re-create. When you own a cecepieces work, you own something that exists nowhere else in the world — with a certificate of authenticity to prove it.</p>
-          <p>Based in Los Angeles, I work in small batches — sometimes a single piece, never more than a few at a time. Each one gets my full attention from first pour to final seal.</p>
+          <p>Headquartered in Seattle, I work in small batches — sometimes a single piece, never more than a few at a time. Each one gets my full attention from first pour to final seal.</p>
           <div class="pills">
             <span class="pill">Resin Art</span><span class="pill">Painting</span><span class="pill">Memorial Pieces</span>
-            <span class="pill">Mixed Media</span><span class="pill">Los Angeles</span><span class="pill">Trade Pricing</span>
+            <span class="pill">Mixed Media</span><span class="pill">Seattle</span><span class="pill">Trade Pricing</span>
           </div>
         </div>
       </div>
@@ -1401,11 +1401,12 @@ const SPLASH_BASE='https://raw.githubusercontent.com/modom123/cecethepieces/main
 const PANEL_CORP_URL=SPLASH_BASE+'Gemini_Generated_Image_wryhr0wryhr0wryh.jpg';
 const PANEL_HOME_URL=SPLASH_BASE+'Gemini_Generated_Image_ncjt3oncjt3oncjt.jpg';
 const PANEL_LUX_URL=SPLASH_BASE+'Gemini_Generated_Image_sciquxsciquxsciq.jpg';
+const PANEL_SEA_URL=SPLASH_BASE+'Gemini_Generated_Image_iv6n3tiv6n3tiv6n.jpg';
 // Resin River Wall Art lifestyle collages (cozy home + office/study)
 const WALLART_HOME_URL=SPLASH_BASE+'Gemini_Generated_Image_upnib3upnib3upni.jpg';
 const WALLART_OFFICE_URL=SPLASH_BASE+'Gemini_Generated_Image_2wam6y2wam6y2wam.jpg';
-let splashImgOk={corp:false,home:false,lux:false,wa_home:false,wa_office:false};
-[['corp',PANEL_CORP_URL],['home',PANEL_HOME_URL],['lux',PANEL_LUX_URL],['wa_home',WALLART_HOME_URL],['wa_office',WALLART_OFFICE_URL]].forEach(function(pair){var im=new Image();im.onload=function(){splashImgOk[pair[0]]=true;};im.src=pair[1];});
+let splashImgOk={corp:false,home:false,lux:false,sea:false,wa_home:false,wa_office:false};
+[['corp',PANEL_CORP_URL],['home',PANEL_HOME_URL],['lux',PANEL_LUX_URL],['sea',PANEL_SEA_URL],['wa_home',WALLART_HOME_URL],['wa_office',WALLART_OFFICE_URL]].forEach(function(pair){var im=new Image();im.onload=function(){splashImgOk[pair[0]]=true;};im.src=pair[1];});
 const PANEL_SHOTS=[
   {img:SPLASH_BASE+'IMG_4085.jpeg',title:'Blush & Silver.',sub:'A geode statement panel — rivers of colour split open by crystal caverns.'},
   {img:SPLASH_BASE+'IMG_4082.jpeg',title:'Blue & Silver.',sub:'Poured by hand, one at a time. No two are ever alike.'},
@@ -1423,6 +1424,7 @@ function panelSlides(){
   if(splashImgOk.home) s.push({img:PANEL_HOME_URL,title:'In your home.',sub:'A living-room feature wall, a kitchen backsplash, a lit bar.'});
   if(splashImgOk.corp) s.push({img:PANEL_CORP_URL,title:'In your business.',sub:'Lobbies, boardrooms and executive suites that command the room.'});
   if(splashImgOk.lux)  s.push({img:PANEL_LUX_URL,title:'Penthouse & boardroom.',sub:'From skyline suites to the head of the table — a true centerpiece.'});
+  if(splashImgOk.sea)  s.push({img:PANEL_SEA_URL,title:'Made in Seattle.',sub:'Original geode statement art, poured by hand in the Pacific Northwest.'});
   return s;
 }
 function wallArtSlides(){
