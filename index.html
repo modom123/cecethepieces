@@ -607,16 +607,23 @@ footer::before{display:none}
       </div>
     </div>
   </section>
-  <!-- Statement Panels in real homes -->
+  <!-- Statement Panels in real spaces -->
   <section id="panels-in-home" class="section" style="background:var(--blue-surface);border-top:1px solid var(--blue-border);border-bottom:1px solid var(--blue-border)">
     <div class="inner">
       <div style="text-align:center;margin-bottom:28px" class="reveal">
         <div class="section-label" style="justify-content:center;color:var(--blue-accent)">See Them Installed</div>
-        <h2 class="section-h">Statement Panels <em>in Real Homes</em></h2>
-        <p style="font-size:.92rem;color:var(--muted);max-width:640px;margin:12px auto 0;line-height:1.8">A geode statement panel becomes the focal point of a room — a living-room feature wall, a kitchen backsplash, a dining-room triptych, a lit bar surround. Each one is poured by hand to fit your space.</p>
+        <h2 class="section-h">Statement Panels <em>in Real Spaces</em></h2>
+        <p style="font-size:.92rem;color:var(--muted);max-width:660px;margin:12px auto 0;line-height:1.8">A geode statement panel becomes the focal point of a room — at home as a living-room feature wall, kitchen backsplash or bar surround, and in the office as a lobby wall, boardroom table or executive backdrop. Each one is poured by hand to fit the space.</p>
       </div>
-      <div class="reveal" style="max-width:720px;margin:0 auto">
-        <img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/geode-panels-in-home_2026-09-12_0547.jpeg" alt="Geode statement panels installed in a modern home — living-room feature wall, kitchen backsplash, dining-room panels and a lit bar" loading="lazy" style="width:100%;border-radius:12px;display:block;box-shadow:0 12px 40px rgba(29,111,168,.16)" onerror="var s=document.getElementById('panels-in-home');if(s)s.style.display='none';">
+      <div class="reveal" style="max-width:920px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+        <figure class="panel-shot" style="margin:0">
+          <img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/geode-panels-in-home_2026-09-12_0547.jpeg" alt="Geode statement panels in a luxury home — living-room feature wall, kitchen backsplash, dining panels and bar" loading="lazy" style="width:100%;border-radius:12px;display:block;box-shadow:0 12px 40px rgba(29,111,168,.16)" onerror="panelImgFail(this)">
+          <figcaption style="font-size:.72rem;color:var(--muted);margin-top:8px;text-align:center">In the home — living room, kitchen, dining &amp; bar</figcaption>
+        </figure>
+        <figure class="panel-shot" style="margin:0">
+          <img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/geode-panels-corporate_2026-09-12_0550.jpeg" alt="Geode statement panels in corporate spaces — executive office, lobby reception, boardroom and private office" loading="lazy" style="width:100%;border-radius:12px;display:block;box-shadow:0 12px 40px rgba(29,111,168,.16)" onerror="panelImgFail(this)">
+          <figcaption style="font-size:.72rem;color:var(--muted);margin-top:8px;text-align:center">In the office — lobbies, boardrooms &amp; executive suites</figcaption>
+        </figure>
       </div>
       <div style="text-align:center;margin-top:26px" class="reveal">
         <button class="cta-btn" onclick="var b=[].slice.call(document.querySelectorAll('#shop-filters .filter-btn')).find(function(x){return x.textContent.trim()==='Statement Panels'});shopTypeFilter('Statement Panel',b);document.getElementById('shop-grid').scrollIntoView({behavior:'smooth'});" style="background:linear-gradient(135deg,var(--blue-accent),var(--blue-mid));color:#fff;box-shadow:0 4px 20px var(--blue-glow)">Shop Statement Panels →</button>
@@ -1502,6 +1509,13 @@ async function submitInquiry(){
   closeInquiry();
   showToast('✅ Inquiry sent! Cece will reply within 24 hours.',true);
   ['inq-name','inq-email','inq-phone','inq-msg'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+}
+// Hide a panels showcase image that hasn't been uploaded yet; hide the whole
+// section only if none of its images load.
+function panelImgFail(img){
+  var fig=img.closest('.panel-shot'); if(fig) fig.style.display='none';
+  var sec=document.getElementById('panels-in-home');
+  if(sec){ var any=[].slice.call(sec.querySelectorAll('.panel-shot')).some(function(f){return f.style.display!=='none';}); if(!any) sec.style.display='none'; }
 }
 // Staged Settings → prefill a rental request with the pieces the visitor selected.
 function requestSetting(btn, eventType, sceneTitle){
