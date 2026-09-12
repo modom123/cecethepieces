@@ -961,16 +961,22 @@ footer::before{display:none}
   .ps-cta.pulse{animation:psPulse 1.5s ease-in-out infinite}
   @keyframes psPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
   .ps-cta2{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;font-family:'Jost',sans-serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:14px 24px;border-radius:6px;cursor:pointer;backdrop-filter:blur(6px)}
+  /* Warm, Pacific-Northwest / rustic theme for the Resin River Wall Art splash */
+  .panel-splash.ps-warm{background:#14100c}
+  .panel-splash.ps-warm .ps-scrim{background:linear-gradient(180deg,rgba(20,15,10,.30) 0%,rgba(20,15,10,.12) 38%,rgba(20,15,10,.88) 100%)}
+  .panel-splash.ps-warm .ps-cta{background:linear-gradient(135deg,#6f4a2c,#b3854e);box-shadow:0 8px 30px rgba(120,80,40,.5)}
+  .panel-splash.ps-warm .ps-dot.on{background:#e9c88a}
+  .panel-splash.ps-warm .ps-kicker{color:rgba(233,200,138,.9)}
 </style>
 <div class="panel-splash" id="panelSplash">
   <div class="ps-stage"><div id="ps-stage-imgs"></div><div class="ps-scrim"></div></div>
-  <div class="ps-copy"><div class="ps-kicker">Cece Statement Panels</div><h2 class="ps-title" id="ps-title"></h2><p class="ps-sub" id="ps-sub"></p></div>
+  <div class="ps-copy"><div class="ps-kicker" id="ps-kicker">Cece Statement Panels</div><h2 class="ps-title" id="ps-title"></h2><p class="ps-sub" id="ps-sub"></p></div>
   <button class="ps-skip" onclick="splashContinue()">Skip →</button>
   <div class="ps-dots" id="ps-dots"></div>
   <div class="ps-actions">
     <button class="ps-cta" id="ps-cta" onclick="splashContinue()">View this Panel →</button>
     <button class="ps-cta2" onclick="splashInquire()">Inquire — Custom Size</button>
-    <button class="ps-cta2" onclick="splashRent()">Rent for an Event</button>
+    <button class="ps-cta2" id="ps-rent" onclick="splashRent()">Rent for an Event</button>
   </div>
 </div>
 
@@ -1389,32 +1395,60 @@ function setLbImage(i){
 }
 function lbStep(d){ if(lbGallery.length>1) setLbImage(lbIndex+d); }
 
-// ── PANEL SPLASH — a dynamic showcase that plays before a Statement Panel opens ──
-const PANEL_CORP_URL='https://raw.githubusercontent.com/modom123/cecethepieces/main/Gemini_Generated_Image_wryhr0wryhr0wryh.jpg';
-const PANEL_HOME_URL='https://raw.githubusercontent.com/modom123/cecethepieces/main/Gemini_Generated_Image_ncjt3oncjt3oncjt.jpg';
-let panelImgOk={corp:false,home:false};
-[['corp',PANEL_CORP_URL],['home',PANEL_HOME_URL]].forEach(function(pair){var im=new Image();im.onload=function(){panelImgOk[pair[0]]=true;};im.src=pair[1];});
-const PANEL_BASE='https://raw.githubusercontent.com/modom123/cecethepieces/main/';
+// ── PIECE SPLASH — a dynamic showcase that plays before certain pieces open ──
+const SPLASH_BASE='https://raw.githubusercontent.com/modom123/cecethepieces/main/';
+// Statement Panel lifestyle collages
+const PANEL_CORP_URL=SPLASH_BASE+'Gemini_Generated_Image_wryhr0wryhr0wryh.jpg';
+const PANEL_HOME_URL=SPLASH_BASE+'Gemini_Generated_Image_ncjt3oncjt3oncjt.jpg';
+// Resin River Wall Art lifestyle collages (cozy home + office/study)
+const WALLART_HOME_URL=SPLASH_BASE+'Gemini_Generated_Image_upnib3upnib3upni.jpg';
+const WALLART_OFFICE_URL=SPLASH_BASE+'Gemini_Generated_Image_2wam6y2wam6y2wam.jpg';
+let splashImgOk={corp:false,home:false,wa_home:false,wa_office:false};
+[['corp',PANEL_CORP_URL],['home',PANEL_HOME_URL],['wa_home',WALLART_HOME_URL],['wa_office',WALLART_OFFICE_URL]].forEach(function(pair){var im=new Image();im.onload=function(){splashImgOk[pair[0]]=true;};im.src=pair[1];});
 const PANEL_SHOTS=[
-  {img:PANEL_BASE+'IMG_4085.jpeg',title:'Blush & Silver.',sub:'A geode statement panel — rivers of colour split open by crystal caverns.'},
-  {img:PANEL_BASE+'IMG_4082.jpeg',title:'Blue & Silver.',sub:'Poured by hand, one at a time. No two are ever alike.'},
-  {img:PANEL_BASE+'IMG_4081.jpeg',title:'Coral & Gold.',sub:'Made in your colours, scaled to your wall.'},
-  {img:PANEL_BASE+'IMG_4080.jpeg',title:'Black & Silver.',sub:'An original focal point — never a print.'}
+  {img:SPLASH_BASE+'IMG_4085.jpeg',title:'Blush & Silver.',sub:'A geode statement panel — rivers of colour split open by crystal caverns.'},
+  {img:SPLASH_BASE+'IMG_4082.jpeg',title:'Blue & Silver.',sub:'Poured by hand, one at a time. No two are ever alike.'},
+  {img:SPLASH_BASE+'IMG_4081.jpeg',title:'Coral & Gold.',sub:'Made in your colours, scaled to your wall.'},
+  {img:SPLASH_BASE+'IMG_4080.jpeg',title:'Black & Silver.',sub:'An original focal point — never a print.'}
+];
+const WALLART_SHOTS=[
+  {img:SPLASH_BASE+'IMG_4034.jpeg',title:'A river runs through it.',sub:'Live-edge walnut poured in resin, framed by hand-gilded botanicals.'},
+  {img:SPLASH_BASE+'IMG_4033.jpeg',title:'Teal & silver, like a mountain stream.',sub:'Cool Pacific-Northwest tones for a cabin, lodge or den.'},
+  {img:SPLASH_BASE+'IMG_4030.jpeg',title:'Warm walnut & gold.',sub:'Rustic, organic, grounding — the outdoors brought in.'},
+  {img:SPLASH_BASE+'IMG_4026.jpeg',title:'No two rivers alike.',sub:'Every Resin River wall piece is a one-of-a-kind original — never a print.'}
 ];
 function panelSlides(){
   var s=PANEL_SHOTS.slice();
-  if(panelImgOk.home) s.push({img:PANEL_HOME_URL,title:'In your home.',sub:'A living-room feature wall, a kitchen backsplash, a lit bar.'});
-  if(panelImgOk.corp) s.push({img:PANEL_CORP_URL,title:'In your business.',sub:'Lobbies, boardrooms and executive suites that command the room.'});
+  if(splashImgOk.home) s.push({img:PANEL_HOME_URL,title:'In your home.',sub:'A living-room feature wall, a kitchen backsplash, a lit bar.'});
+  if(splashImgOk.corp) s.push({img:PANEL_CORP_URL,title:'In your business.',sub:'Lobbies, boardrooms and executive suites that command the room.'});
   return s;
+}
+function wallArtSlides(){
+  var s=WALLART_SHOTS.slice();
+  if(splashImgOk.wa_home)   s.push({img:WALLART_HOME_URL,title:'By the fire.',sub:'Over the mantel, in the cabin kitchen, above the bed — cozy and calm.'});
+  if(splashImgOk.wa_office) s.push({img:WALLART_OFFICE_URL,title:'In the study.',sub:'A grounding, natural focal point for the office, den or entry.'});
+  return s;
+}
+// Which splash (if any) a piece gets, plus its theme + copy.
+function splashConfigFor(p){
+  if(p.type==='Statement Panel') return {slides:panelSlides(), theme:'', kicker:'Cece Statement Panels', cta:'View this Panel →'};
+  if(p.type==='Resin Art' && /wall|plaque|river/i.test(p.title||'')) return {slides:wallArtSlides(), theme:'ps-warm', kicker:'Cece Resin River Wall Art', cta:'View this Piece →'};
+  return null;
 }
 let splashPieceId=null, splashSlides=[], splashIdx=0, splashTimer=null;
 function openPanelSplash(id){
-  var slides=panelSlides(); if(!slides.length){ openPiece(id,true); return; }
-  splashPieceId=id; splashSlides=slides; splashIdx=0;
-  document.getElementById('ps-stage-imgs').innerHTML=slides.map(function(s){return '<img class="ps-img" src="'+s.img+'" alt="Cece statement panel in a real space">';}).join('');
-  document.getElementById('ps-dots').innerHTML=slides.map(function(_,i){return '<button class="ps-dot" aria-label="slide" onclick="splashGo('+i+')"></button>';}).join('');
+  var p=allPieces.find(function(x){return String(x.id)===String(id);}); if(!p){ return; }
+  var cfg=splashConfigFor(p); if(!cfg || !cfg.slides.length){ openPiece(id,true); return; }
+  splashPieceId=id; splashSlides=cfg.slides; splashIdx=0;
+  var box=document.getElementById('panelSplash');
+  box.classList.toggle('ps-warm', cfg.theme==='ps-warm');
+  document.getElementById('ps-kicker').textContent=cfg.kicker;
+  document.getElementById('ps-cta').textContent=cfg.cta;
+  document.getElementById('ps-rent').style.display=p.for_rent?'':'none';
+  document.getElementById('ps-stage-imgs').innerHTML=cfg.slides.map(function(s){return '<img class="ps-img" src="'+s.img+'" alt="Cece original art in a real space">';}).join('');
+  document.getElementById('ps-dots').innerHTML=cfg.slides.map(function(_,i){return '<button class="ps-dot" aria-label="slide" onclick="splashGo('+i+')"></button>';}).join('');
   document.getElementById('ps-cta').classList.remove('pulse');
-  document.getElementById('panelSplash').classList.add('open');
+  box.classList.add('open');
   document.body.style.overflow='hidden';
   splashGo(0);
 }
@@ -1435,7 +1469,7 @@ function closePanelSplash(){ clearTimeout(splashTimer); document.getElementById(
 
 function openPiece(id, skipSplash){
   const p=allPieces.find(x=>String(x.id)===String(id));if(!p)return;
-  if(!skipSplash && p.type==='Statement Panel' && panelSlides().length){ openPanelSplash(id); return; }
+  if(!skipSplash){ var _cfg=splashConfigFor(p); if(_cfg && _cfg.slides.length){ openPanelSplash(id); return; } }
   activePiece=p;
   const isSold=(p.status||'available')==='sold';
   buildLbGallery(p);
