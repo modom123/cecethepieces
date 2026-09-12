@@ -1393,10 +1393,17 @@ const PANEL_CORP_URL='https://raw.githubusercontent.com/modom123/cecethepieces/m
 const PANEL_HOME_URL='https://raw.githubusercontent.com/modom123/cecethepieces/main/Gemini_Generated_Image_ncjt3oncjt3oncjt.jpg';
 let panelImgOk={corp:false,home:false};
 [['corp',PANEL_CORP_URL],['home',PANEL_HOME_URL]].forEach(function(pair){var im=new Image();im.onload=function(){panelImgOk[pair[0]]=true;};im.src=pair[1];});
+const PANEL_BASE='https://raw.githubusercontent.com/modom123/cecethepieces/main/';
+const PANEL_SHOTS=[
+  {img:PANEL_BASE+'IMG_4085.jpeg',title:'Blush & Silver.',sub:'A geode statement panel — rivers of colour split open by crystal caverns.'},
+  {img:PANEL_BASE+'IMG_4082.jpeg',title:'Blue & Silver.',sub:'Poured by hand, one at a time. No two are ever alike.'},
+  {img:PANEL_BASE+'IMG_4081.jpeg',title:'Coral & Gold.',sub:'Made in your colours, scaled to your wall.'},
+  {img:PANEL_BASE+'IMG_4080.jpeg',title:'Black & Silver.',sub:'An original focal point — never a print.'}
+];
 function panelSlides(){
-  var s=[];
-  if(panelImgOk.corp) s.push({img:PANEL_CORP_URL,title:'From boardrooms to lobbies.',sub:'A one-of-a-kind geode statement panel that commands any corporate space.'});
-  if(panelImgOk.home)  s.push({img:PANEL_HOME_URL,title:'To living rooms & kitchens.',sub:'Poured by hand to fit your home — no two are ever alike.'});
+  var s=PANEL_SHOTS.slice();
+  if(panelImgOk.home) s.push({img:PANEL_HOME_URL,title:'In your home.',sub:'A living-room feature wall, a kitchen backsplash, a lit bar.'});
+  if(panelImgOk.corp) s.push({img:PANEL_CORP_URL,title:'In your business.',sub:'Lobbies, boardrooms and executive suites that command the room.'});
   return s;
 }
 let splashPieceId=null, splashSlides=[], splashIdx=0, splashTimer=null;
@@ -1417,7 +1424,7 @@ function splashGo(i){
   document.getElementById('ps-sub').textContent=splashSlides[i].sub;
   document.querySelectorAll('#ps-dots .ps-dot').forEach(function(d,k){ d.classList.toggle('on',k===i); });
   clearTimeout(splashTimer);
-  if(i<splashSlides.length-1){ splashTimer=setTimeout(function(){ splashGo(i+1); },3600); }
+  if(i<splashSlides.length-1){ splashTimer=setTimeout(function(){ splashGo(i+1); },2800); }
   else { document.getElementById('ps-cta').classList.add('pulse'); }
 }
 function splashContinue(){ closePanelSplash(); if(splashPieceId) openPiece(splashPieceId,true); }
