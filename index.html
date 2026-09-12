@@ -969,6 +969,7 @@ footer::before{display:none}
   <div class="ps-dots" id="ps-dots"></div>
   <div class="ps-actions">
     <button class="ps-cta" id="ps-cta" onclick="splashContinue()">View this Panel →</button>
+    <button class="ps-cta2" onclick="splashInquire()">Inquire — Custom Size</button>
     <button class="ps-cta2" onclick="splashRent()">Rent for an Event</button>
   </div>
 </div>
@@ -1428,6 +1429,7 @@ function splashGo(i){
   else { document.getElementById('ps-cta').classList.add('pulse'); }
 }
 function splashContinue(){ closePanelSplash(); if(splashPieceId) openPiece(splashPieceId,true); }
+function splashInquire(){ var p=allPieces.find(function(x){return String(x.id)===String(splashPieceId);}); if(p) activePiece=p; closePanelSplash(); openInquiry(); }
 function splashRent(){ closePanelSplash(); openRentalModal(); }
 function closePanelSplash(){ clearTimeout(splashTimer); document.getElementById('panelSplash').classList.remove('open'); document.body.style.overflow=''; }
 
@@ -1441,11 +1443,17 @@ function openPiece(id, skipSplash){
   document.getElementById('lb-title').textContent=p.title;
   const prEl=document.getElementById('lb-price');
   prEl.textContent=p.price?'$'+Number(p.price).toLocaleString():'Price on inquiry';
+  // Statement Panels are made to order, so price is a starting point.
+  if(p.type==='Statement Panel'&&p.price&&!isSold) prEl.textContent='From $'+Number(p.price).toLocaleString();
   prEl.className='lb-price'+(isSold?' sold':'');
   document.getElementById('lb-sold-tag').style.display=isSold?'inline-flex':'none';
   const dimsEl=document.getElementById('lb-dims');
   dimsEl.innerHTML=p.dimensions?`<strong>Dimensions:</strong> ${p.dimensions}`:'';
   dimsEl.style.display=p.dimensions?'':'none';
+  if(p.type==='Statement Panel'){
+    dimsEl.innerHTML=(p.dimensions?`<strong>Dimensions:</strong> ${p.dimensions} `:'')+`<span style="color:var(--muted2)">— standard size shown; made to order in your dimensions.</span>`;
+    dimsEl.style.display='';
+  }
   const matsEl=document.getElementById('lb-mats');
   matsEl.innerHTML=p.materials?`<strong>Materials:</strong> ${p.materials}`:'';
   matsEl.style.display=p.materials?'':'none';
@@ -1454,6 +1462,9 @@ function openPiece(id, skipSplash){
   buyBtn.className='lb-buy'; buyBtn.target='';
   if(isSold){
     buyBtn.textContent='This Piece is Sold';buyBtn.className='lb-buy sold';buyBtn.href='#';buyBtn.onclick=e=>e.preventDefault();
+  } else if(p.type==='Statement Panel'){
+    // Panels are custom-sized — route to inquiry instead of fixed checkout.
+    buyBtn.textContent='Inquire for Your Size →';buyBtn.href='#';buyBtn.onclick=e=>{e.preventDefault();openInquiry();};
   } else if(STRIPE_CHECKOUT_URL && p.price){
     // Real Stripe checkout (price validated server-side by the Edge Function)
     buyBtn.textContent=`Buy Now — $${Number(p.price).toLocaleString()} →`;buyBtn.href='#';
