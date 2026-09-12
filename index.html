@@ -8,8 +8,11 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecepieces — public website)
-  LAST UPDATED: 2026-09-12_0733 UTC
-  CHANGE: 2026-09-12_0733 — Wall-art splash now shows five distinct colorways
+  LAST UPDATED: 2026-09-12_0745 UTC
+  CHANGE: 2026-09-12_0745 — Added a corporate/boardroom lifestyle slide to the
+          Mixed-Media splash (the ocean-islands piece in a high-rise
+          conference room), after the in-home slide.
+          2026-09-12_0733 — Wall-art splash now shows five distinct colorways
           & frames (deep teal live-edge, blush, golden mustard, ivory, and a
           silver-framed teal) instead of four near-identical navy pieces.
           2026-09-12_0725 — Added a Mixed-Media splash (ocean/teal theme,
@@ -1435,8 +1438,9 @@ const WALLART_HOME_URL=SPLASH_BASE+'Gemini_Generated_Image_upnib3upnib3upni.jpg'
 const WALLART_OFFICE_URL=SPLASH_BASE+'Gemini_Generated_Image_2wam6y2wam6y2wam.jpg';
 // Mixed-media lifestyle collage (ocean/island resin piece in a bright modern home)
 const MIXEDMEDIA_HOME_URL=SPLASH_BASE+'Gemini_Generated_Image_391xt6391xt6391x.jpg';
-let splashImgOk={corp:false,home:false,lux:false,sea:false,wa_home:false,wa_office:false,mm_home:false};
-[['corp',PANEL_CORP_URL],['home',PANEL_HOME_URL],['lux',PANEL_LUX_URL],['sea',PANEL_SEA_URL],['wa_home',WALLART_HOME_URL],['wa_office',WALLART_OFFICE_URL],['mm_home',MIXEDMEDIA_HOME_URL]].forEach(function(pair){var im=new Image();im.onload=function(){splashImgOk[pair[0]]=true;};im.src=pair[1];});
+const MIXEDMEDIA_CORP_URL=SPLASH_BASE+'Gemini_Generated_Image_xscbqexscbqexscb.jpg';
+let splashImgOk={corp:false,home:false,lux:false,sea:false,wa_home:false,wa_office:false,mm_home:false,mm_corp:false};
+[['corp',PANEL_CORP_URL],['home',PANEL_HOME_URL],['lux',PANEL_LUX_URL],['sea',PANEL_SEA_URL],['wa_home',WALLART_HOME_URL],['wa_office',WALLART_OFFICE_URL],['mm_home',MIXEDMEDIA_HOME_URL],['mm_corp',MIXEDMEDIA_CORP_URL]].forEach(function(pair){var im=new Image();im.onload=function(){splashImgOk[pair[0]]=true;};im.src=pair[1];});
 const PANEL_SHOTS=[
   {img:SPLASH_BASE+'IMG_4085.jpeg',title:'Blush & Silver.',sub:'A geode statement panel — rivers of colour split open by crystal caverns.'},
   {img:SPLASH_BASE+'IMG_4082.jpeg',title:'Blue & Silver.',sub:'Poured by hand, one at a time. No two are ever alike.'},
@@ -1465,6 +1469,7 @@ const MIXEDMEDIA_SHOTS=[
 function mixedMediaSlides(){
   var s=MIXEDMEDIA_SHOTS.slice();
   if(splashImgOk.mm_home) s.push({img:MIXEDMEDIA_HOME_URL,title:'In your home.',sub:'A living-room centrepiece that turns a bare wall into a window on the sea.'});
+  if(splashImgOk.mm_corp) s.push({img:MIXEDMEDIA_CORP_URL,title:'In the boardroom.',sub:'A high-rise conference room, an executive lobby — an original that commands the space.'});
   return s;
 }
 function panelSlides(){
