@@ -8,8 +8,12 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecespieces — public website)
-  LAST UPDATED: 2026-09-16_0205 UTC
-  CHANGE: 2026-09-16_0205 — Follow-ups: added a Buy Now button to every product
+  LAST UPDATED: 2026-09-16_0230 UTC
+  CHANGE: 2026-09-16_0230 — Removed all "supply kit" offerings from the Academy
+          (kits are not supplied): dropped the enrollment kit selector, the
+          "kits shipped" perk and step copy, the Supply Kits pill, and the
+          private-workshop kit line. Classes now just provide a supply list.
+          2026-09-16_0205 — Follow-ups: added a Buy Now button to every product
           card (real Stripe checkout for priced pieces / payment link / inquiry
           fallback) and led the home rental section with a styled lifestyle
           photo. NOTE: piece re-categorization and photo swaps (mixed media,
@@ -931,7 +935,7 @@ footer::before{display:none}
       </div>
       <div class="steps-grid reveal">
         <div class="step"><div class="step-num">01</div><div class="step-icon">🎨</div><div class="step-title">Pick a Class</div><div class="step-desc">Choose a live workshop with a set date, or an on-demand course you take at your own pace.</div></div>
-        <div class="step"><div class="step-num">02</div><div class="step-icon">📦</div><div class="step-title">Gather Supplies</div><div class="step-desc">Every class lists exactly what you need. Optional supply kits can be shipped to your door.</div></div>
+        <div class="step"><div class="step-num">02</div><div class="step-icon">📝</div><div class="step-title">Gather Supplies</div><div class="step-desc">Every class comes with a clear supply list so you can pick up exactly what you need before we begin.</div></div>
         <div class="step"><div class="step-num">03</div><div class="step-icon">💻</div><div class="step-title">Join & Create</div><div class="step-desc">Live classes stream to your Classroom with a join link. On-demand lessons play right in your browser.</div></div>
         <div class="step"><div class="step-num">04</div><div class="step-icon">✨</div><div class="step-title">Keep Learning</div><div class="step-desc">Course videos, recordings and materials stay in your Classroom forever — rewatch anytime.</div></div>
       </div>
@@ -969,7 +973,7 @@ footer::before{display:none}
         <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:14px">I've spent years learning resin the hard way — the bubbles, the sticky pours, the colors that muddy. In these classes I hand you every shortcut I wish I'd had, so your very first piece feels like magic instead of a mess.</p>
         <p style="font-size:.9rem;color:var(--muted);line-height:1.9">Classes are small and warm. Ask questions, show me your work, and leave with something you're proud to hang. No art degree required — just a little curiosity.</p>
         <div class="pills" style="margin-top:20px">
-          <span class="pill">Live Q&amp;A</span><span class="pill">Beginner Friendly</span><span class="pill">Lifetime Access</span><span class="pill">Supply Kits</span>
+          <span class="pill">Live Q&amp;A</span><span class="pill">Beginner Friendly</span><span class="pill">Lifetime Access</span><span class="pill">Small Classes</span>
         </div>
       </div>
       <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:3px">
@@ -996,7 +1000,7 @@ footer::before{display:none}
       <div class="reveal" style="display:flex;flex-direction:column;gap:12px">
         <div style="display:flex;gap:14px;padding:16px;background:var(--white);border:1px solid var(--gold-border);border-radius:8px"><span style="font-size:1.2rem">👥</span><div><div style="font-size:.82rem;font-weight:600;color:var(--ink2);margin-bottom:3px">Private Groups of 4–20</div><div style="font-size:.74rem;color:var(--muted)">One live call, your own date, everyone creates together</div></div></div>
         <div style="display:flex;gap:14px;padding:16px;background:var(--white);border:1px solid var(--gold-border);border-radius:8px"><span style="font-size:1.2rem">🎁</span><div><div style="font-size:.82rem;font-weight:600;color:var(--ink2);margin-bottom:3px">Gift Any Class</div><div style="font-size:.74rem;color:var(--muted)">Printable card + redeemable code, no expiry</div></div></div>
-        <div style="display:flex;gap:14px;padding:16px;background:var(--white);border:1px solid var(--gold-border);border-radius:8px"><span style="font-size:1.2rem">📦</span><div><div style="font-size:.82rem;font-weight:600;color:var(--ink2);margin-bottom:3px">Supply Kits Shipped</div><div style="font-size:.74rem;color:var(--muted)">Everything measured out and mailed to each guest</div></div></div>
+        <div style="display:flex;gap:14px;padding:16px;background:var(--white);border:1px solid var(--gold-border);border-radius:8px"><span style="font-size:1.2rem">📝</span><div><div style="font-size:.82rem;font-weight:600;color:var(--ink2);margin-bottom:3px">Clear Supply List</div><div style="font-size:.74rem;color:var(--muted)">Each guest gets a simple list of what to grab beforehand</div></div></div>
       </div>
     </div>
   </section>
@@ -1382,12 +1386,6 @@ footer::before{display:none}
       <div class="mf"><label class="mlabel">Email *</label><input class="minput" id="enr-email" type="email" placeholder="your@email.com"></div>
     </div>
     <div class="mf"><label class="mlabel">Phone (optional)</label><input class="minput" id="enr-phone" placeholder="(555) 000-0000"></div>
-    <div class="mf" id="enr-kit-wrap"><label class="mlabel">Supply Kit</label>
-      <select class="mselect" id="enr-kit">
-        <option value="none">I'll gather my own supplies</option>
-        <option value="kit">Ship me the supply kit (+ added to invoice)</option>
-      </select>
-    </div>
     <div class="mf"><label class="mlabel">Anything Cece should know? (optional)</label>
       <textarea class="mtextarea" id="enr-notes" placeholder="Experience level, questions, who this is for..."></textarea>
     </div>
@@ -1895,15 +1893,13 @@ async function submitEnroll(){
   if(!name){ showToast('Please enter your name.'); return; }
   if(!email){ showToast('Please enter your email.'); return; }
   const phone=document.getElementById('enr-phone').value.trim();
-  const kit=document.getElementById('enr-kit').value;
   const notes=document.getElementById('enr-notes').value.trim();
   const c=enrollClass;
-  const kitNote=kit==='kit'?'Wants a supply kit shipped. ':'';
-  const fullNotes=(phone?('Phone: '+phone+'\n'):'')+kitNote+(notes||'');
+  const fullNotes=(phone?('Phone: '+phone+'\n'):'')+(notes||'');
   const enrollment={
     student_name:name, student_email:email, student_phone:phone||null,
     class_id:c?c.id:null, class_title:c?c.title:'Class', class_type:c?c.type:null,
-    price:c?c.price:null, supply_kit:(kit==='kit'), status:'pending', notes:notes||null,
+    price:c?c.price:null, status:'pending', notes:notes||null,
     created_at:new Date().toISOString()
   };
   // 1) Enrollment row (Academy roster). 2) Order row so CRM + Sales agent see the lead.
@@ -1915,7 +1911,7 @@ async function submitEnroll(){
   rememberEnrollment(email,name,c);
   // Email fallback so Cece always gets it.
   const s=encodeURIComponent(`Class Enrollment — ${c?c.title:''} — ${name}`);
-  const b=encodeURIComponent(`New class enrollment!\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone||'Not provided'}\n\nClass: ${c?c.title:''} (${c?classTypeLabel(c):''})\n${c&&c.type==='live'?'Session: '+fmtClassDate(c.start_at)+'\n':''}Price: ${c&&c.price?'$'+c.price:'—'}\nSupply kit: ${kit==='kit'?'Yes — ship a kit':'No'}\n\nNotes:\n${notes||'None'}`);
+  const b=encodeURIComponent(`New class enrollment!\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone||'Not provided'}\n\nClass: ${c?c.title:''} (${c?classTypeLabel(c):''})\n${c&&c.type==='live'?'Session: '+fmtClassDate(c.start_at)+'\n':''}Price: ${c&&c.price?'$'+c.price:'—'}\n\nNotes:\n${notes||'None'}`);
   window.open(`mailto:hello@cecethepiece.com?subject=${s}&body=${b}`);
   closeEnroll();
   showToast('🎉 You’re enrolled! Check My Classroom for your class.',true);
@@ -1930,7 +1926,7 @@ function openClassInquiry(kind){
     const sub=kind==='gift'?'Gift a Class':'Private Workshop Inquiry';
     const msg=kind==='gift'
       ?"Hi Cece,\n\nI'd like to gift a class.\n\n• Which class (or let recipient choose): \n• Recipient's name: \n• Occasion / date needed: \n\nThank you!"
-      :"Hi Cece,\n\nI'd like to book a private virtual workshop.\n\n• Occasion: \n• Group size: \n• Preferred dates: \n• Which class / theme: \n• Ship supply kits to guests? \n\nLooking forward to it!";
+      :"Hi Cece,\n\nI'd like to book a private virtual workshop.\n\n• Occasion: \n• Group size: \n• Preferred dates: \n• Which class / theme: \n\nLooking forward to it!";
     const sEl=document.getElementById('cf-subject'), mEl=document.getElementById('cf-msg');
     if(sEl)sEl.value=sub; if(mEl)mEl.value=msg;
     document.getElementById('cf-name')?.focus();
