@@ -2503,9 +2503,13 @@ async function startCheckout(pieceId){
       body:JSON.stringify({piece_id:pieceId})
     });
     const d=await r.json().catch(()=>({}));
-    if(r.ok && d.url){ window.location.href=d.url; }
-    else { showToast(d.error||'Checkout is unavailable right now — send an inquiry and Cece will help you buy.'); openInquiry(); }
-  }catch(e){ showToast('Checkout error — send an inquiry and Cece will help you buy.'); openInquiry(); }
+    if(r.ok && d.url){ window.location.href=d.url; return; }
+    // Clearer messaging so a missing setup isn't mistaken for a bug.
+    const msg = /not found/i.test(d.error||'')
+      ? 'This piece isn’t set up for online checkout yet — leave your details and Cece will send a secure payment link.'
+      : (d.error || 'Secure checkout is being finished — leave your details and Cece will send you a payment link.');
+    showToast(msg); openInquiry();
+  }catch(e){ showToast('Couldn’t reach secure checkout — leave your details and Cece will send a payment link.'); openInquiry(); }
 }
 
 // ── PIECE INQUIRY (lead capture → hub Orders → Sales agent) ──
