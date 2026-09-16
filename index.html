@@ -8,8 +8,13 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecespieces — public website)
-  LAST UPDATED: 2026-09-16_0230 UTC
-  CHANGE: 2026-09-16_0230 — Removed all "supply kit" offerings from the Academy
+  LAST UPDATED: 2026-09-16_0340 UTC
+  CHANGE: 2026-09-16_0340 — Payments: people can now buy CLASSES online too.
+          Enrolling in a priced class goes straight to Stripe secure checkout
+          (price read server-side from the DB); the class then appears in My
+          Classroom on return, and a canceled/failed checkout falls back to an
+          emailed payment link. Art Buy Now buttons use the same checkout.
+          2026-09-16_0230 — Removed all "supply kit" offerings from the Academy
           (kits are not supplied): dropped the enrollment kit selector, the
           "kits shipped" perk and step copy, the Supply Kits pill, and the
           private-workshop kit line. Classes now just provide a supply list.
@@ -1390,7 +1395,7 @@ footer::before{display:none}
       <textarea class="mtextarea" id="enr-notes" placeholder="Experience level, questions, who this is for..."></textarea>
     </div>
     <button class="msubmit" onclick="submitEnroll()" style="background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid))">Enroll Now →</button>
-    <div style="font-size:.66rem;color:var(--muted2);text-align:center;margin-top:12px;line-height:1.6">Confirmation &amp; payment link sent within 24 hours · Access appears in <button onclick="closeEnroll();openClassroom()" style="background:none;border:none;color:var(--gold-accent);cursor:pointer;font-size:.66rem">My Classroom</button></div>
+    <div style="font-size:.66rem;color:var(--muted2);text-align:center;margin-top:12px;line-height:1.6">🔒 Secure card checkout · Your class appears in <button onclick="closeEnroll();openClassroom()" style="background:none;border:none;color:var(--gold-accent);cursor:pointer;font-size:.66rem">My Classroom</button></div>
   </div>
 </div>
 
@@ -1424,9 +1429,9 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const STRIPE_CHECKOUT_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co/functions/v1/create-checkout';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v2.9.1';
+const SITE_VERSION  = 'v3.0';
 const SITE_BUILD    = '2026-09-16';
-const SITE_LABEL    = 'Buy buttons + staged home rental + artist edits';
+const SITE_LABEL    = 'Online payments for art & classes (Stripe)';
 // ─────────────────────────────────────────────────────────────
 const CONFIGURED = true;
 
@@ -1879,13 +1884,30 @@ function openEnroll(id){
   closeClass();
   document.getElementById('enr-class-name').textContent=c.title;
   document.getElementById('enr-class-sub').textContent=c.type==='live'
-    ? `Live workshop · ${fmtClassDate(c.start_at)} · ${c.duration||''}. Cece confirms your seat and sends the join link.`
-    : `On-demand course · ${c.duration||''}. Lifetime access unlocks in My Classroom once confirmed.`;
+    ? `Live workshop · ${fmtClassDate(c.start_at)} · ${c.duration||''}. Secure your seat — the join link waits in My Classroom.`
+    : `On-demand course · ${c.duration||''}. Lifetime access unlocks in My Classroom right after checkout.`;
   document.getElementById('enrollModal').classList.add('open');
   document.body.style.overflow='hidden';
   setTimeout(()=>document.getElementById('enr-name').focus(),60);
 }
 function closeEnroll(){ document.getElementById('enrollModal').classList.remove('open'); document.body.style.overflow=''; }
+
+// Ask the create-checkout Edge Function for a Stripe session for a CLASS.
+// Returns true if it redirected to Stripe, false if checkout is unavailable.
+async function startClassCheckout(classId,name,email){
+  if(!STRIPE_CHECKOUT_URL) return false;
+  try{
+    const r=await fetch(STRIPE_CHECKOUT_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json',apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`},
+      body:JSON.stringify({class_id:classId,student_name:name,student_email:email})
+    });
+    const d=await r.json().catch(()=>({}));
+    if(r.ok && d.url){ window.location.href=d.url; return true; }
+    showToast(d.error||'Secure checkout is unavailable right now — Cece will email your payment link.');
+    return false;
+  }catch(e){ showToast('Checkout error — Cece will email your payment link.'); return false; }
+}
 
 async function submitEnroll(){
   const name=document.getElementById('enr-name').value.trim();
@@ -1895,6 +1917,24 @@ async function submitEnroll(){
   const phone=document.getElementById('enr-phone').value.trim();
   const notes=document.getElementById('enr-notes').value.trim();
   const c=enrollClass;
+  // Remember locally + as the current student so the Classroom works instantly
+  // (and loads automatically when they return from Stripe checkout).
+  rememberEnrollment(email,name,c);
+  crStudent={name,email}; try{ localStorage.setItem('cece_cr_student',JSON.stringify(crStudent)); }catch(e){}
+
+  const paid=!!(c && c.price && Number(c.price)>0);
+
+  // Paid class + Stripe configured → secure card checkout. The Edge Function
+  // records the pending enrollment + order server-side (price read from the DB).
+  if(paid && STRIPE_CHECKOUT_URL){
+    closeEnroll();
+    showToast('Taking you to secure checkout…',true);
+    const ok=await startClassCheckout(c.id,name,email);
+    if(ok) return; // redirected to Stripe
+    // otherwise fall through to the manual-enroll fallback below
+  }
+
+  // Free class, or Stripe not available: record the enrollment + email Cece.
   const fullNotes=(phone?('Phone: '+phone+'\n'):'')+(notes||'');
   const enrollment={
     student_name:name, student_email:email, student_phone:phone||null,
@@ -1902,21 +1942,17 @@ async function submitEnroll(){
     price:c?c.price:null, status:'pending', notes:notes||null,
     created_at:new Date().toISOString()
   };
-  // 1) Enrollment row (Academy roster). 2) Order row so CRM + Sales agent see the lead.
   if(CONFIGURED){
     try{ await fetch(`${SUPABASE_URL}/rest/v1/class_enrollments`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(enrollment)});}catch(e){}
     try{ await fetch(`${SUPABASE_URL}/rest/v1/orders`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({piece_title:(c?c.title:'Class')+' (Class Enrollment)',price:c?c.price:null,type:'class-enrollment',status:'pending',source:'website academy',customer_name:name,customer_email:email,notes:fullNotes,created_at:new Date().toISOString()})});}catch(e){}
   }
-  // Remember locally so the student's Classroom works instantly (even offline).
-  rememberEnrollment(email,name,c);
-  // Email fallback so Cece always gets it.
   const s=encodeURIComponent(`Class Enrollment — ${c?c.title:''} — ${name}`);
   const b=encodeURIComponent(`New class enrollment!\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone||'Not provided'}\n\nClass: ${c?c.title:''} (${c?classTypeLabel(c):''})\n${c&&c.type==='live'?'Session: '+fmtClassDate(c.start_at)+'\n':''}Price: ${c&&c.price?'$'+c.price:'—'}\n\nNotes:\n${notes||'None'}`);
   window.open(`mailto:hello@cecethepiece.com?subject=${s}&body=${b}`);
   closeEnroll();
-  showToast('🎉 You’re enrolled! Check My Classroom for your class.',true);
+  showToast(paid?'✅ Enrollment received — Cece will email your payment link.':'🎉 You’re enrolled! Check My Classroom for your class.',true);
   ['enr-name','enr-phone','enr-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  setTimeout(()=>{ crStudent={name,email}; goTo('classroom'); loadMyClasses(email); },700);
+  setTimeout(()=>{ goTo('classroom'); loadMyClasses(email); },700);
 }
 
 // Private-workshop & gift-a-class inquiries reuse the Contact form.
@@ -2619,9 +2655,16 @@ setInterval(async()=>{
   // Render version stamp in footer
   const vs = document.getElementById('site-version-stamp');
   if (vs) vs.textContent = `Website ${SITE_VERSION} · ${SITE_BUILD}`;
-  // Thank-you after returning from Stripe checkout
-  const co=new URLSearchParams(location.search).get('checkout');
-  if(co==='success'){ setTimeout(()=>showToast('🎉 Thank you! Your order is confirmed — Cece will be in touch about delivery.',true),400); }
+  // Thank-you after returning from Stripe checkout (art or class)
+  const _p=new URLSearchParams(location.search);
+  const co=_p.get('checkout'), coType=_p.get('type');
+  if(co==='success' && coType==='class'){
+    setTimeout(()=>{ showToast('🎉 Payment received — welcome to class! Opening your Classroom…',true); goTo('classroom'); },400);
+  } else if(co==='success'){
+    setTimeout(()=>showToast('🎉 Thank you! Your order is confirmed — Cece will be in touch about delivery.',true),400);
+  } else if(co==='cancel'){
+    setTimeout(()=>showToast(coType==='class'?'Checkout canceled — your spot is still open when you’re ready.':'Checkout canceled — the piece is still available.'),400);
+  }
   if(co){ history.replaceState(null,'',location.pathname); }
 })();
 </script>
