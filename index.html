@@ -3,13 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>cecepieces — Original Art</title>
+<title>cecespieces — Original Art</title>
 
 <!--
   ────────────────────────────────────────────────────────────────
-  FILE: index.html  (cecepieces — public website)
-  LAST UPDATED: 2026-09-16_0022 UTC
-  CHANGE: 2026-09-16_0022 — Launched the cecepieces Academy (online art classes).
+  FILE: index.html  (cecespieces — public website)
+  LAST UPDATED: 2026-09-16_0140 UTC
+  CHANGE: 2026-09-16_0140 — Artist punch-list pass: rebranded "cecepieces" →
+          "cecespieces" everywhere (title, logos, copy); removed the auto
+          slideshow popup when a product is clicked (opens the piece
+          directly); bigger base font, nav tabs, product names/descriptions
+          and category titles; centered product cards and category headings;
+          removed "no reproductions" wording; reworded the home value prop and
+          About copy ("when you own one of Cece's Pieces…"), deleted the
+          duplicated About quote and the "I don't re-create" line; removed
+          trade-pricing blocks; added a "The Concept" section + photo slot on
+          About; changed the memorial "no two alike" line to "no exact
+          duplicates, can be recreated…"; added a Collaborate footer/contact
+          option; added a Preservation category (Memorial → Preservation →
+          Resin order) and moved flower-preservation pieces into it; removed
+          the non-working rental event tabs and the "Sold" shop filter;
+          centered the Rentable Pieces + Staged Settings sections; and made
+          Staged Settings a plain gallery (no pre-selected/outlined pieces).
+          2026-09-16_0022 — Launched the cecespieces Academy (online art classes).
           New "Classes" nav page with a 4-class learning ladder
           (Beginner → Master): Resin 101, Geode & Alcohol Ink (live),
           Ocean Waves & Memorial Keepsakes (live), and the River Table
@@ -50,7 +66,7 @@
           Auth and hands the session to the hub (HUB_URL) so the team
           lands signed in — no "amazinhelp" shown before login.
           2026-09-10_1947 — Rebranded the visible name from "Cece's
-          Pieces" to "cecepieces" (title, logos, headings, copy). Left
+          Pieces" to "cecespieces" (title, logos, headings, copy). Left
           the @cecethepiece social handles, hello@cecethepiece.com email,
           and #cecethepiece hashtags unchanged (real external accounts).
           2026-09-10_2036 — Added a lead-capture inquiry form (name,
@@ -153,7 +169,7 @@
   --coral:var(--danger);--green:var(--success);
   --cream:var(--bg);--warm:var(--surface);--warm2:var(--surface2);
 }
-html{scroll-behavior:smooth;font-size:16px}
+html{scroll-behavior:smooth;font-size:17.5px}
 body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;overflow-x:hidden}
 *,a{cursor:default}
 a,button,.piece-card,.filter-btn,.nav-link,.cta-btn,.rental-card{cursor:pointer}
@@ -165,7 +181,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .nav-logo{font-family:'Playfair Display',serif;font-size:1.32rem;font-weight:400;letter-spacing:.03em;color:var(--ink2);background:none;border:none;padding:0}
 .nav-logo em{font-style:italic;background:linear-gradient(135deg,var(--purple2),var(--pink2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .nav-links{display:flex;align-items:center;gap:36px}
-.nav-link{font-family:'Jost',sans-serif;font-size:.67rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;background:none;border:none;padding:4px 0;position:relative;transition:color .2s}
+.nav-link{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;background:none;border:none;padding:4px 0;position:relative;transition:color .2s}
 .nav-link::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink));transform:scaleX(0);transition:transform .3s;transform-origin:left}
 .nav-link:hover,.nav-link.active{color:var(--ink2)}
 .nav-link.active::after,.nav-link:hover::after{transform:scaleX(1)}
@@ -178,7 +194,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .inner{max-width:1380px;margin:0 auto;padding:0 52px}
 .section{padding:88px 0}
 .section-sm{padding:56px 0}
-.section-label{font-size:.57rem;letter-spacing:.28em;text-transform:uppercase;color:var(--lav);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.section-label{font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--lav);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:10px}
 .section-label::before{content:'';width:22px;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink))}
 .section-h{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,3.5vw,3rem);font-weight:300;color:var(--ink2);line-height:1.1}
 .section-h em{font-style:italic;background:linear-gradient(135deg,var(--purple2),var(--pink2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -232,11 +248,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .badge-hold{background:var(--lav-soft);color:var(--lav3);border:1px solid var(--lav-border)}
 .badge-rent{background:var(--lav-soft);color:var(--lav);border:1px solid var(--lav-border)}
 .piece-var-chip{position:absolute;bottom:12px;left:12px;font-size:.52rem;letter-spacing:.08em;font-weight:700;padding:4px 9px;border-radius:20px;background:rgba(255,255,255,.9);color:var(--purple2);box-shadow:0 2px 8px rgba(139,63,255,.15);z-index:2}
-.piece-body{padding:18px 20px 22px;flex:1;display:flex;flex-direction:column;background:var(--light)}
-.piece-type{font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lav3);font-weight:600;margin-bottom:5px}
-.piece-name{font-family:'Playfair Display',serif;font-size:1.22rem;font-weight:400;color:var(--ink2);line-height:1.2;margin-bottom:4px}
-.piece-dims{font-size:.67rem;color:var(--muted2);margin-bottom:8px}
-.piece-price{font-size:1.05rem;font-weight:600;color:var(--ink2);margin-top:auto;padding-top:12px;border-top:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between}
+.piece-body{padding:18px 20px 22px;flex:1;display:flex;flex-direction:column;background:var(--light);text-align:center}
+.piece-type{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lav3);font-weight:600;margin-bottom:5px}
+.piece-name{font-family:'Playfair Display',serif;font-size:1.32rem;font-weight:400;color:var(--ink2);line-height:1.22;margin-bottom:4px}
+.piece-dims{font-size:.74rem;color:var(--muted2);margin-bottom:8px}
+.piece-price{font-size:1.08rem;font-weight:600;color:var(--ink2);margin-top:auto;padding-top:12px;border-top:1px solid var(--border2);display:flex;align-items:center;justify-content:center;gap:10px}
 .sold-label{font-size:.62rem;color:#c0004a;font-weight:500}
 
 .skeleton{background:var(--light2);overflow:hidden;position:relative;border:1px solid var(--light-border)}
@@ -380,7 +396,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .lb-hr{height:1px;background:var(--lav-border2);margin:18px 0}
 .lb-detail{font-size:.76rem;color:var(--muted2);line-height:1.85;margin-bottom:4px}
 .lb-detail strong{color:var(--ink2);font-weight:500}
-.lb-desc{font-size:.88rem;color:var(--muted);line-height:1.85;margin-top:14px;font-weight:400}
+.lb-desc{font-size:.98rem;color:var(--muted);line-height:1.85;margin-top:14px;font-weight:400}
 .lb-actions{margin-top:auto;padding-top:22px;display:flex;flex-direction:column;gap:10px}
 .lb-buy{padding:14px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;transition:all .2s;display:block;text-align:center;text-decoration:none;border-radius:4px;box-shadow:0 4px 20px var(--glow-purple)}
 .lb-buy:hover{opacity:.9;transform:translateY(-1px)}
@@ -487,7 +503,7 @@ footer::before{display:none}
 
 <!-- NAV -->
 <nav class="nav" id="mainNav">
-  <button class="nav-logo" onclick="goTo('home')">cece<em>pieces</em></button>
+  <button class="nav-logo" onclick="goTo('home')">ceces<em>pieces</em></button>
   <div class="nav-links" id="navLinks">
     <button class="nav-link" onclick="goTo('home')" data-p="home">Home</button>
     <button class="nav-link" onclick="goTo('shop')" data-p="shop">Shop</button>
@@ -506,7 +522,7 @@ footer::before{display:none}
     <div class="hero-grain"></div>
     <div class="hero-eyebrow">Original Artwork by Cece</div>
     <h1 class="hero-title">Pour. Flow.<br><em>Own Something</em><br>No One Else Has.</h1>
-    <p class="hero-sub">One-of-a-kind resin and mixed media pieces — no prints, no reproductions, no compromises. Each work exists exactly once.</p>
+    <p class="hero-sub">One-of-a-kind resin and mixed media pieces — original work, no compromises. Each piece exists exactly once.</p>
     <div class="hero-btns">
       <button class="cta-btn cta-primary" onclick="goTo('shop')">Browse the Collection →</button>
       <button class="cta-btn cta-secondary" onclick="goTo('rentals')">Rent for an Event</button>
@@ -536,7 +552,7 @@ footer::before{display:none}
         <div class="value-item">
           <div class="value-icon">✦</div>
           <div class="value-title">One of a Kind</div>
-          <div class="value-desc">No prints. No reproductions. When you own a cecepieces work, nothing like it exists anywhere else in the world.</div>
+          <div class="value-desc">One-of-a-kind original art. When you own one of Cece's Pieces, nothing like it exists anywhere else in the world.</div>
         </div>
         <div class="value-item">
           <div class="value-icon">🎪</div>
@@ -546,7 +562,7 @@ footer::before{display:none}
         <div class="value-item">
           <div class="value-icon">🎨</div>
           <div class="value-title">Custom Commissions</div>
-          <div class="value-desc">Work directly with Cece to create something built around your space, palette, and vision. Trade pricing available.</div>
+          <div class="value-desc">Work directly with Cece to create something built around your space, palette, and vision.</div>
         </div>
       </div>
     </div>
@@ -586,7 +602,7 @@ footer::before{display:none}
         <blockquote style="font-family:'Playfair Display',serif;font-size:clamp(1.65rem,3vw,2.4rem);font-weight:300;line-height:1.38;color:var(--ink-on-dark);margin-bottom:26px">"Every pour is <em style="font-style:italic;color:var(--purple2)">unrepeatable.</em> The moment the resin touches the surface, something entirely new comes into the world."</blockquote>
         <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:32px">
           <div style="width:30px;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink))"></div>
-          <span style="font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2)">Cece — cecepieces</span>
+          <span style="font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2)">Cece — cecespieces</span>
           <div style="width:30px;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink))"></div>
         </div>
         <button class="cta-btn cta-secondary" onclick="goTo('about')">Read Cece's Story →</button>
@@ -620,7 +636,7 @@ footer::before{display:none}
     <div class="inner">
       <div class="section-label" style="color:var(--blue-accent)">The Collection</div>
       <h1 class="page-header-h" style="color:var(--ink2)">All <em style="font-style:italic;background:linear-gradient(135deg,var(--blue-accent),var(--blue-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Original</em> Work</h1>
-      <p class="page-header-sub" style="color:var(--muted)">Every piece made by hand. No prints, no reproductions. One exists — the one you see here.</p>
+      <p class="page-header-sub" style="color:var(--muted)">Every piece made by hand. One exists — the one you see here.</p>
     </div>
   </div>
   <section class="section" style="background:var(--blue-bg)">
@@ -628,11 +644,11 @@ footer::before{display:none}
       <div class="filters reveal" id="shop-filters">
         <button class="filter-btn active" onclick="shopFilter('all',this)">All</button>
         <button class="filter-btn" onclick="shopFilter('available',this)">Available</button>
-        <button class="filter-btn" onclick="shopFilter('sold',this)">Sold</button>
         <button class="filter-btn" onclick="shopTypeFilter('Resin Art',this)">Resin Art</button>
         <button class="filter-btn" onclick="shopTypeFilter('Painting',this)">Painting</button>
         <button class="filter-btn" onclick="shopTypeFilter('Mixed Media',this)">Mixed Media</button>
         <button class="filter-btn" onclick="shopTypeFilter('Memorial Piece',this)">Memorial Pieces</button>
+        <button class="filter-btn" onclick="shopTypeFilter('Preservation',this)">Preservation</button>
         <button class="filter-btn" onclick="shopTypeFilter('Statement Panel',this)">Statement Panels</button>
         <button class="filter-btn" onclick="shopTypeFilter('Seasonal Gift',this)">Seasonal &amp; Gifts</button>
         <span class="results-count" id="shop-count"></span>
@@ -711,7 +727,7 @@ footer::before{display:none}
   <!-- Staged Settings showcase -->
   <section class="section" style="background:var(--pink-surface);border-top:1px solid var(--pink-border);border-bottom:1px solid var(--pink-border)">
     <style>
-  .scene-block .scene-fig{margin:0;cursor:pointer;display:block}
+  .scene-block .scene-fig{margin:0;display:block}
   .scene-thumb{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)}
   .scene-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .15s}
   .scene-check{position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.9);border:1.5px solid var(--pink-accent);color:var(--pink-accent);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center}
@@ -719,6 +735,10 @@ footer::before{display:none}
   .scene-pick:not(:checked) + .scene-thumb img{opacity:.5}
   .scene-pick:not(:checked) + .scene-thumb .scene-check{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.2);color:transparent}
   .scene-hint{font-size:.72rem;color:var(--muted);margin:2px 0 14px}
+  /* Center each staged-setting block (title, blurb, pieces) */
+  .scene-block{text-align:center}
+  .scene-block > div:first-child{justify-content:center}
+  .scene-block > p{max-width:660px;margin-left:auto;margin-right:auto}
 </style>
     <div class="inner">
       <div style="text-align:center;margin-bottom:44px" class="reveal">
@@ -733,15 +753,15 @@ footer::before{display:none}
           <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--ink2);margin:0">A Blush &amp; Gold Wedding</h3>
         </div>
         <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 4px">Soft blush pours, gilded botanicals and a crystal-geode backdrop set the scene for the ceremony and reception — a showstopping focal point behind the sweetheart table, guest book, or vow exchange.</p>
-        <div class="scene-hint">Tap a piece to include or remove it, then request the ones you want.</div>
+        <div class="scene-hint">These pieces make up the look — request them all for your event, or mention the ones you love.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Geode Statement Backdrop" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/81746D25-6F5A-426B-8BB6-6EC446155E6D.jpeg" alt="Geode Statement Backdrop" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Geode Statement Backdrop</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Blush &amp; Silver Panel" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4085.jpeg" alt="Blush &amp; Silver Panel" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush &amp; Silver Panel</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Blush River Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4029.jpeg" alt="Blush River Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush River Plaque</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Ivory &amp; Gold Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4028.jpeg" alt="Ivory &amp; Gold Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory &amp; Gold Plaque</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Floral Keepsake" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4069.jpeg" alt="Floral Keepsake" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Floral Keepsake</figcaption></label>
+          <figure class="scene-fig" data-title="Geode Statement Backdrop"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/81746D25-6F5A-426B-8BB6-6EC446155E6D.jpeg" alt="Geode Statement Backdrop" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Geode Statement Backdrop</figcaption></figure>
+          <figure class="scene-fig" data-title="Blush &amp; Silver Panel"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4085.jpeg" alt="Blush &amp; Silver Panel" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush &amp; Silver Panel</figcaption></figure>
+          <figure class="scene-fig" data-title="Blush River Plaque"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4029.jpeg" alt="Blush River Plaque" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush River Plaque</figcaption></figure>
+          <figure class="scene-fig" data-title="Ivory &amp; Gold Plaque"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4028.jpeg" alt="Ivory &amp; Gold Plaque" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory &amp; Gold Plaque</figcaption></figure>
+          <figure class="scene-fig" data-title="Floral Keepsake"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4069.jpeg" alt="Floral Keepsake" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Floral Keepsake</figcaption></figure>
         </div>
-        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'Wedding','A Blush &amp; Gold Wedding')">Add selected pieces to a rental request →</button>
+        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'Wedding','A Blush &amp; Gold Wedding')">Request these pieces for your event →</button>
       </div>
 
       <div class="reveal scene-block" data-scene="house" style="margin-bottom:48px">
@@ -750,15 +770,15 @@ footer::before{display:none}
           <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--ink2);margin:0">A House on the Market</h3>
         </div>
         <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 4px">Warm, homey statement art that helps buyers picture themselves living there — framed river wood over the mantel, a landscape block on the shelf, a botanical frame in the entry. Staging pieces that photograph beautifully for listings.</p>
-        <div class="scene-hint">Tap a piece to include or remove it, then request the ones you want.</div>
+        <div class="scene-hint">These pieces make up the look — request them all for your event, or mention the ones you love.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Framed River Wall Art" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed River Wall Art" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Wall Art</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="River Wall Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4026.jpeg" alt="River Wall Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">River Wall Plaque</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Forest Landscape Block" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/forest-landscape-block_2026-09-11_1302.jpeg" alt="Forest Landscape Block" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Forest Landscape Block</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Ivory Float Framed" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4035.jpeg" alt="Ivory Float Framed" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory Float Framed</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Botanical Memory Frame" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/botanical-memory-frame_2026-09-11_1302.jpeg" alt="Botanical Memory Frame" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Botanical Memory Frame</figcaption></label>
+          <figure class="scene-fig" data-title="Framed River Wall Art"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed River Wall Art" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Wall Art</figcaption></figure>
+          <figure class="scene-fig" data-title="River Wall Plaque"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4026.jpeg" alt="River Wall Plaque" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">River Wall Plaque</figcaption></figure>
+          <figure class="scene-fig" data-title="Forest Landscape Block"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/forest-landscape-block_2026-09-11_1302.jpeg" alt="Forest Landscape Block" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Forest Landscape Block</figcaption></figure>
+          <figure class="scene-fig" data-title="Ivory Float Framed"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4035.jpeg" alt="Ivory Float Framed" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory Float Framed</figcaption></figure>
+          <figure class="scene-fig" data-title="Botanical Memory Frame"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/botanical-memory-frame_2026-09-11_1302.jpeg" alt="Botanical Memory Frame" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Botanical Memory Frame</figcaption></figure>
         </div>
-        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'House Staging','A House on the Market')">Add selected pieces to a rental request →</button>
+        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'House Staging','A House on the Market')">Request these pieces for your event →</button>
       </div>
 
       <div class="reveal scene-block" data-scene="corporate">
@@ -767,15 +787,15 @@ footer::before{display:none}
           <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--ink2);margin:0">A Corporate Dinner</h3>
         </div>
         <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 4px">Polished, modern statement panels in teal, blue and silver to anchor a gala, awards night, or client dinner — a sophisticated backdrop for the head table, stage, or step-and-repeat.</p>
-        <div class="scene-hint">Tap a piece to include or remove it, then request the ones you want.</div>
+        <div class="scene-hint">These pieces make up the look — request them all for your event, or mention the ones you love.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Blue &amp; Silver Panel" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4082.jpeg" alt="Blue &amp; Silver Panel" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blue &amp; Silver Panel</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Black &amp; Silver Panel" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4080.jpeg" alt="Black &amp; Silver Panel" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Black &amp; Silver Panel</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Teal &amp; Silver Framed" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4033.jpeg" alt="Teal &amp; Silver Framed" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Silver Framed</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Teal &amp; Gold Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4030.jpeg" alt="Teal &amp; Gold Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Gold Plaque</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Framed River Art" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed River Art" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Art</figcaption></label>
+          <figure class="scene-fig" data-title="Blue &amp; Silver Panel"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4082.jpeg" alt="Blue &amp; Silver Panel" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blue &amp; Silver Panel</figcaption></figure>
+          <figure class="scene-fig" data-title="Black &amp; Silver Panel"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4080.jpeg" alt="Black &amp; Silver Panel" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Black &amp; Silver Panel</figcaption></figure>
+          <figure class="scene-fig" data-title="Teal &amp; Silver Framed"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4033.jpeg" alt="Teal &amp; Silver Framed" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Silver Framed</figcaption></figure>
+          <figure class="scene-fig" data-title="Teal &amp; Gold Plaque"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4030.jpeg" alt="Teal &amp; Gold Plaque" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Gold Plaque</figcaption></figure>
+          <figure class="scene-fig" data-title="Framed River Art"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed River Art" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Art</figcaption></figure>
         </div>
-        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'Corporate Event','A Corporate Dinner')">Add selected pieces to a rental request →</button>
+        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'Corporate Event','A Corporate Dinner')">Request these pieces for your event →</button>
       </div>
     </div>
   </section>
@@ -783,15 +803,10 @@ footer::before{display:none}
   <!-- Rental pieces -->
   <section class="section" style="background:var(--pink-bg)">
     <div class="inner">
-      <div class="section-header reveal">
-        <div><div class="section-label">Available Now</div><h2 class="section-h">Rentable <em>Pieces</em></h2></div>
+      <div class="section-header reveal" style="justify-content:center;text-align:center">
+        <div><div class="section-label" style="justify-content:center">Available Now</div><h2 class="section-h">Rentable <em>Pieces</em></h2></div>
       </div>
-      <div class="filters reveal" id="rental-filters">
-        <button class="filter-btn active" onclick="rentalFilter('all',this)">All Events</button>
-        <button class="filter-btn" onclick="rentalFilter('Birthday',this)">🎂 Birthdays</button>
-        <button class="filter-btn" onclick="rentalFilter('Wedding',this)">💍 Weddings</button>
-        <button class="filter-btn" onclick="rentalFilter('House Staging',this)">🏠 Staging</button>
-        <button class="filter-btn" onclick="rentalFilter('Corporate Event',this)">🎉 Corporate</button>
+      <div class="filters reveal" id="rental-filters" style="justify-content:center">
         <span class="results-count" id="rental-count"></span>
       </div>
       <div class="rental-grid" id="rental-grid">
@@ -884,7 +899,7 @@ footer::before{display:none}
 
   <div class="page-header" style="background:var(--gold-surface);border-bottom:1px solid var(--gold-border)">
     <div class="inner">
-      <div class="section-label" style="color:var(--gold-accent)">cecepieces Academy</div>
+      <div class="section-label" style="color:var(--gold-accent)">cecespieces Academy</div>
       <h1 class="page-header-h" style="color:var(--ink2)">Learn to <em style="font-style:italic;background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pour</em></h1>
       <p class="page-header-sub" style="color:var(--muted)">Online art classes taught by Cece — live workshops you join from home and self-paced courses you keep forever. Resin, alcohol ink, geode art, and memorial keepsakes, broken down step by step for every level.</p>
       <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
@@ -1036,23 +1051,21 @@ footer::before{display:none}
     <div class="inner">
       <div class="about-split">
         <div class="reveal">
-          <div class="about-quote-block">
-            <blockquote class="about-quote">"Every pour is <em>unrepeatable.</em> The moment the resin touches the surface, something entirely new comes into the world."</blockquote>
-            <div class="about-attr"><div class="about-attr-line"></div><span class="about-attr-name">Cece — cecepieces</span></div>
+          <div style="border-radius:6px;overflow:hidden;box-shadow:0 10px 40px rgba(30,122,64,.12);background:var(--green-surface)">
+            <img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4026.jpeg" alt="Cece creating a piece in the studio" style="width:100%;display:block" loading="lazy">
           </div>
-          <div style="margin-top:24px;padding:24px 28px;background:var(--amber-light);border:1px solid rgba(201,114,10,.18);border-radius:3px">
-            <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--purple2);margin-bottom:8px">For Designers</div>
-            <div style="font-size:.88rem;color:var(--ink2);line-height:1.85;font-weight:300">Trade pricing available — 30% off retail for interior design professionals. Custom commissions and rental programs welcome.</div>
-            <button class="cta-btn cta-primary" style="margin-top:16px;padding:10px 24px;font-size:.64rem" onclick="goTo('contact')">Apply for Trade Access →</button>
+          <div style="margin-top:26px">
+            <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green-accent);margin-bottom:10px">The Concept</div>
+            <p style="font-size:.9rem;color:var(--muted);line-height:1.9;font-weight:400">Every piece begins with a feeling I want to hold still — a wave, a memory, a moment of light. I work with resin because it moves the way those moments do: fluid, alive, a little unpredictable. My intention is never to control the material completely, but to guide it, and let the beauty happen in the space between.</p>
           </div>
         </div>
         <div class="about-text reveal">
           <p>I'm Cece — an independent artist working in resin, glass, and mixed media. My practice is rooted in process: the controlled chaos of materials in motion, the beauty of things you can't quite predict.</p>
-          <p>Every piece I make is completely original. I don't reproduce, I don't print, I don't re-create. When you own a cecepieces work, you own something that exists nowhere else in the world — with a certificate of authenticity to prove it.</p>
+          <p>Every piece I make is completely original. When you own a piece, you own something that exists nowhere else in the world — with a certificate of authenticity to prove it.</p>
           <p>Headquartered in Seattle, I work in small batches — sometimes a single piece, never more than a few at a time. Each one gets my full attention from first pour to final seal.</p>
           <div class="pills">
             <span class="pill">Resin Art</span><span class="pill">Painting</span><span class="pill">Memorial Pieces</span>
-            <span class="pill">Mixed Media</span><span class="pill">Seattle</span><span class="pill">Trade Pricing</span>
+            <span class="pill">Mixed Media</span><span class="pill">Seattle</span>
           </div>
         </div>
       </div>
@@ -1081,7 +1094,7 @@ footer::before{display:none}
       <div class="reveal">
         <div class="section-label" style="color:var(--green-accent)">A Special Category</div>
         <h2 class="section-h" style="color:var(--ink2);margin-bottom:16px">Memorial <em style="font-style:italic;background:linear-gradient(135deg,var(--green-accent),var(--green-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pieces</em></h2>
-        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:16px;font-weight:400">I create handcrafted memorial pieces because I believe the way we honor our loved ones should be as unique as they were. No two are ever alike.</p>
+        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:16px;font-weight:400">I create handcrafted memorial pieces because I believe the way we honor our loved ones should be as unique as they were. No exact duplicates, but a piece can be recreated in a similar design for multiples.</p>
         <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:28px;font-weight:400">Custom colors, personal touches, embedded botanicals and metals can be worked in. The result is something that truly belongs to a specific person and a specific story.</p>
         <button class="cta-btn" onclick="goTo('contact')" style="background:linear-gradient(135deg,var(--green-accent),var(--green-mid));color:#fff;box-shadow:0 4px 20px var(--green-glow)">Inquire About a Custom Memorial Piece →</button>
       </div>
@@ -1101,7 +1114,7 @@ footer::before{display:none}
     <div class="inner">
       <div class="section-label">Get in Touch</div>
       <h1 class="page-header-h">Let's <em>Talk</em></h1>
-      <p class="page-header-sub">Questions about a piece, shipping, trade pricing, rental booking, or commissioning something custom.</p>
+      <p class="page-header-sub">Questions about a piece, shipping, rental booking, or commissioning something custom.</p>
     </div>
   </div>
   <section class="section" style="background:var(--surface)">
@@ -1123,6 +1136,7 @@ footer::before{display:none}
           <button onclick="prefillContact('trade')" class="quick-btn">🏷️ Trade / designer pricing</button>
           <button onclick="prefillContact('urn')" class="quick-btn">🕊️ Custom memorial piece</button>
           <button onclick="prefillContact('stager')" class="quick-btn">🏠 Stager program inquiry</button>
+          <button onclick="prefillContact('collaborate')" class="quick-btn">🤝 Collaborate with Cece</button>
         </div>
       </div>
       <div class="reveal">
@@ -1146,8 +1160,8 @@ footer::before{display:none}
   <div class="inner">
     <div class="footer-grid">
       <div>
-        <button class="footer-logo" onclick="goTo('home')">cece<em>pieces</em></button>
-        <p class="footer-tagline">Original resin and mixed media artwork. Every piece made by hand. No prints. No reproductions.</p>
+        <button class="footer-logo" onclick="goTo('home')">ceces<em>pieces</em></button>
+        <p class="footer-tagline">Original resin and mixed media artwork. Every piece made by hand.</p>
         <div class="footer-socials">
           <a href="https://instagram.com/cecethepiece" target="_blank" class="footer-soc">📷</a>
           <a href="https://tiktok.com/@cecethepiece" target="_blank" class="footer-soc">🎵</a>
@@ -1180,12 +1194,12 @@ footer::before{display:none}
         <button class="footer-lnk" onclick="goTo('about')">About Cece</button>
         <button class="footer-lnk" onclick="goTo('contact')">Contact</button>
         <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('commission'),100)">Commission a Piece</button>
-        <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('trade'),100)">Trade Pricing</button>
+        <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('collaborate'),100)">Collaborate</button>
         <button class="footer-lnk" onclick="openHubLogin()">Hub Login →</button>
       </div>
     </div>
   </div>
-  <div class="inner"><div class="footer-bottom"><span>© 2026 cecepieces. All rights reserved.</span><span id="site-version-stamp" style="font-size:.6rem;color:var(--muted2)"></span><span>Original work. No prints. No reproductions.</span></div></div>
+  <div class="inner"><div class="footer-bottom"><span>© 2026 cecespieces. All rights reserved.</span><span id="site-version-stamp" style="font-size:.6rem;color:var(--muted2)"></span><span>Original handmade artwork.</span></div></div>
 </footer>
 
 <!-- PANEL SPLASH -->
@@ -1378,7 +1392,7 @@ footer::before{display:none}
 <div class="hub-login" id="hubLogin" onclick="if(event.target.id==='hubLogin')closeHubLogin()">
   <form class="hub-login-card" id="hubLoginForm" autocomplete="on">
     <button class="hub-login-close" type="button" onclick="closeHubLogin()">✕</button>
-    <div class="hub-login-logo">cece<em>pieces</em></div>
+    <div class="hub-login-logo">ceces<em>pieces</em></div>
     <div class="hub-login-sub">Business Hub · Team Sign In</div>
     <div class="hub-login-err" id="hubLoginErr"></div>
     <label class="hub-login-label" for="hubEmail">Email</label>
@@ -1404,9 +1418,9 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const STRIPE_CHECKOUT_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co/functions/v1/create-checkout';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v2.8';
+const SITE_VERSION  = 'v2.9';
 const SITE_BUILD    = '2026-09-16';
-const SITE_LABEL    = 'Academy: online classes, classroom & enrollment';
+const SITE_LABEL    = 'cecespieces rebrand + artist edits + Academy';
 // ─────────────────────────────────────────────────────────────
 const CONFIGURED = true;
 
@@ -1437,7 +1451,7 @@ async function fetchPieces() {
 }
 
 // ── CATALOG SEED ──
-// The real cecepieces catalog, shown until the Supabase database has its own
+// The real cecespieces catalog, shown until the Supabase database has its own
 // rows. Photos load straight from this repo; colorways are drag/click variations.
 function sampleData(){
   const B='https://raw.githubusercontent.com/modom123/cecethepieces/main/';
@@ -1480,7 +1494,7 @@ function sampleData(){
    materials:'Epoxy resin, pressed lavender & cremation ash, hanging cord',
    description:'A round hanging ornament with real pressed lavender and a whisper of ash suspended in clear resin — light-catching and gentle.',
    image:B+'IMG_4063.jpeg',variations:[]},
-  {id:'cat-floral',title:'Floral Preservation Block',type:'Memorial Piece',price:'150',status:'available',
+  {id:'cat-floral',title:'Floral Preservation Block',type:'Preservation',price:'150',status:'available',
    materials:'Epoxy resin preserving your real flowers, personalized lettering',
    description:'Send me your wedding or anniversary bouquet and I’ll preserve it forever inside a crystal-clear resin block, personalized with names and a date. Made to order.',
    image:B+'IMG_4069.jpeg',variations:[]},
@@ -1488,7 +1502,7 @@ function sampleData(){
    materials:'Resin ornament with personalized name & character, ribbon',
    description:'Personalized keepsake ornaments — a name, a character, a little glitter. Perfect for stockings, gift tags and the tree.',
    image:B+'IMG_4066.jpeg',variations:[]},
-  {id:'cat-frame',title:'Botanical Memory Frame',type:'Memorial Piece',price:'150',status:'available',
+  {id:'cat-frame',title:'Botanical Memory Frame',type:'Preservation',price:'150',status:'available',
    materials:'Round wood frame, real pressed flowers & feathers, glass keepsake vial, resin',
    description:'Real pressed flowers, delicate feathers and a tiny glass keepsake vial arranged inside a round wooden frame — a botanical memory kept under glass. Made to order from your own blooms and mementos.',
    image:B+'botanical-memory-frame_2026-09-11_1302.jpeg',variations:[]},
@@ -1537,7 +1551,7 @@ function sampleClasses(){
   {id:'cls-resin101',track:1,active:true,title:'Resin 101: Your First Pour',type:'ondemand',level:'Beginner',price:'49',
    blurb:'Start here. The complete self-paced foundation — mixing, coloring, killing bubbles, and a glass-smooth finish.',
    image:B+'IMG_4034.jpeg',instructor:'Cece',duration:'1 hr 40 min · 6 lessons',
-   description:'Everything a total beginner needs, on your own schedule. Watch each lesson as many times as you like, then follow along at your kitchen table. By the end you’ll have poured a clean, professional-looking piece and understand exactly why it worked — the perfect first rung of the cecepieces path.',
+   description:'Everything a total beginner needs, on your own schedule. Watch each lesson as many times as you like, then follow along at your kitchen table. By the end you’ll have poured a clean, professional-looking piece and understand exactly why it worked — the perfect first rung of the cecespieces path.',
    materials:['2-part epoxy resin (starter 16 oz)','A few mica pigments','Small wood panels or coasters','Gloves, cups, stir sticks','Heat gun or torch lighter'],
    lessons:[{title:'What resin is & choosing the right kind',duration:'12 min',video_url:'',free_preview:true},{title:'Measuring & mixing without mistakes',duration:'18 min',video_url:''},{title:'Coloring: pigments, inks & how much',duration:'16 min',video_url:''},{title:'Killing bubbles & controlling cells',duration:'15 min',video_url:''},{title:'Your first full pour, step by step',duration:'25 min',video_url:''},{title:'Curing, demolding & finishing',duration:'14 min',video_url:''}]},
 
@@ -1561,7 +1575,7 @@ function sampleClasses(){
 
   // ── LEVEL 4 · MASTER ── the signature river table masterclass
   {id:'cls-river',track:4,active:true,title:'The River Table Masterclass',type:'ondemand',level:'Master',price:'129',
-   blurb:'The signature cecepieces look. Live-edge wood + a deep resin river, taught end to end. Our deepest course.',
+   blurb:'The signature cecespieces look. Live-edge wood + a deep resin river, taught end to end. Our deepest course.',
    image:B+'IMG_4026.jpeg',instructor:'Cece',duration:'2 hr 10 min · 7 lessons',
    description:'The full masterclass on my signature framed river pieces — from prepping live-edge wood and building a leak-proof dam, to the deep colored pour, the druzy crystal heart, sanding back to glass, and the flawless flood coat. The most in-depth course in the Academy and the top of the path.',
    materials:['Live-edge wood slab or board','Deep-pour epoxy resin (32 oz+)','Tuck tape & melamine for a dam','Pigments + druzy crystals','Orbital sander & finishing supplies','Heat gun, gloves, cups'],
@@ -1662,11 +1676,11 @@ function renderHome(){
 // ── RENDER SHOP ──
 // Pieces are grouped by category (medium) in a set order so the shop never
 // looks random. Any unknown category sorts to the end.
-const CAT_ORDER=['Resin Art','Statement Panel','Memorial Piece','Seasonal Gift','Painting','Mixed Media','Drawing','Sculpture','Photography'];
-const CAT_LABEL={'Resin Art':'Resin Art','Statement Panel':'Statement Panels','Memorial Piece':'Memorial Pieces','Seasonal Gift':'Seasonal & Gifts','Painting':'Paintings','Mixed Media':'Mixed Media','Drawing':'Drawings','Sculpture':'Sculpture','Photography':'Photography'};
+const CAT_ORDER=['Memorial Piece','Preservation','Resin Art','Statement Panel','Mixed Media','Painting','Seasonal Gift','Drawing','Sculpture','Photography'];
+const CAT_LABEL={'Resin Art':'Resin Art','Statement Panel':'Statement Panels','Memorial Piece':'Memorial Pieces','Preservation':'Preservation','Seasonal Gift':'Seasonal & Gifts','Painting':'Paintings','Mixed Media':'Mixed Media','Drawing':'Drawings','Sculpture':'Sculpture','Photography':'Photography'};
 function catKey(p){return p.type==='Decorative Urn'?'Memorial Piece':(p.type||'Other');}
 function catRank(t){const i=CAT_ORDER.indexOf(t);return i<0?CAT_ORDER.length:i;}
-function catHeadHTML(label){return `<div class="shop-cat-head" style="grid-column:1/-1;font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--ink2);margin:22px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--light-border)">${label}</div>`;}
+function catHeadHTML(label){return `<div class="shop-cat-head" style="grid-column:1/-1;font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--ink2);margin:26px 0 8px;padding-bottom:10px;border-bottom:1px solid var(--light-border);text-align:center">${label}</div>`;}
 function renderShop(){
   let list=allPieces;
   if(_sf==='available') list=list.filter(p=>(p.status||'available')==='available');
@@ -2115,9 +2129,9 @@ function addToCalendar(id){
   const durMin=(/([\d.]+)\s*hour/i.exec(c.duration||'')?parseFloat(RegExp.$1)*60:120);
   const end=new Date(start.getTime()+durMin*60000);
   const z=d=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
-  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//cecepieces Academy//EN','BEGIN:VEVENT',
-    'UID:'+c.id+'@cecepieces','DTSTAMP:'+z(new Date()),'DTSTART:'+z(start),'DTEND:'+z(end),
-    'SUMMARY:'+c.title+' — cecepieces Academy',
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//cecespieces Academy//EN','BEGIN:VEVENT',
+    'UID:'+c.id+'@cecespieces','DTSTAMP:'+z(new Date()),'DTSTART:'+z(start),'DTEND:'+z(end),
+    'SUMMARY:'+c.title+' — cecespieces Academy',
     'DESCRIPTION:Your live online art class with Cece.'+(c.join_url?' Join: '+c.join_url:''),
     (c.join_url?'URL:'+c.join_url:''),'END:VEVENT','END:VCALENDAR'].filter(Boolean).join('\r\n');
   const blob=new Blob([ics],{type:'text/calendar'});
@@ -2274,7 +2288,8 @@ function closePanelSplash(){ clearTimeout(splashTimer); document.getElementById(
 
 function openPiece(id, skipSplash){
   const p=allPieces.find(x=>String(x.id)===String(id));if(!p)return;
-  if(!skipSplash){ var _cfg=splashConfigFor(p); if(_cfg && _cfg.slides.length){ openPanelSplash(id); return; } }
+  // Product clicks open the piece directly — the auto slideshow popup was
+  // removed per artist feedback (it delayed getting to the product).
   activePiece=p;
   const isSold=(p.status||'available')==='sold';
   buildLbGallery(p);
@@ -2335,7 +2350,7 @@ async function lbInquire(){
   window.open(`mailto:hello@cecethepiece.com?subject=${s}&body=${b}`);
 }
 function lbCopy(){navigator.clipboard.writeText(window.location.href).then(()=>showToast('Link copied!',true));}
-function lbShare(){if(!activePiece)return;if(navigator.share)navigator.share({title:activePiece.title+" — cecepieces",url:window.location.href});else lbCopy();}
+function lbShare(){if(!activePiece)return;if(navigator.share)navigator.share({title:activePiece.title+" — cecespieces",url:window.location.href});else lbCopy();}
 
 // ── HUB LOGIN ──
 // The team signs in here (on Cece's own site) with their Supabase Auth
@@ -2448,7 +2463,7 @@ function panelImgFail(img){
 // Staged Settings → prefill a rental request with the pieces the visitor selected.
 function requestSetting(btn, eventType, sceneTitle){
   const block = btn.closest('.scene-block');
-  const picks = block ? Array.from(block.querySelectorAll('.scene-pick:checked')).map(c=>c.dataset.title) : [];
+  const picks = block ? Array.from(block.querySelectorAll('.scene-fig')).map(c=>c.dataset.title).filter(Boolean) : [];
   openRentalModal();
   selectedEvent = eventType;
   document.querySelectorAll('#event-grid .event-btn').forEach(b=>{ const oc=b.getAttribute('onclick')||''; b.classList.toggle('on', oc.indexOf("'"+eventType+"'")>=0); });
@@ -2490,6 +2505,7 @@ const prefills={
   trade:{sub:'Trade Pricing Inquiry',msg:"Hi Cece,\n\nI'm an interior design professional interested in trade pricing.\n\n• My firm/studio: \n• Project types: \n• What I'm looking for: "},
   urn:{sub:'Custom Memorial Piece Inquiry',msg:"Hi Cece,\n\nI'm interested in a custom memorial piece.\n\n• Colors or themes: \n• Timeline: \n• Special inclusions: \n\nThank you for creating such meaningful work."},
   stager:{sub:'Stager Program Inquiry',msg:"Hi Cece,\n\nI'm a home stager interested in your rental program.\n\n• My market area: \n• How often I stage: \n• What I'm looking for: "},
+  collaborate:{sub:'Collaboration Inquiry',msg:"Hi Cece,\n\nI'd love to collaborate with you.\n\n• Who I am / my brand: \n• What I have in mind: \n• Timeline: \n\nExcited to connect!"},
 };
 
 function prefillContact(type){
