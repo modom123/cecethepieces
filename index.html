@@ -8,8 +8,14 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecespieces — public website)
-  LAST UPDATED: 2026-09-16_0340 UTC
-  CHANGE: 2026-09-16_0340 — Payments: people can now buy CLASSES online too.
+  LAST UPDATED: 2026-09-16_0430 UTC
+  CHANGE: 2026-09-16_0430 — Custom-piece deposits: a piece with a `deposit` set
+          is a commission — its Buy Now becomes "Pay Deposit — $X" (card and
+          lightbox), with a note that the balance is invoiced by email once
+          Cece confirms the piece. Checkout charges the deposit (server-side);
+          the balance is billed later from the hub. Regular pieces still charge
+          full price. (Demo: the Ocean Islands piece now takes a $400 deposit.)
+          2026-09-16_0340 — Payments: people can now buy CLASSES online too.
           Enrolling in a priced class goes straight to Stripe secure checkout
           (price read server-side from the DB); the class then appears in My
           Classroom on return, and a canceled/failed checkout falls back to an
@@ -1300,6 +1306,7 @@ footer::before{display:none}
       <div class="lb-detail" id="lb-mats"></div>
       <div class="lb-desc" id="lb-desc"></div>
       <div class="lb-actions">
+        <div id="lb-deposit-note" style="display:none;font-size:.72rem;color:var(--muted);line-height:1.55;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;margin-bottom:10px"></div>
         <a class="lb-buy" id="lb-buy" href="#">Purchase This Piece</a>
         <button class="lb-inquiry" onclick="openInquiry()">✉ &nbsp;Inquire About This Piece</button>
         <div class="lb-share-row">
@@ -1429,9 +1436,9 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const STRIPE_CHECKOUT_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co/functions/v1/create-checkout';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v3.0';
+const SITE_VERSION  = 'v3.1';
 const SITE_BUILD    = '2026-09-16';
-const SITE_LABEL    = 'Online payments for art & classes (Stripe)';
+const SITE_LABEL    = 'Custom-piece deposits + art/class checkout';
 // ─────────────────────────────────────────────────────────────
 const CONFIGURED = true;
 
@@ -1517,7 +1524,7 @@ function sampleData(){
    materials:'Round wood frame, real pressed flowers & feathers, glass keepsake vial, resin',
    description:'Real pressed flowers, delicate feathers and a tiny glass keepsake vial arranged inside a round wooden frame — a botanical memory kept under glass. Made to order from your own blooms and mementos.',
    image:B+'botanical-memory-frame_2026-09-11_1302.jpeg',variations:[]},
-  {id:'cat-ocean',title:'Ocean Islands — Resin & Moss',type:'Mixed Media',price:'1450',status:'available',for_rent:true,
+  {id:'cat-ocean',title:'Ocean Islands — Resin & Moss',type:'Mixed Media',price:'1450',deposit:'400',status:'available',for_rent:true,
    materials:'Epoxy resin, preserved moss & lichen, gold leaf, crushed minerals on a large panel',
    description:'An aerial view of an emerald archipelago — islands of preserved moss and gold rimmed by rivers of blue-green resin. A true mixed-media original, made to order in your size and palette (and available to rent as an event backdrop).',
    image:B+'Gemini_Generated_Image_391xt6391xt6391x.jpg',variations:[]},
@@ -1642,17 +1649,25 @@ function pieceCardHTML(p){
         <span class="${isSold?'sold-label':''}">${p.price?'$'+Number(p.price).toLocaleString():'Inquire'}</span>
         ${isSold?'<span class="sold-label">Sold</span>':''}
       </div>
-      ${isSold?'':`<button class="card-buy-btn" onclick="event.stopPropagation();quickBuy('${p.id}')">${p.price?'Buy Now →':'Inquire →'}</button>`}
+      ${isSold?'':`<button class="card-buy-btn" onclick="event.stopPropagation();quickBuy('${p.id}')">${depositOf(p)?'Pay Deposit →':(p.price?'Buy Now →':'Inquire →')}</button>`}
     </div>
   </div>`;
 }
+// A custom / commission piece charges a DOWN PAYMENT (deposit) up front; the
+// balance is invoiced once Cece confirms the piece. depositOf returns the
+// deposit amount when it is set and smaller than the price, else 0.
+function depositOf(p){
+  const d=parseFloat(p&&p.deposit), pr=parseFloat(p&&p.price);
+  return (d>0 && (!pr || d<pr)) ? d : 0;
+}
+function balanceOf(p){ const d=depositOf(p), pr=parseFloat(p&&p.price)||0; return d?Math.max(0,pr-d):0; }
 // Buy straight from a product card: real Stripe checkout for priced pieces
-// (falls back to an inquiry), a payment link if one is set, else an inquiry.
+// (deposit for custom pieces, full price otherwise), a payment link, else inquiry.
 function quickBuy(id){
   const p=allPieces.find(x=>String(x.id)===String(id)); if(!p) return;
   activePiece=p;
+  if(STRIPE_CHECKOUT_URL && (p.price||depositOf(p))){ startCheckout(p.id); return; }
   if(p.payment_link){ window.open(p.payment_link,'_blank'); return; }
-  if(STRIPE_CHECKOUT_URL && p.price){ startCheckout(p.id); return; }
   openPiece(id); setTimeout(openInquiry,80);
 }
 
@@ -2371,8 +2386,20 @@ function openPiece(id, skipSplash){
   document.getElementById('lb-desc').textContent=p.description||'An original, one-of-a-kind work by Cece. Certificate of authenticity included.';
   const buyBtn=document.getElementById('lb-buy');
   buyBtn.className='lb-buy'; buyBtn.target='';
+  const dep=depositOf(p);
+  const depNote=document.getElementById('lb-deposit-note');
+  if(depNote){
+    if(dep && !isSold){
+      depNote.style.display='';
+      depNote.innerHTML=`✦ <strong>Custom piece.</strong> Pay a <strong>$${Number(dep).toLocaleString()} deposit</strong> now to reserve it. Once Cece confirms the details${balanceOf(p)?` the remaining <strong>$${balanceOf(p).toLocaleString()}</strong>`:' the balance'} is invoiced by email before it ships.`;
+    } else { depNote.style.display='none'; depNote.innerHTML=''; }
+  }
   if(isSold){
     buyBtn.textContent='This Piece is Sold';buyBtn.className='lb-buy sold';buyBtn.href='#';buyBtn.onclick=e=>e.preventDefault();
+  } else if(dep && STRIPE_CHECKOUT_URL){
+    // Custom piece — deposit checkout (amount validated server-side).
+    buyBtn.textContent=`Pay Deposit — $${Number(dep).toLocaleString()} →`;buyBtn.href='#';
+    buyBtn.onclick=e=>{e.preventDefault();startCheckout(p.id);};
   } else if(p.type==='Statement Panel'){
     // Panels are custom-sized — route to inquiry instead of fixed checkout.
     buyBtn.textContent='Inquire for Your Size →';buyBtn.href='#';buyBtn.onclick=e=>{e.preventDefault();openInquiry();};
