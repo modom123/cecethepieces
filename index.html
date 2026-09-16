@@ -8,8 +8,13 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecespieces — public website)
-  LAST UPDATED: 2026-09-16_0140 UTC
-  CHANGE: 2026-09-16_0140 — Artist punch-list pass: rebranded "cecepieces" →
+  LAST UPDATED: 2026-09-16_0205 UTC
+  CHANGE: 2026-09-16_0205 — Follow-ups: added a Buy Now button to every product
+          card (real Stripe checkout for priced pieces / payment link / inquiry
+          fallback) and led the home rental section with a styled lifestyle
+          photo. NOTE: piece re-categorization and photo swaps (mixed media,
+          river plaques, landscape block) are managed per-piece in the hub.
+          2026-09-16_0140 — Artist punch-list pass: rebranded "cecepieces" →
           "cecespieces" everywhere (title, logos, copy); removed the auto
           slideshow popup when a product is clicked (opens the piece
           directly); bigger base font, nav tabs, product names/descriptions
@@ -243,6 +248,9 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .piece-card:hover .piece-overlay{opacity:1}
 .overlay-buy{width:100%;padding:11px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-family:'Jost',sans-serif;font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;border:none;transition:opacity .2s}
 .overlay-buy:hover{opacity:.88}
+.card-buy-btn{width:100%;margin-top:12px;padding:10px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--lav3),var(--lav));color:#fff;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:opacity .2s}
+.card-buy-btn:hover{opacity:.9}
+#page-shop .card-buy-btn{background:linear-gradient(135deg,var(--blue-accent),var(--blue-mid))}
 .piece-badge{position:absolute;top:12px;left:12px;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:4px 9px;border-radius:3px}
 .badge-sold{background:rgba(192,0,74,.1);color:var(--danger);border:1px solid rgba(192,0,74,.2)}
 .badge-hold{background:var(--lav-soft);color:var(--lav3);border:1px solid var(--lav-border)}
@@ -1418,9 +1426,9 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const STRIPE_CHECKOUT_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co/functions/v1/create-checkout';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v2.9';
+const SITE_VERSION  = 'v2.9.1';
 const SITE_BUILD    = '2026-09-16';
-const SITE_LABEL    = 'cecespieces rebrand + artist edits + Academy';
+const SITE_LABEL    = 'Buy buttons + staged home rental + artist edits';
 // ─────────────────────────────────────────────────────────────
 const CONFIGURED = true;
 
@@ -1631,8 +1639,18 @@ function pieceCardHTML(p){
         <span class="${isSold?'sold-label':''}">${p.price?'$'+Number(p.price).toLocaleString():'Inquire'}</span>
         ${isSold?'<span class="sold-label">Sold</span>':''}
       </div>
+      ${isSold?'':`<button class="card-buy-btn" onclick="event.stopPropagation();quickBuy('${p.id}')">${p.price?'Buy Now →':'Inquire →'}</button>`}
     </div>
   </div>`;
+}
+// Buy straight from a product card: real Stripe checkout for priced pieces
+// (falls back to an inquiry), a payment link if one is set, else an inquiry.
+function quickBuy(id){
+  const p=allPieces.find(x=>String(x.id)===String(id)); if(!p) return;
+  activePiece=p;
+  if(p.payment_link){ window.open(p.payment_link,'_blank'); return; }
+  if(STRIPE_CHECKOUT_URL && p.price){ startCheckout(p.id); return; }
+  openPiece(id); setTimeout(openInquiry,80);
 }
 
 function rentalCardHTML(p){
@@ -1667,7 +1685,14 @@ function renderHome(){
   fg.innerHTML=avail.length?avail.map(pieceCardHTML).join(''):'<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted);font-size:.9rem">No pieces currently available — check back soon!</div>';
   const rentable=allPieces.filter(p=>p.for_rent).slice(0,4);
   const rpg=document.getElementById('home-rental-preview');
-  if(rentable.length) rpg.innerHTML=rentable.map(p=>`<div style="aspect-ratio:1;overflow:hidden;background:var(--surface2)">${p.image?`<img src="${p.image}" style="width:100%;height:100%;object-fit:cover;display:block" alt="">`:''}</div>`).join('');
+  // Lead with a styled/staged lifestyle photo so the rental section shows the
+  // art in a real space (artist request), with two rental thumbnails beside it.
+  if(rpg){
+    const staging='https://raw.githubusercontent.com/modom123/cecethepieces/main/Gemini_Generated_Image_391xt6391xt6391x.jpg';
+    const thumbs=rentable.slice(0,2).map(p=>`<div style="aspect-ratio:1;overflow:hidden;background:var(--surface2);border-radius:6px">${p.image?`<img src="${p.image}" style="width:100%;height:100%;object-fit:cover;display:block" alt="">`:''}</div>`).join('');
+    rpg.style.gridTemplateColumns='1fr 1fr';
+    rpg.innerHTML=`<div style="grid-column:1/-1;aspect-ratio:16/10;overflow:hidden;background:var(--surface2);border-radius:6px"><img src="${staging}" style="width:100%;height:100%;object-fit:cover;display:block" alt="A cecespieces statement piece styled in a living room"></div>${thumbs}`;
+  }
   const ig=document.getElementById('home-ig');
   const recent=allPieces.slice(0,4);
   ig.innerHTML=recent.length?recent.map(p=>`<div class="ig-cell" onclick="openPiece('${p.id}')">${p.image?`<img src="${p.image}" alt="" loading="lazy">`:'<div class="ig-cell-empty">🎨</div>'}</div>`).join(''):document.getElementById('home-ig').innerHTML;
