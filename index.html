@@ -3,13 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>cecepieces — Original Art</title>
+<title>cecespieces — Original Art</title>
 
 <!--
   ────────────────────────────────────────────────────────────────
-  FILE: index.html  (cecepieces — public website)
-  LAST UPDATED: 2026-09-12_0745 UTC
-  CHANGE: 2026-09-12_0745 — Added a corporate/boardroom lifestyle slide to the
+  FILE: index.html  (cecespieces — public website)
+  LAST UPDATED: 2026-09-16_0140 UTC
+  CHANGE: 2026-09-16_0140 — Artist punch-list pass: rebranded "cecepieces" →
+          "cecespieces" everywhere (title, logos, copy); removed the auto
+          slideshow popup when a product is clicked (opens the piece
+          directly); bigger base font, nav tabs, product names/descriptions
+          and category titles; centered product cards and category headings;
+          removed "no reproductions" wording; reworded the home value prop and
+          About copy ("when you own one of Cece's Pieces…"), deleted the
+          duplicated About quote and the "I don't re-create" line; removed
+          trade-pricing blocks; added a "The Concept" section + photo slot on
+          About; changed the memorial "no two alike" line to "no exact
+          duplicates, can be recreated…"; added a Collaborate footer/contact
+          option; added a Preservation category (Memorial → Preservation →
+          Resin order) and moved flower-preservation pieces into it; removed
+          the non-working rental event tabs and the "Sold" shop filter;
+          centered the Rentable Pieces + Staged Settings sections; and made
+          Staged Settings a plain gallery (no pre-selected/outlined pieces).
+          2026-09-16_0022 — Launched the cecespieces Academy (online art classes).
+          New "Classes" nav page with a 4-class learning ladder
+          (Beginner → Master): Resin 101, Geode & Alcohol Ink (live),
+          Ocean Waves & Memorial Keepsakes (live), and the River Table
+          Masterclass. Live workshops show a schedule, seats and countdown;
+          on-demand courses list lessons. Enrolling saves to Supabase
+          (class_enrollments + orders) so the hub/CRM/Sales agent see the
+          student, then emails Cece. New "My Classroom" page: students enter
+          their email to load enrolled classes, watch lessons in a player
+          with per-lesson progress saved locally, download supply lists, and
+          for live classes get a join link, live countdown and .ics calendar
+          invite. Classes read from the Supabase `classes` table so what the
+          Business Hub marks active / schedules / prices is exactly what is
+          offered here; a curated seed shows until the table is populated.
+          2026-09-12_0745 — Added a corporate/boardroom lifestyle slide to the
           Mixed-Media splash (the ocean-islands piece in a high-rise
           conference room), after the in-home slide.
           2026-09-12_0733 — Wall-art splash now shows five distinct colorways
@@ -36,7 +66,7 @@
           Auth and hands the session to the hub (HUB_URL) so the team
           lands signed in — no "amazinhelp" shown before login.
           2026-09-10_1947 — Rebranded the visible name from "Cece's
-          Pieces" to "cecepieces" (title, logos, headings, copy). Left
+          Pieces" to "cecespieces" (title, logos, headings, copy). Left
           the @cecethepiece social handles, hello@cecethepiece.com email,
           and #cecethepiece hashtags unchanged (real external accounts).
           2026-09-10_2036 — Added a lead-capture inquiry form (name,
@@ -115,6 +145,17 @@
   --pink-glow:rgba(214,58,110,.22);
   --pink-soft:rgba(214,58,110,.08);
 
+  /* ── Gold / Amber palette for Classes (Academy) page ── */
+  --gold-bg:#fdf8ee;        /* warm cream — classes section bg */
+  --gold-surface:#faf0d6;   /* light gold — header, cards */
+  --gold-deep:#f3e2b0;      /* richer gold — bands, live strip */
+  --gold-accent:#a8760f;    /* deep amber — headings, buttons, links */
+  --gold-mid:#cf9a2b;       /* medium amber — hover, secondary */
+  --gold-border:rgba(168,118,15,.2);
+  --gold-border2:rgba(168,118,15,.1);
+  --gold-glow:rgba(168,118,15,.22);
+  --gold-soft:rgba(168,118,15,.08);
+
   /* ── Semantic aliases ── */
   --white:#ffffff;
   --success:#1a9a5c;--danger:#c0004a;
@@ -128,7 +169,7 @@
   --coral:var(--danger);--green:var(--success);
   --cream:var(--bg);--warm:var(--surface);--warm2:var(--surface2);
 }
-html{scroll-behavior:smooth;font-size:16px}
+html{scroll-behavior:smooth;font-size:17.5px}
 body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;overflow-x:hidden}
 *,a{cursor:default}
 a,button,.piece-card,.filter-btn,.nav-link,.cta-btn,.rental-card{cursor:pointer}
@@ -140,7 +181,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .nav-logo{font-family:'Playfair Display',serif;font-size:1.32rem;font-weight:400;letter-spacing:.03em;color:var(--ink2);background:none;border:none;padding:0}
 .nav-logo em{font-style:italic;background:linear-gradient(135deg,var(--purple2),var(--pink2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .nav-links{display:flex;align-items:center;gap:36px}
-.nav-link{font-family:'Jost',sans-serif;font-size:.67rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;background:none;border:none;padding:4px 0;position:relative;transition:color .2s}
+.nav-link{font-family:'Jost',sans-serif;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;background:none;border:none;padding:4px 0;position:relative;transition:color .2s}
 .nav-link::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink));transform:scaleX(0);transition:transform .3s;transform-origin:left}
 .nav-link:hover,.nav-link.active{color:var(--ink2)}
 .nav-link.active::after,.nav-link:hover::after{transform:scaleX(1)}
@@ -153,7 +194,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .inner{max-width:1380px;margin:0 auto;padding:0 52px}
 .section{padding:88px 0}
 .section-sm{padding:56px 0}
-.section-label{font-size:.57rem;letter-spacing:.28em;text-transform:uppercase;color:var(--lav);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.section-label{font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--lav);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:10px}
 .section-label::before{content:'';width:22px;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink))}
 .section-h{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,3.5vw,3rem);font-weight:300;color:var(--ink2);line-height:1.1}
 .section-h em{font-style:italic;background:linear-gradient(135deg,var(--purple2),var(--pink2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -207,11 +248,11 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .badge-hold{background:var(--lav-soft);color:var(--lav3);border:1px solid var(--lav-border)}
 .badge-rent{background:var(--lav-soft);color:var(--lav);border:1px solid var(--lav-border)}
 .piece-var-chip{position:absolute;bottom:12px;left:12px;font-size:.52rem;letter-spacing:.08em;font-weight:700;padding:4px 9px;border-radius:20px;background:rgba(255,255,255,.9);color:var(--purple2);box-shadow:0 2px 8px rgba(139,63,255,.15);z-index:2}
-.piece-body{padding:18px 20px 22px;flex:1;display:flex;flex-direction:column;background:var(--light)}
-.piece-type{font-size:.54rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lav3);font-weight:600;margin-bottom:5px}
-.piece-name{font-family:'Playfair Display',serif;font-size:1.22rem;font-weight:400;color:var(--ink2);line-height:1.2;margin-bottom:4px}
-.piece-dims{font-size:.67rem;color:var(--muted2);margin-bottom:8px}
-.piece-price{font-size:1.05rem;font-weight:600;color:var(--ink2);margin-top:auto;padding-top:12px;border-top:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between}
+.piece-body{padding:18px 20px 22px;flex:1;display:flex;flex-direction:column;background:var(--light);text-align:center}
+.piece-type{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--lav3);font-weight:600;margin-bottom:5px}
+.piece-name{font-family:'Playfair Display',serif;font-size:1.32rem;font-weight:400;color:var(--ink2);line-height:1.22;margin-bottom:4px}
+.piece-dims{font-size:.74rem;color:var(--muted2);margin-bottom:8px}
+.piece-price{font-size:1.08rem;font-weight:600;color:var(--ink2);margin-top:auto;padding-top:12px;border-top:1px solid var(--border2);display:flex;align-items:center;justify-content:center;gap:10px}
 .sold-label{font-size:.62rem;color:#c0004a;font-weight:500}
 
 .skeleton{background:var(--light2);overflow:hidden;position:relative;border:1px solid var(--light-border)}
@@ -355,7 +396,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .lb-hr{height:1px;background:var(--lav-border2);margin:18px 0}
 .lb-detail{font-size:.76rem;color:var(--muted2);line-height:1.85;margin-bottom:4px}
 .lb-detail strong{color:var(--ink2);font-weight:500}
-.lb-desc{font-size:.88rem;color:var(--muted);line-height:1.85;margin-top:14px;font-weight:400}
+.lb-desc{font-size:.98rem;color:var(--muted);line-height:1.85;margin-top:14px;font-weight:400}
 .lb-actions{margin-top:auto;padding-top:22px;display:flex;flex-direction:column;gap:10px}
 .lb-buy{padding:14px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;transition:all .2s;display:block;text-align:center;text-decoration:none;border-radius:4px;box-shadow:0 4px 20px var(--glow-purple)}
 .lb-buy:hover{opacity:.9;transform:translateY(-1px)}
@@ -388,7 +429,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 
 footer{background:var(--surface2);border-top:1px solid var(--lav-border);padding:56px 0 0;position:relative;overflow:hidden}
 footer::before{display:none}
-.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:44px;padding-bottom:44px;position:relative;z-index:1}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;position:relative;z-index:1}
 .footer-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:400;color:var(--ink2);display:block;margin-bottom:10px;background:none;border:none;padding:0;text-align:left}
 .footer-logo em{font-style:italic;background:linear-gradient(135deg,var(--purple2),var(--pink2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .footer-tagline{font-size:.76rem;color:var(--muted);line-height:1.8;font-weight:400}
@@ -462,11 +503,12 @@ footer::before{display:none}
 
 <!-- NAV -->
 <nav class="nav" id="mainNav">
-  <button class="nav-logo" onclick="goTo('home')">cece<em>pieces</em></button>
+  <button class="nav-logo" onclick="goTo('home')">ceces<em>pieces</em></button>
   <div class="nav-links" id="navLinks">
     <button class="nav-link" onclick="goTo('home')" data-p="home">Home</button>
     <button class="nav-link" onclick="goTo('shop')" data-p="shop">Shop</button>
     <button class="nav-link" onclick="goTo('rentals')" data-p="rentals">Rentals</button>
+    <button class="nav-link" onclick="goTo('classes')" data-p="classes">Classes</button>
     <button class="nav-link" onclick="goTo('about')" data-p="about">About</button>
     <button class="nav-link nav-cta" onclick="goTo('contact')" data-p="contact">Contact</button>
   </div>
@@ -480,7 +522,7 @@ footer::before{display:none}
     <div class="hero-grain"></div>
     <div class="hero-eyebrow">Original Artwork by Cece</div>
     <h1 class="hero-title">Pour. Flow.<br><em>Own Something</em><br>No One Else Has.</h1>
-    <p class="hero-sub">One-of-a-kind resin and mixed media pieces — no prints, no reproductions, no compromises. Each work exists exactly once.</p>
+    <p class="hero-sub">One-of-a-kind resin and mixed media pieces — original work, no compromises. Each piece exists exactly once.</p>
     <div class="hero-btns">
       <button class="cta-btn cta-primary" onclick="goTo('shop')">Browse the Collection →</button>
       <button class="cta-btn cta-secondary" onclick="goTo('rentals')">Rent for an Event</button>
@@ -510,7 +552,7 @@ footer::before{display:none}
         <div class="value-item">
           <div class="value-icon">✦</div>
           <div class="value-title">One of a Kind</div>
-          <div class="value-desc">No prints. No reproductions. When you own a cecepieces work, nothing like it exists anywhere else in the world.</div>
+          <div class="value-desc">One-of-a-kind original art. When you own one of Cece's Pieces, nothing like it exists anywhere else in the world.</div>
         </div>
         <div class="value-item">
           <div class="value-icon">🎪</div>
@@ -520,7 +562,7 @@ footer::before{display:none}
         <div class="value-item">
           <div class="value-icon">🎨</div>
           <div class="value-title">Custom Commissions</div>
-          <div class="value-desc">Work directly with Cece to create something built around your space, palette, and vision. Trade pricing available.</div>
+          <div class="value-desc">Work directly with Cece to create something built around your space, palette, and vision.</div>
         </div>
       </div>
     </div>
@@ -560,7 +602,7 @@ footer::before{display:none}
         <blockquote style="font-family:'Playfair Display',serif;font-size:clamp(1.65rem,3vw,2.4rem);font-weight:300;line-height:1.38;color:var(--ink-on-dark);margin-bottom:26px">"Every pour is <em style="font-style:italic;color:var(--purple2)">unrepeatable.</em> The moment the resin touches the surface, something entirely new comes into the world."</blockquote>
         <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:32px">
           <div style="width:30px;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink))"></div>
-          <span style="font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2)">Cece — cecepieces</span>
+          <span style="font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2)">Cece — cecespieces</span>
           <div style="width:30px;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink))"></div>
         </div>
         <button class="cta-btn cta-secondary" onclick="goTo('about')">Read Cece's Story →</button>
@@ -594,7 +636,7 @@ footer::before{display:none}
     <div class="inner">
       <div class="section-label" style="color:var(--blue-accent)">The Collection</div>
       <h1 class="page-header-h" style="color:var(--ink2)">All <em style="font-style:italic;background:linear-gradient(135deg,var(--blue-accent),var(--blue-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Original</em> Work</h1>
-      <p class="page-header-sub" style="color:var(--muted)">Every piece made by hand. No prints, no reproductions. One exists — the one you see here.</p>
+      <p class="page-header-sub" style="color:var(--muted)">Every piece made by hand. One exists — the one you see here.</p>
     </div>
   </div>
   <section class="section" style="background:var(--blue-bg)">
@@ -602,11 +644,11 @@ footer::before{display:none}
       <div class="filters reveal" id="shop-filters">
         <button class="filter-btn active" onclick="shopFilter('all',this)">All</button>
         <button class="filter-btn" onclick="shopFilter('available',this)">Available</button>
-        <button class="filter-btn" onclick="shopFilter('sold',this)">Sold</button>
         <button class="filter-btn" onclick="shopTypeFilter('Resin Art',this)">Resin Art</button>
         <button class="filter-btn" onclick="shopTypeFilter('Painting',this)">Painting</button>
         <button class="filter-btn" onclick="shopTypeFilter('Mixed Media',this)">Mixed Media</button>
         <button class="filter-btn" onclick="shopTypeFilter('Memorial Piece',this)">Memorial Pieces</button>
+        <button class="filter-btn" onclick="shopTypeFilter('Preservation',this)">Preservation</button>
         <button class="filter-btn" onclick="shopTypeFilter('Statement Panel',this)">Statement Panels</button>
         <button class="filter-btn" onclick="shopTypeFilter('Seasonal Gift',this)">Seasonal &amp; Gifts</button>
         <span class="results-count" id="shop-count"></span>
@@ -685,7 +727,7 @@ footer::before{display:none}
   <!-- Staged Settings showcase -->
   <section class="section" style="background:var(--pink-surface);border-top:1px solid var(--pink-border);border-bottom:1px solid var(--pink-border)">
     <style>
-  .scene-block .scene-fig{margin:0;cursor:pointer;display:block}
+  .scene-block .scene-fig{margin:0;display:block}
   .scene-thumb{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:8px;background:var(--surface2)}
   .scene-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .15s}
   .scene-check{position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.9);border:1.5px solid var(--pink-accent);color:var(--pink-accent);font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center}
@@ -693,6 +735,10 @@ footer::before{display:none}
   .scene-pick:not(:checked) + .scene-thumb img{opacity:.5}
   .scene-pick:not(:checked) + .scene-thumb .scene-check{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.2);color:transparent}
   .scene-hint{font-size:.72rem;color:var(--muted);margin:2px 0 14px}
+  /* Center each staged-setting block (title, blurb, pieces) */
+  .scene-block{text-align:center}
+  .scene-block > div:first-child{justify-content:center}
+  .scene-block > p{max-width:660px;margin-left:auto;margin-right:auto}
 </style>
     <div class="inner">
       <div style="text-align:center;margin-bottom:44px" class="reveal">
@@ -707,15 +753,15 @@ footer::before{display:none}
           <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--ink2);margin:0">A Blush &amp; Gold Wedding</h3>
         </div>
         <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 4px">Soft blush pours, gilded botanicals and a crystal-geode backdrop set the scene for the ceremony and reception — a showstopping focal point behind the sweetheart table, guest book, or vow exchange.</p>
-        <div class="scene-hint">Tap a piece to include or remove it, then request the ones you want.</div>
+        <div class="scene-hint">These pieces make up the look — request them all for your event, or mention the ones you love.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Geode Statement Backdrop" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/81746D25-6F5A-426B-8BB6-6EC446155E6D.jpeg" alt="Geode Statement Backdrop" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Geode Statement Backdrop</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Blush &amp; Silver Panel" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4085.jpeg" alt="Blush &amp; Silver Panel" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush &amp; Silver Panel</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Blush River Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4029.jpeg" alt="Blush River Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush River Plaque</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Ivory &amp; Gold Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4028.jpeg" alt="Ivory &amp; Gold Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory &amp; Gold Plaque</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Floral Keepsake" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4069.jpeg" alt="Floral Keepsake" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Floral Keepsake</figcaption></label>
+          <figure class="scene-fig" data-title="Geode Statement Backdrop"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/81746D25-6F5A-426B-8BB6-6EC446155E6D.jpeg" alt="Geode Statement Backdrop" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Geode Statement Backdrop</figcaption></figure>
+          <figure class="scene-fig" data-title="Blush &amp; Silver Panel"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4085.jpeg" alt="Blush &amp; Silver Panel" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush &amp; Silver Panel</figcaption></figure>
+          <figure class="scene-fig" data-title="Blush River Plaque"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4029.jpeg" alt="Blush River Plaque" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blush River Plaque</figcaption></figure>
+          <figure class="scene-fig" data-title="Ivory &amp; Gold Plaque"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4028.jpeg" alt="Ivory &amp; Gold Plaque" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory &amp; Gold Plaque</figcaption></figure>
+          <figure class="scene-fig" data-title="Floral Keepsake"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4069.jpeg" alt="Floral Keepsake" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Floral Keepsake</figcaption></figure>
         </div>
-        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'Wedding','A Blush &amp; Gold Wedding')">Add selected pieces to a rental request →</button>
+        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'Wedding','A Blush &amp; Gold Wedding')">Request these pieces for your event →</button>
       </div>
 
       <div class="reveal scene-block" data-scene="house" style="margin-bottom:48px">
@@ -724,15 +770,15 @@ footer::before{display:none}
           <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--ink2);margin:0">A House on the Market</h3>
         </div>
         <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 4px">Warm, homey statement art that helps buyers picture themselves living there — framed river wood over the mantel, a landscape block on the shelf, a botanical frame in the entry. Staging pieces that photograph beautifully for listings.</p>
-        <div class="scene-hint">Tap a piece to include or remove it, then request the ones you want.</div>
+        <div class="scene-hint">These pieces make up the look — request them all for your event, or mention the ones you love.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Framed River Wall Art" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed River Wall Art" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Wall Art</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="River Wall Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4026.jpeg" alt="River Wall Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">River Wall Plaque</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Forest Landscape Block" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/forest-landscape-block_2026-09-11_1302.jpeg" alt="Forest Landscape Block" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Forest Landscape Block</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Ivory Float Framed" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4035.jpeg" alt="Ivory Float Framed" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory Float Framed</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Botanical Memory Frame" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/botanical-memory-frame_2026-09-11_1302.jpeg" alt="Botanical Memory Frame" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Botanical Memory Frame</figcaption></label>
+          <figure class="scene-fig" data-title="Framed River Wall Art"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed River Wall Art" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Wall Art</figcaption></figure>
+          <figure class="scene-fig" data-title="River Wall Plaque"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4026.jpeg" alt="River Wall Plaque" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">River Wall Plaque</figcaption></figure>
+          <figure class="scene-fig" data-title="Forest Landscape Block"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/forest-landscape-block_2026-09-11_1302.jpeg" alt="Forest Landscape Block" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Forest Landscape Block</figcaption></figure>
+          <figure class="scene-fig" data-title="Ivory Float Framed"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4035.jpeg" alt="Ivory Float Framed" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Ivory Float Framed</figcaption></figure>
+          <figure class="scene-fig" data-title="Botanical Memory Frame"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/botanical-memory-frame_2026-09-11_1302.jpeg" alt="Botanical Memory Frame" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Botanical Memory Frame</figcaption></figure>
         </div>
-        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'House Staging','A House on the Market')">Add selected pieces to a rental request →</button>
+        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'House Staging','A House on the Market')">Request these pieces for your event →</button>
       </div>
 
       <div class="reveal scene-block" data-scene="corporate">
@@ -741,15 +787,15 @@ footer::before{display:none}
           <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--ink2);margin:0">A Corporate Dinner</h3>
         </div>
         <p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 4px">Polished, modern statement panels in teal, blue and silver to anchor a gala, awards night, or client dinner — a sophisticated backdrop for the head table, stage, or step-and-repeat.</p>
-        <div class="scene-hint">Tap a piece to include or remove it, then request the ones you want.</div>
+        <div class="scene-hint">These pieces make up the look — request them all for your event, or mention the ones you love.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Blue &amp; Silver Panel" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4082.jpeg" alt="Blue &amp; Silver Panel" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blue &amp; Silver Panel</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Black &amp; Silver Panel" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4080.jpeg" alt="Black &amp; Silver Panel" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Black &amp; Silver Panel</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Teal &amp; Silver Framed" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4033.jpeg" alt="Teal &amp; Silver Framed" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Silver Framed</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Teal &amp; Gold Plaque" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4030.jpeg" alt="Teal &amp; Gold Plaque" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Gold Plaque</figcaption></label>
-          <label class="scene-fig"><input type="checkbox" class="scene-pick" data-title="Framed River Art" checked hidden><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed River Art" loading="lazy"><span class="scene-check" aria-hidden="true">✓</span></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Art</figcaption></label>
+          <figure class="scene-fig" data-title="Blue &amp; Silver Panel"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4082.jpeg" alt="Blue &amp; Silver Panel" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Blue &amp; Silver Panel</figcaption></figure>
+          <figure class="scene-fig" data-title="Black &amp; Silver Panel"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4080.jpeg" alt="Black &amp; Silver Panel" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Black &amp; Silver Panel</figcaption></figure>
+          <figure class="scene-fig" data-title="Teal &amp; Silver Framed"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4033.jpeg" alt="Teal &amp; Silver Framed" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Silver Framed</figcaption></figure>
+          <figure class="scene-fig" data-title="Teal &amp; Gold Plaque"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4030.jpeg" alt="Teal &amp; Gold Plaque" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Teal &amp; Gold Plaque</figcaption></figure>
+          <figure class="scene-fig" data-title="Framed River Art"><div class="scene-thumb"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4034.jpeg" alt="Framed River Art" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">Framed River Art</figcaption></figure>
         </div>
-        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'Corporate Event','A Corporate Dinner')">Add selected pieces to a rental request →</button>
+        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'Corporate Event','A Corporate Dinner')">Request these pieces for your event →</button>
       </div>
     </div>
   </section>
@@ -757,15 +803,10 @@ footer::before{display:none}
   <!-- Rental pieces -->
   <section class="section" style="background:var(--pink-bg)">
     <div class="inner">
-      <div class="section-header reveal">
-        <div><div class="section-label">Available Now</div><h2 class="section-h">Rentable <em>Pieces</em></h2></div>
+      <div class="section-header reveal" style="justify-content:center;text-align:center">
+        <div><div class="section-label" style="justify-content:center">Available Now</div><h2 class="section-h">Rentable <em>Pieces</em></h2></div>
       </div>
-      <div class="filters reveal" id="rental-filters">
-        <button class="filter-btn active" onclick="rentalFilter('all',this)">All Events</button>
-        <button class="filter-btn" onclick="rentalFilter('Birthday',this)">🎂 Birthdays</button>
-        <button class="filter-btn" onclick="rentalFilter('Wedding',this)">💍 Weddings</button>
-        <button class="filter-btn" onclick="rentalFilter('House Staging',this)">🏠 Staging</button>
-        <button class="filter-btn" onclick="rentalFilter('Corporate Event',this)">🎉 Corporate</button>
+      <div class="filters reveal" id="rental-filters" style="justify-content:center">
         <span class="results-count" id="rental-count"></span>
       </div>
       <div class="rental-grid" id="rental-grid">
@@ -793,6 +834,210 @@ footer::before{display:none}
   </section>
 </div><!-- /rentals -->
 
+<!-- ═══════════ CLASSES / ACADEMY ═══════════ -->
+<div class="page" id="page-classes">
+  <style>
+    /* ── Academy / Classes styles (gold theme) ── */
+    .class-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:26px}
+    .class-card{background:var(--white);border:1px solid var(--gold-border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s;cursor:pointer}
+    .class-card:hover{transform:translateY(-4px);box-shadow:0 14px 40px var(--gold-glow)}
+    .class-thumb{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--gold-surface)}
+    .class-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+    .class-card:hover .class-thumb img{transform:scale(1.05)}
+    .class-thumb-empty{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;opacity:.14}
+    .class-badge{position:absolute;top:12px;left:12px;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;font-family:'Jost',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+    .badge-live{background:linear-gradient(135deg,#d63a6e,#e8547a)}
+    .badge-ondemand{background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid))}
+    .live-dot{width:7px;height:7px;border-radius:50%;background:#fff;animation:livePulse 1.4s infinite}
+    @keyframes livePulse{0%,100%{opacity:1}50%{opacity:.3}}
+    .class-price-tag{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.94);color:var(--ink2);font-weight:700;font-size:.82rem;padding:5px 12px;border-radius:20px;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+    .class-body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .class-level{font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-accent);font-weight:600}
+    .class-name{font-family:'Playfair Display',serif;font-size:1.22rem;color:var(--ink2);line-height:1.25}
+    .class-blurb{font-size:.82rem;color:var(--muted);line-height:1.6;flex:1}
+    .class-meta{display:flex;flex-wrap:wrap;gap:10px;font-size:.72rem;color:var(--muted2);margin-top:2px}
+    .class-meta span{display:inline-flex;align-items:center;gap:4px}
+    .class-seats{font-size:.72rem;color:var(--gold-accent);font-weight:600}
+    .class-seats.full{color:var(--danger)}
+    .class-card-btn{margin-top:6px;padding:11px 16px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid));color:#fff;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.06em;font-weight:600;cursor:pointer;text-align:center}
+    /* Modal: class detail */
+    .cls-modal-cover{aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--gold-surface);margin-bottom:16px}
+    .cls-modal-cover img{width:100%;height:100%;object-fit:cover;display:block}
+    .cls-lesson{display:flex;align-items:center;gap:12px;padding:11px 13px;border:1px solid var(--gold-border2);border-radius:9px;margin-bottom:8px;background:var(--gold-bg)}
+    .cls-lesson-num{width:26px;height:26px;flex-shrink:0;border-radius:50%;background:var(--gold-surface);color:var(--gold-accent);font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .cls-lesson-info{flex:1;min-width:0}
+    .cls-lesson-title{font-size:.84rem;color:var(--ink2);font-weight:500}
+    .cls-lesson-dur{font-size:.68rem;color:var(--muted2)}
+    .cls-preview-tag{font-size:.6rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-accent);background:var(--gold-soft);padding:3px 8px;border-radius:12px}
+    .cls-supply{display:flex;align-items:flex-start;gap:9px;font-size:.82rem;color:var(--muted);line-height:1.5;margin-bottom:7px}
+    .cls-supply::before{content:'◦';color:var(--gold-accent);font-weight:700}
+    /* Classroom */
+    .cr-shell{display:grid;grid-template-columns:280px 1fr;gap:0;min-height:70vh;border:1px solid var(--gold-border);border-radius:14px;overflow:hidden;background:var(--white)}
+    .cr-side{background:var(--gold-bg);border-right:1px solid var(--gold-border2);padding:18px 14px;overflow-y:auto}
+    .cr-side-head{font-family:'Jost',sans-serif;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-accent);font-weight:600;margin:4px 6px 12px}
+    .cr-class-item{padding:12px 13px;border-radius:10px;cursor:pointer;margin-bottom:6px;border:1px solid transparent;transition:.15s}
+    .cr-class-item:hover{background:var(--gold-surface)}
+    .cr-class-item.active{background:var(--gold-surface);border-color:var(--gold-border)}
+    .cr-class-item-title{font-size:.86rem;color:var(--ink2);font-weight:600;line-height:1.3}
+    .cr-class-item-meta{font-size:.68rem;color:var(--muted2);margin-top:3px}
+    .cr-progress-bar{height:5px;border-radius:3px;background:var(--gold-border2);margin-top:8px;overflow:hidden}
+    .cr-progress-fill{height:100%;background:linear-gradient(90deg,var(--gold-accent),var(--gold-mid));transition:width .4s}
+    .cr-main{padding:24px 28px;overflow-y:auto}
+    .cr-video{aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#0d0b14;margin-bottom:18px;position:relative}
+    .cr-video iframe,.cr-video video{width:100%;height:100%;border:0;display:block}
+    .cr-video-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:rgba(255,255,255,.6);gap:10px;text-align:center;padding:24px}
+    .cr-lesson-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--gold-border2);border-radius:10px;margin-bottom:8px;cursor:pointer;transition:.15s;background:var(--gold-bg)}
+    .cr-lesson-row:hover{border-color:var(--gold-border);background:var(--gold-surface)}
+    .cr-lesson-row.playing{border-color:var(--gold-accent);background:var(--gold-surface)}
+    .cr-check{width:24px;height:24px;flex-shrink:0;border-radius:50%;border:2px solid var(--gold-border);display:flex;align-items:center;justify-content:center;font-size:.7rem;color:transparent;background:var(--white)}
+    .cr-check.done{background:var(--gold-accent);border-color:var(--gold-accent);color:#fff}
+    .cr-live-banner{background:linear-gradient(135deg,#d63a6e,#e8547a);color:#fff;border-radius:12px;padding:18px 22px;margin-bottom:18px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px}
+    .cr-live-join{background:#fff;color:#d63a6e;font-family:'Jost',sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.04em;padding:11px 22px;border-radius:8px;border:none;cursor:pointer;text-decoration:none;display:inline-block}
+    .cr-countdown{font-variant-numeric:tabular-nums;font-weight:600}
+    @media(max-width:820px){.cr-shell{grid-template-columns:1fr}.cr-side{border-right:none;border-bottom:1px solid var(--gold-border2);max-height:220px}}
+  </style>
+
+  <div class="page-header" style="background:var(--gold-surface);border-bottom:1px solid var(--gold-border)">
+    <div class="inner">
+      <div class="section-label" style="color:var(--gold-accent)">cecespieces Academy</div>
+      <h1 class="page-header-h" style="color:var(--ink2)">Learn to <em style="font-style:italic;background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pour</em></h1>
+      <p class="page-header-sub" style="color:var(--muted)">Online art classes taught by Cece — live workshops you join from home and self-paced courses you keep forever. Resin, alcohol ink, geode art, and memorial keepsakes, broken down step by step for every level.</p>
+      <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="cta-btn" style="display:inline-flex;background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid));color:#fff;box-shadow:0 4px 20px var(--gold-glow)" onclick="document.getElementById('classes-catalog').scrollIntoView({behavior:'smooth'})">Browse Classes →</button>
+        <button class="cta-btn" style="display:inline-flex;background:transparent;color:var(--gold-accent);border:1.5px solid var(--gold-border);box-shadow:none" onclick="openClassroom()">🎓 Enter My Classroom</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next live workshop strip (populated dynamically) -->
+  <section id="next-live-strip" style="display:none;background:var(--gold-deep);border-bottom:1px solid var(--gold-border)">
+    <div class="inner" style="padding:20px 0"><div id="next-live-inner"></div></div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section-sm" style="background:var(--gold-bg)">
+    <div class="inner">
+      <div style="text-align:center;margin-bottom:44px" class="reveal">
+        <div class="section-label" style="justify-content:center;color:var(--gold-accent)">Simple to Start</div>
+        <h2 class="section-h">How Online Classes <em>Work</em></h2>
+      </div>
+      <div class="steps-grid reveal">
+        <div class="step"><div class="step-num">01</div><div class="step-icon">🎨</div><div class="step-title">Pick a Class</div><div class="step-desc">Choose a live workshop with a set date, or an on-demand course you take at your own pace.</div></div>
+        <div class="step"><div class="step-num">02</div><div class="step-icon">📦</div><div class="step-title">Gather Supplies</div><div class="step-desc">Every class lists exactly what you need. Optional supply kits can be shipped to your door.</div></div>
+        <div class="step"><div class="step-num">03</div><div class="step-icon">💻</div><div class="step-title">Join & Create</div><div class="step-desc">Live classes stream to your Classroom with a join link. On-demand lessons play right in your browser.</div></div>
+        <div class="step"><div class="step-num">04</div><div class="step-icon">✨</div><div class="step-title">Keep Learning</div><div class="step-desc">Course videos, recordings and materials stay in your Classroom forever — rewatch anytime.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Class catalog -->
+  <section class="section" id="classes-catalog" style="background:var(--gold-surface);border-top:1px solid var(--gold-border);border-bottom:1px solid var(--gold-border)">
+    <div class="inner">
+      <div class="section-header reveal">
+        <div><div class="section-label" style="color:var(--gold-accent)">The Catalog</div><h2 class="section-h">Classes &amp; <em>Workshops</em></h2></div>
+      </div>
+      <div class="filters reveal" id="class-filters">
+        <button class="filter-btn active" onclick="classFilter('all',this)">All Classes</button>
+        <button class="filter-btn" onclick="classFilter('live',this)">🔴 Live Workshops</button>
+        <button class="filter-btn" onclick="classFilter('ondemand',this)">▶ On-Demand</button>
+        <button class="filter-btn" onclick="classFilter('beginner',this)">🌱 Beginner-Friendly</button>
+        <button class="filter-btn" onclick="classFilter('advanced',this)">🎓 Advanced</button>
+        <span class="results-count" id="class-count"></span>
+      </div>
+      <div class="class-grid" id="classes-grid">
+        <div class="skeleton"><div class="sk-img" style="aspect-ratio:16/10"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+        <div class="skeleton"><div class="sk-img" style="aspect-ratio:16/10"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+        <div class="skeleton"><div class="sk-img" style="aspect-ratio:16/10"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instructor / teaching philosophy band -->
+  <section class="section" style="background:var(--gold-bg)">
+    <div class="inner" style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+      <div class="reveal">
+        <div class="section-label" style="color:var(--gold-accent)">Your Instructor</div>
+        <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:300;color:var(--ink2);line-height:1.15;margin-bottom:16px">Taught by <em style="font-style:italic;background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Cece</em>, Pour by Pour</h2>
+        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:14px">I've spent years learning resin the hard way — the bubbles, the sticky pours, the colors that muddy. In these classes I hand you every shortcut I wish I'd had, so your very first piece feels like magic instead of a mess.</p>
+        <p style="font-size:.9rem;color:var(--muted);line-height:1.9">Classes are small and warm. Ask questions, show me your work, and leave with something you're proud to hang. No art degree required — just a little curiosity.</p>
+        <div class="pills" style="margin-top:20px">
+          <span class="pill">Live Q&amp;A</span><span class="pill">Beginner Friendly</span><span class="pill">Lifetime Access</span><span class="pill">Supply Kits</span>
+        </div>
+      </div>
+      <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:3px">
+        <div style="aspect-ratio:1;overflow:hidden;background:var(--gold-surface)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4026.jpeg" style="width:100%;height:100%;object-fit:cover" alt="" loading="lazy"></div>
+        <div style="aspect-ratio:1;overflow:hidden;background:var(--gold-surface)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/81746D25-6F5A-426B-8BB6-6EC446155E6D.jpeg" style="width:100%;height:100%;object-fit:cover" alt="" loading="lazy"></div>
+        <div style="aspect-ratio:1;overflow:hidden;background:var(--gold-surface)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4036.jpeg" style="width:100%;height:100%;object-fit:cover" alt="" loading="lazy"></div>
+        <div style="aspect-ratio:1;overflow:hidden;background:var(--gold-surface)"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/Gemini_Generated_Image_391xt6391xt6391x.jpg" style="width:100%;height:100%;object-fit:cover" alt="" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Private group / gift a class CTA -->
+  <section class="section" style="background:var(--gold-deep);border-top:1px solid var(--gold-border)">
+    <div class="inner" style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+      <div class="reveal">
+        <div class="section-label" style="color:var(--gold-accent)">Parties & Gifts</div>
+        <h2 class="section-h" style="color:var(--ink2);margin-bottom:16px">Private Groups &amp; <em style="font-style:italic;background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Gift Classes</em></h2>
+        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:24px">Book a private virtual workshop for a birthday, team offsite, bridal shower or girls' night — everyone pours together on the same call. Or gift a class to someone who'd love it, delivered as a printable card with a code.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="cta-btn" onclick="openClassInquiry('private')" style="background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid));color:#fff;box-shadow:0 4px 20px var(--gold-glow)">Plan a Private Workshop →</button>
+          <button class="cta-btn" onclick="openClassInquiry('gift')" style="background:transparent;color:var(--gold-accent);border:1.5px solid var(--gold-border);box-shadow:none">🎁 Gift a Class</button>
+        </div>
+      </div>
+      <div class="reveal" style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:14px;padding:16px;background:var(--white);border:1px solid var(--gold-border);border-radius:8px"><span style="font-size:1.2rem">👥</span><div><div style="font-size:.82rem;font-weight:600;color:var(--ink2);margin-bottom:3px">Private Groups of 4–20</div><div style="font-size:.74rem;color:var(--muted)">One live call, your own date, everyone creates together</div></div></div>
+        <div style="display:flex;gap:14px;padding:16px;background:var(--white);border:1px solid var(--gold-border);border-radius:8px"><span style="font-size:1.2rem">🎁</span><div><div style="font-size:.82rem;font-weight:600;color:var(--ink2);margin-bottom:3px">Gift Any Class</div><div style="font-size:.74rem;color:var(--muted)">Printable card + redeemable code, no expiry</div></div></div>
+        <div style="display:flex;gap:14px;padding:16px;background:var(--white);border:1px solid var(--gold-border);border-radius:8px"><span style="font-size:1.2rem">📦</span><div><div style="font-size:.82rem;font-weight:600;color:var(--ink2);margin-bottom:3px">Supply Kits Shipped</div><div style="font-size:.74rem;color:var(--muted)">Everything measured out and mailed to each guest</div></div></div>
+      </div>
+    </div>
+  </section>
+</div><!-- /classes -->
+
+<!-- ═══════════ CLASSROOM (enrolled students) ═══════════ -->
+<div class="page" id="page-classroom">
+  <div class="page-header" style="background:var(--gold-surface);border-bottom:1px solid var(--gold-border)">
+    <div class="inner">
+      <div class="section-label" style="color:var(--gold-accent)">My Classroom</div>
+      <h1 class="page-header-h" style="color:var(--ink2)">Your <em style="font-style:italic;background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Classroom</em></h1>
+      <p class="page-header-sub" style="color:var(--muted)">Watch lessons, track your progress, download supply lists, and join your live workshops — all in one place.</p>
+    </div>
+  </div>
+  <section class="section" style="background:var(--gold-bg)">
+    <div class="inner">
+      <!-- Access gate -->
+      <div id="cr-gate" class="reveal" style="max-width:440px;margin:0 auto;background:var(--white);border:1px solid var(--gold-border);border-radius:14px;padding:32px 30px;text-align:center">
+        <div style="font-size:2.4rem;margin-bottom:8px">🎓</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--ink2);margin-bottom:6px">Enter Your Classroom</h3>
+        <p style="font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:18px">Enter the email you enrolled with and we'll pull up every class you own.</p>
+        <input class="minput" id="cr-email" type="email" placeholder="your@email.com" style="width:100%;margin-bottom:12px" onkeydown="if(event.key==='Enter')loadMyClasses()">
+        <button class="cta-btn" style="width:100%;justify-content:center;background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid));color:#fff;box-shadow:0 4px 20px var(--gold-glow)" onclick="loadMyClasses()">Open My Classroom →</button>
+        <div style="font-size:.72rem;color:var(--muted2);margin-top:14px">New here? <button onclick="goTo('classes')" style="background:none;border:none;color:var(--gold-accent);font-size:.72rem;cursor:pointer;font-weight:600">Browse classes →</button></div>
+      </div>
+      <!-- Empty state -->
+      <div id="cr-empty" style="display:none;max-width:480px;margin:0 auto;text-align:center;padding:40px 20px">
+        <div style="font-size:2.4rem;margin-bottom:10px">🔍</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--ink2);margin-bottom:8px">No classes found for that email</h3>
+        <p style="font-size:.84rem;color:var(--muted);line-height:1.7;margin-bottom:18px">Double-check the address you enrolled with, or browse the catalog to sign up for your first class.</p>
+        <button class="cta-btn" style="background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid));color:#fff" onclick="goTo('classes')">Browse Classes →</button>
+        <div style="margin-top:12px"><button onclick="crSignOut()" style="background:none;border:none;color:var(--muted2);font-size:.74rem;cursor:pointer">Try a different email</button></div>
+      </div>
+      <!-- Classroom shell -->
+      <div id="cr-shell" class="cr-shell" style="display:none">
+        <div class="cr-side">
+          <div class="cr-side-head">My Classes</div>
+          <div id="cr-class-list"></div>
+          <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--gold-border2)">
+            <div id="cr-student-name" style="font-size:.74rem;color:var(--muted);margin:0 6px 8px"></div>
+            <button onclick="crSignOut()" style="background:none;border:none;color:var(--gold-accent);font-size:.74rem;cursor:pointer;margin:0 6px;font-weight:600">↩ Sign out</button>
+          </div>
+        </div>
+        <div class="cr-main" id="cr-main"></div>
+      </div>
+    </div>
+  </section>
+</div><!-- /classroom -->
+
 <!-- ═══════════ ABOUT ═══════════ -->
 <div class="page" id="page-about">
   <div class="page-header" style="background:var(--green-surface);border-bottom:1px solid var(--green-border)">
@@ -806,23 +1051,21 @@ footer::before{display:none}
     <div class="inner">
       <div class="about-split">
         <div class="reveal">
-          <div class="about-quote-block">
-            <blockquote class="about-quote">"Every pour is <em>unrepeatable.</em> The moment the resin touches the surface, something entirely new comes into the world."</blockquote>
-            <div class="about-attr"><div class="about-attr-line"></div><span class="about-attr-name">Cece — cecepieces</span></div>
+          <div style="border-radius:6px;overflow:hidden;box-shadow:0 10px 40px rgba(30,122,64,.12);background:var(--green-surface)">
+            <img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4026.jpeg" alt="Cece creating a piece in the studio" style="width:100%;display:block" loading="lazy">
           </div>
-          <div style="margin-top:24px;padding:24px 28px;background:var(--amber-light);border:1px solid rgba(201,114,10,.18);border-radius:3px">
-            <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--purple2);margin-bottom:8px">For Designers</div>
-            <div style="font-size:.88rem;color:var(--ink2);line-height:1.85;font-weight:300">Trade pricing available — 30% off retail for interior design professionals. Custom commissions and rental programs welcome.</div>
-            <button class="cta-btn cta-primary" style="margin-top:16px;padding:10px 24px;font-size:.64rem" onclick="goTo('contact')">Apply for Trade Access →</button>
+          <div style="margin-top:26px">
+            <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green-accent);margin-bottom:10px">The Concept</div>
+            <p style="font-size:.9rem;color:var(--muted);line-height:1.9;font-weight:400">Every piece begins with a feeling I want to hold still — a wave, a memory, a moment of light. I work with resin because it moves the way those moments do: fluid, alive, a little unpredictable. My intention is never to control the material completely, but to guide it, and let the beauty happen in the space between.</p>
           </div>
         </div>
         <div class="about-text reveal">
           <p>I'm Cece — an independent artist working in resin, glass, and mixed media. My practice is rooted in process: the controlled chaos of materials in motion, the beauty of things you can't quite predict.</p>
-          <p>Every piece I make is completely original. I don't reproduce, I don't print, I don't re-create. When you own a cecepieces work, you own something that exists nowhere else in the world — with a certificate of authenticity to prove it.</p>
+          <p>Every piece I make is completely original. When you own a piece, you own something that exists nowhere else in the world — with a certificate of authenticity to prove it.</p>
           <p>Headquartered in Seattle, I work in small batches — sometimes a single piece, never more than a few at a time. Each one gets my full attention from first pour to final seal.</p>
           <div class="pills">
             <span class="pill">Resin Art</span><span class="pill">Painting</span><span class="pill">Memorial Pieces</span>
-            <span class="pill">Mixed Media</span><span class="pill">Seattle</span><span class="pill">Trade Pricing</span>
+            <span class="pill">Mixed Media</span><span class="pill">Seattle</span>
           </div>
         </div>
       </div>
@@ -851,7 +1094,7 @@ footer::before{display:none}
       <div class="reveal">
         <div class="section-label" style="color:var(--green-accent)">A Special Category</div>
         <h2 class="section-h" style="color:var(--ink2);margin-bottom:16px">Memorial <em style="font-style:italic;background:linear-gradient(135deg,var(--green-accent),var(--green-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pieces</em></h2>
-        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:16px;font-weight:400">I create handcrafted memorial pieces because I believe the way we honor our loved ones should be as unique as they were. No two are ever alike.</p>
+        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:16px;font-weight:400">I create handcrafted memorial pieces because I believe the way we honor our loved ones should be as unique as they were. No exact duplicates, but a piece can be recreated in a similar design for multiples.</p>
         <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:28px;font-weight:400">Custom colors, personal touches, embedded botanicals and metals can be worked in. The result is something that truly belongs to a specific person and a specific story.</p>
         <button class="cta-btn" onclick="goTo('contact')" style="background:linear-gradient(135deg,var(--green-accent),var(--green-mid));color:#fff;box-shadow:0 4px 20px var(--green-glow)">Inquire About a Custom Memorial Piece →</button>
       </div>
@@ -871,7 +1114,7 @@ footer::before{display:none}
     <div class="inner">
       <div class="section-label">Get in Touch</div>
       <h1 class="page-header-h">Let's <em>Talk</em></h1>
-      <p class="page-header-sub">Questions about a piece, shipping, trade pricing, rental booking, or commissioning something custom.</p>
+      <p class="page-header-sub">Questions about a piece, shipping, rental booking, or commissioning something custom.</p>
     </div>
   </div>
   <section class="section" style="background:var(--surface)">
@@ -893,6 +1136,7 @@ footer::before{display:none}
           <button onclick="prefillContact('trade')" class="quick-btn">🏷️ Trade / designer pricing</button>
           <button onclick="prefillContact('urn')" class="quick-btn">🕊️ Custom memorial piece</button>
           <button onclick="prefillContact('stager')" class="quick-btn">🏠 Stager program inquiry</button>
+          <button onclick="prefillContact('collaborate')" class="quick-btn">🤝 Collaborate with Cece</button>
         </div>
       </div>
       <div class="reveal">
@@ -916,8 +1160,8 @@ footer::before{display:none}
   <div class="inner">
     <div class="footer-grid">
       <div>
-        <button class="footer-logo" onclick="goTo('home')">cece<em>pieces</em></button>
-        <p class="footer-tagline">Original resin and mixed media artwork. Every piece made by hand. No prints. No reproductions.</p>
+        <button class="footer-logo" onclick="goTo('home')">ceces<em>pieces</em></button>
+        <p class="footer-tagline">Original resin and mixed media artwork. Every piece made by hand.</p>
         <div class="footer-socials">
           <a href="https://instagram.com/cecethepiece" target="_blank" class="footer-soc">📷</a>
           <a href="https://tiktok.com/@cecethepiece" target="_blank" class="footer-soc">🎵</a>
@@ -939,16 +1183,23 @@ footer::before{display:none}
         <button class="footer-lnk" onclick="goTo('rentals')">Birthdays</button>
       </div>
       <div>
+        <div class="footer-col-head">Classes</div>
+        <button class="footer-lnk" onclick="goTo('classes')">All Classes</button>
+        <button class="footer-lnk" onclick="goTo('classes');setTimeout(()=>classFilter('live',null),100)">Live Workshops</button>
+        <button class="footer-lnk" onclick="goTo('classes');setTimeout(()=>classFilter('ondemand',null),100)">On-Demand Courses</button>
+        <button class="footer-lnk" onclick="openClassroom()">My Classroom →</button>
+      </div>
+      <div>
         <div class="footer-col-head">Info</div>
         <button class="footer-lnk" onclick="goTo('about')">About Cece</button>
         <button class="footer-lnk" onclick="goTo('contact')">Contact</button>
         <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('commission'),100)">Commission a Piece</button>
-        <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('trade'),100)">Trade Pricing</button>
+        <button class="footer-lnk" onclick="goTo('contact');setTimeout(()=>prefillContact('collaborate'),100)">Collaborate</button>
         <button class="footer-lnk" onclick="openHubLogin()">Hub Login →</button>
       </div>
     </div>
   </div>
-  <div class="inner"><div class="footer-bottom"><span>© 2026 cecepieces. All rights reserved.</span><span id="site-version-stamp" style="font-size:.6rem;color:var(--muted2)"></span><span>Original work. No prints. No reproductions.</span></div></div>
+  <div class="inner"><div class="footer-bottom"><span>© 2026 cecespieces. All rights reserved.</span><span id="site-version-stamp" style="font-size:.6rem;color:var(--muted2)"></span><span>Original handmade artwork.</span></div></div>
 </footer>
 
 <!-- PANEL SPLASH -->
@@ -1103,11 +1354,45 @@ footer::before{display:none}
   </div>
 </div>
 
+<!-- CLASS DETAIL MODAL -->
+<div class="modal-bg" id="classModal" onclick="if(event.target.id==='classModal')closeClass()">
+  <div class="modal-box" style="max-width:640px">
+    <button class="modal-close" onclick="closeClass()">✕</button>
+    <div id="cls-detail"></div>
+  </div>
+</div>
+
+<!-- ENROLL MODAL -->
+<div class="modal-bg" id="enrollModal" onclick="if(event.target.id==='enrollModal')closeEnroll()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeEnroll()">✕</button>
+    <div style="font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-accent);margin-bottom:8px">Enrollment</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:300;color:var(--ink);margin-bottom:4px">Enroll in <em id="enr-class-name" style="font-style:italic;color:var(--gold-accent)">this class</em></h2>
+    <p id="enr-class-sub" style="font-size:.8rem;color:var(--muted);line-height:1.7;margin-bottom:16px"></p>
+    <div class="mrow">
+      <div class="mf"><label class="mlabel">Your Name *</label><input class="minput" id="enr-name" placeholder="Full name"></div>
+      <div class="mf"><label class="mlabel">Email *</label><input class="minput" id="enr-email" type="email" placeholder="your@email.com"></div>
+    </div>
+    <div class="mf"><label class="mlabel">Phone (optional)</label><input class="minput" id="enr-phone" placeholder="(555) 000-0000"></div>
+    <div class="mf" id="enr-kit-wrap"><label class="mlabel">Supply Kit</label>
+      <select class="mselect" id="enr-kit">
+        <option value="none">I'll gather my own supplies</option>
+        <option value="kit">Ship me the supply kit (+ added to invoice)</option>
+      </select>
+    </div>
+    <div class="mf"><label class="mlabel">Anything Cece should know? (optional)</label>
+      <textarea class="mtextarea" id="enr-notes" placeholder="Experience level, questions, who this is for..."></textarea>
+    </div>
+    <button class="msubmit" onclick="submitEnroll()" style="background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid))">Enroll Now →</button>
+    <div style="font-size:.66rem;color:var(--muted2);text-align:center;margin-top:12px;line-height:1.6">Confirmation &amp; payment link sent within 24 hours · Access appears in <button onclick="closeEnroll();openClassroom()" style="background:none;border:none;color:var(--gold-accent);cursor:pointer;font-size:.66rem">My Classroom</button></div>
+  </div>
+</div>
+
 <!-- HUB LOGIN -->
 <div class="hub-login" id="hubLogin" onclick="if(event.target.id==='hubLogin')closeHubLogin()">
   <form class="hub-login-card" id="hubLoginForm" autocomplete="on">
     <button class="hub-login-close" type="button" onclick="closeHubLogin()">✕</button>
-    <div class="hub-login-logo">cece<em>pieces</em></div>
+    <div class="hub-login-logo">ceces<em>pieces</em></div>
     <div class="hub-login-sub">Business Hub · Team Sign In</div>
     <div class="hub-login-err" id="hubLoginErr"></div>
     <label class="hub-login-label" for="hubEmail">Email</label>
@@ -1133,9 +1418,9 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const STRIPE_CHECKOUT_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co/functions/v1/create-checkout';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v2.7';
-const SITE_BUILD    = '2026-09-11';
-const SITE_LABEL    = 'Hub on Vercel · Stripe checkout · Secure leads';
+const SITE_VERSION  = 'v2.9';
+const SITE_BUILD    = '2026-09-16';
+const SITE_LABEL    = 'cecespieces rebrand + artist edits + Academy';
 // ─────────────────────────────────────────────────────────────
 const CONFIGURED = true;
 
@@ -1148,6 +1433,10 @@ const HUB_URL = 'https://cece-hub.vercel.app';
 let allPieces = [], activePiece = null, selectedEvent = 'Birthday', currentPage = 'home';
 let _sf = 'all', _st = null;
 let lbGallery = [], lbIndex = 0;
+
+// ── ACADEMY / CLASSES STATE ──
+let allClasses = [], activeClass = null, enrollClass = null, _cf = 'all';
+let crStudent = null, crClasses = [], crActiveId = null, crActiveLesson = 0, crTimer = null;
 
 // ── DATA ──
 async function fetchPieces() {
@@ -1162,7 +1451,7 @@ async function fetchPieces() {
 }
 
 // ── CATALOG SEED ──
-// The real cecepieces catalog, shown until the Supabase database has its own
+// The real cecespieces catalog, shown until the Supabase database has its own
 // rows. Photos load straight from this repo; colorways are drag/click variations.
 function sampleData(){
   const B='https://raw.githubusercontent.com/modom123/cecethepieces/main/';
@@ -1205,7 +1494,7 @@ function sampleData(){
    materials:'Epoxy resin, pressed lavender & cremation ash, hanging cord',
    description:'A round hanging ornament with real pressed lavender and a whisper of ash suspended in clear resin — light-catching and gentle.',
    image:B+'IMG_4063.jpeg',variations:[]},
-  {id:'cat-floral',title:'Floral Preservation Block',type:'Memorial Piece',price:'150',status:'available',
+  {id:'cat-floral',title:'Floral Preservation Block',type:'Preservation',price:'150',status:'available',
    materials:'Epoxy resin preserving your real flowers, personalized lettering',
    description:'Send me your wedding or anniversary bouquet and I’ll preserve it forever inside a crystal-clear resin block, personalized with names and a date. Made to order.',
    image:B+'IMG_4069.jpeg',variations:[]},
@@ -1213,7 +1502,7 @@ function sampleData(){
    materials:'Resin ornament with personalized name & character, ribbon',
    description:'Personalized keepsake ornaments — a name, a character, a little glitter. Perfect for stockings, gift tags and the tree.',
    image:B+'IMG_4066.jpeg',variations:[]},
-  {id:'cat-frame',title:'Botanical Memory Frame',type:'Memorial Piece',price:'150',status:'available',
+  {id:'cat-frame',title:'Botanical Memory Frame',type:'Preservation',price:'150',status:'available',
    materials:'Round wood frame, real pressed flowers & feathers, glass keepsake vial, resin',
    description:'Real pressed flowers, delicate feathers and a tiny glass keepsake vial arranged inside a round wooden frame — a botanical memory kept under glass. Made to order from your own blooms and mementos.',
    image:B+'botanical-memory-frame_2026-09-11_1302.jpeg',variations:[]},
@@ -1231,6 +1520,68 @@ function sampleData(){
    image:B+'feather-heart-keychain_2026-09-11_1302.jpeg',variations:[]},
 ];}
 
+// ── ACADEMY DATA ──
+// Classes load from Supabase `classes`; until that table has rows we show the
+// curated seed below so the Academy is fully browsable out of the box.
+async function fetchClasses(){
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/classes?select=*&order=created_at.desc`,
+      {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+    if(!r.ok) throw new Error();
+    const rows=await r.json();
+    return (rows&&rows.length)?rows.map(normalizeClass):sampleClasses();
+  }catch(e){ return sampleClasses(); }
+}
+// Supabase stores lessons/materials as JSON/text — normalize to arrays.
+function normalizeClass(c){
+  const arr=v=>{ if(Array.isArray(v))return v; if(typeof v==='string'){try{const p=JSON.parse(v);return Array.isArray(p)?p:[];}catch(e){return v?v.split('\n').filter(Boolean):[];}} return []; };
+  return {...c, active:(c.active!==false), track:(c.track!=null?Number(c.track):99), lessons:arr(c.lessons), materials:arr(c.materials)};
+}
+// Order classes along the learning path: Beginner → Master.
+const LEVEL_RANK={Beginner:1,Intermediate:2,Advanced:3,Master:4,'All Levels':5};
+// A live start date N days from now at a given hour (keeps the demo "upcoming").
+function inDays(n,hour=18){ const d=new Date(); d.setDate(d.getDate()+n); d.setHours(hour,0,0,0); return d.toISOString(); }
+// The 4-class learning ladder — Beginner → Master. This is the same starter
+// catalog the Business Hub ("command center") seeds into Supabase, so what
+// Cece offers, schedules and prices there is exactly what shows here.
+function sampleClasses(){
+  const B='https://raw.githubusercontent.com/modom123/cecethepieces/main/';
+  return[
+  // ── LEVEL 1 · BEGINNER ── self-paced foundation
+  {id:'cls-resin101',track:1,active:true,title:'Resin 101: Your First Pour',type:'ondemand',level:'Beginner',price:'49',
+   blurb:'Start here. The complete self-paced foundation — mixing, coloring, killing bubbles, and a glass-smooth finish.',
+   image:B+'IMG_4034.jpeg',instructor:'Cece',duration:'1 hr 40 min · 6 lessons',
+   description:'Everything a total beginner needs, on your own schedule. Watch each lesson as many times as you like, then follow along at your kitchen table. By the end you’ll have poured a clean, professional-looking piece and understand exactly why it worked — the perfect first rung of the cecespieces path.',
+   materials:['2-part epoxy resin (starter 16 oz)','A few mica pigments','Small wood panels or coasters','Gloves, cups, stir sticks','Heat gun or torch lighter'],
+   lessons:[{title:'What resin is & choosing the right kind',duration:'12 min',video_url:'',free_preview:true},{title:'Measuring & mixing without mistakes',duration:'18 min',video_url:''},{title:'Coloring: pigments, inks & how much',duration:'16 min',video_url:''},{title:'Killing bubbles & controlling cells',duration:'15 min',video_url:''},{title:'Your first full pour, step by step',duration:'25 min',video_url:''},{title:'Curing, demolding & finishing',duration:'14 min',video_url:''}]},
+
+  // ── LEVEL 2 · INTERMEDIATE ── live geode + alcohol ink workshop
+  {id:'cls-geode',track:2,active:true,title:'Geode & Alcohol Ink Art — Live Workshop',type:'live',level:'Intermediate',price:'75',
+   blurb:'Pour a sparkling crystal geode and bloom petri-style ink art, live with Cece in one relaxed evening.',
+   image:B+'81746D25-6F5A-426B-8BB6-6EC446155E6D.jpeg',instructor:'Cece',duration:'2 hours',
+   start_at:inDays(7,18),join_url:'',seats:12,seats_left:6,
+   description:'Your next step up: a camera-on evening where we build a crystal geode and play with blooming alcohol inks together, start to finish. I cover cell-making, the crystal edge, and metallic accents, pausing for your questions the whole way. Assumes you’ve poured at least once (or finished Resin 101).',
+   materials:['2-part epoxy resin (16 oz)','Mica pigment powders (3–4 colors)','Alcohol inks (2–3 colors)','Wooden or canvas panel, 8"–12"','Clear crystals / crushed glass','Nitrile gloves, cups, stir sticks','Heat gun or torch lighter'],
+   lessons:[{title:'Welcome + safety & workspace setup',duration:'15 min',video_url:'',free_preview:true},{title:'Mixing, coloring & the geode base',duration:'40 min',video_url:''},{title:'Crystal edge, cells & alcohol-ink blooms',duration:'40 min',video_url:''},{title:'Metallics, finishing & live Q&A',duration:'25 min',video_url:''}]},
+
+  // ── LEVEL 3 · ADVANCED ── live coastal + memorial keepsakes
+  {id:'cls-coastal',track:3,active:true,title:'Ocean Waves & Memorial Keepsakes — Live',type:'live',level:'Advanced',price:'95',
+   blurb:'Sculpt lacing waves, a sandy shoreline, and learn to preserve flowers & keepsakes in resin, live.',
+   image:B+'IMG_4036.jpeg',instructor:'Cece',duration:'2.5 hours',
+   start_at:inDays(15,18),join_url:'',seats:10,seats_left:4,
+   description:'An advanced live session in two parts: first the white lacing-wave technique over real sand for a coastal scene, then the respectful craft of preserving flowers, sand or a keepsake into a memorial piece. Faster paced — best once you’re comfortable timing a pour.',
+   materials:['2-part epoxy resin (24 oz)','White + blue/teal pigments','Real fine beach sand','Dried / pressed flowers or a keepsake','Wood panel, tray or silicone mold','Heat gun, gloves, cups, stir sticks'],
+   lessons:[{title:'The coastal color plan & base layer',duration:'30 min',video_url:'',free_preview:true},{title:'The lacing wave technique',duration:'40 min',video_url:''},{title:'Preserving flowers & keepsakes, respectfully',duration:'45 min',video_url:''},{title:'Finishing, personalization & Q&A',duration:'25 min',video_url:''}]},
+
+  // ── LEVEL 4 · MASTER ── the signature river table masterclass
+  {id:'cls-river',track:4,active:true,title:'The River Table Masterclass',type:'ondemand',level:'Master',price:'129',
+   blurb:'The signature cecespieces look. Live-edge wood + a deep resin river, taught end to end. Our deepest course.',
+   image:B+'IMG_4026.jpeg',instructor:'Cece',duration:'2 hr 10 min · 7 lessons',
+   description:'The full masterclass on my signature framed river pieces — from prepping live-edge wood and building a leak-proof dam, to the deep colored pour, the druzy crystal heart, sanding back to glass, and the flawless flood coat. The most in-depth course in the Academy and the top of the path.',
+   materials:['Live-edge wood slab or board','Deep-pour epoxy resin (32 oz+)','Tuck tape & melamine for a dam','Pigments + druzy crystals','Orbital sander & finishing supplies','Heat gun, gloves, cups'],
+   lessons:[{title:'Choosing & prepping the wood',duration:'18 min',video_url:'',free_preview:true},{title:'Building a leak-proof dam',duration:'16 min',video_url:''},{title:'Coloring the river & planning depth',duration:'18 min',video_url:''},{title:'The deep pour (and avoiding overheating)',duration:'22 min',video_url:''},{title:'Setting the druzy crystal heart',duration:'20 min',video_url:''},{title:'Sanding back to glass',duration:'18 min',video_url:''},{title:'The flood coat & final seal',duration:'18 min',video_url:''}]},
+];}
+
 // ── ROUTING ──
 function goTo(page) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1244,6 +1595,8 @@ function goTo(page) {
   if(page==='home')    renderHome();
   if(page==='shop')    renderShop();
   if(page==='rentals') renderRentals();
+  if(page==='classes') renderClasses();
+  if(page==='classroom') renderClassroomGate();
   if(page==='about')   renderAbout();
   setTimeout(initReveal,80);
 }
@@ -1323,11 +1676,11 @@ function renderHome(){
 // ── RENDER SHOP ──
 // Pieces are grouped by category (medium) in a set order so the shop never
 // looks random. Any unknown category sorts to the end.
-const CAT_ORDER=['Resin Art','Statement Panel','Memorial Piece','Seasonal Gift','Painting','Mixed Media','Drawing','Sculpture','Photography'];
-const CAT_LABEL={'Resin Art':'Resin Art','Statement Panel':'Statement Panels','Memorial Piece':'Memorial Pieces','Seasonal Gift':'Seasonal & Gifts','Painting':'Paintings','Mixed Media':'Mixed Media','Drawing':'Drawings','Sculpture':'Sculpture','Photography':'Photography'};
+const CAT_ORDER=['Memorial Piece','Preservation','Resin Art','Statement Panel','Mixed Media','Painting','Seasonal Gift','Drawing','Sculpture','Photography'];
+const CAT_LABEL={'Resin Art':'Resin Art','Statement Panel':'Statement Panels','Memorial Piece':'Memorial Pieces','Preservation':'Preservation','Seasonal Gift':'Seasonal & Gifts','Painting':'Paintings','Mixed Media':'Mixed Media','Drawing':'Drawings','Sculpture':'Sculpture','Photography':'Photography'};
 function catKey(p){return p.type==='Decorative Urn'?'Memorial Piece':(p.type||'Other');}
 function catRank(t){const i=CAT_ORDER.indexOf(t);return i<0?CAT_ORDER.length:i;}
-function catHeadHTML(label){return `<div class="shop-cat-head" style="grid-column:1/-1;font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--ink2);margin:22px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--light-border)">${label}</div>`;}
+function catHeadHTML(label){return `<div class="shop-cat-head" style="grid-column:1/-1;font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--ink2);margin:26px 0 8px;padding-bottom:10px;border-bottom:1px solid var(--light-border);text-align:center">${label}</div>`;}
 function renderShop(){
   let list=allPieces;
   if(_sf==='available') list=list.filter(p=>(p.status||'available')==='available');
@@ -1379,6 +1732,413 @@ function renderAbout(){
   const urns=allPieces.filter(p=>p.type==='Memorial Piece'||p.type==='Decorative Urn').slice(0,4);
   const ug=document.getElementById('urn-grid');
   if(urns.length&&ug) ug.innerHTML=urns.map(p=>`<div style="aspect-ratio:1;overflow:hidden;background:var(--surface2)">${p.image?`<img src="${p.image}" style="width:100%;height:100%;object-fit:cover;display:block" alt="">`:''}</div>`).join('');
+}
+
+// ═══════════════ ACADEMY / CLASSES ═══════════════
+function fmtClassDate(iso){
+  if(!iso) return 'Date TBD';
+  const d=new Date(iso);
+  return d.toLocaleDateString('en-US',{weekday:'short',month:'long',day:'numeric'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+}
+function classTypeLabel(c){ return c.type==='live'?'Live Workshop':'On-Demand Course'; }
+
+function classCardHTML(c){
+  const isLive=c.type==='live';
+  const seatsLeft=(c.seats_left!=null)?Number(c.seats_left):null;
+  const full=isLive && seatsLeft!=null && seatsLeft<=0;
+  const badge=isLive
+    ?`<div class="class-badge badge-live"><span class="live-dot"></span>Live · ${fmtClassDate(c.start_at).split(' · ')[0]}</div>`
+    :`<div class="class-badge badge-ondemand">▶ On-Demand</div>`;
+  const seats=isLive?(full?'<span class="class-seats full">Waitlist only</span>':(seatsLeft!=null?`<span class="class-seats">${seatsLeft} seat${seatsLeft!==1?'s':''} left</span>`:'')):`<span class="class-seats">Lifetime access</span>`;
+  const img=c.image?`<img src="${c.image}" alt="${c.title}" loading="lazy">`:'<div class="class-thumb-empty">🎨</div>';
+  const lessonCount=(c.lessons||[]).length;
+  return`<div class="class-card" onclick="openClass('${c.id}')">
+    <div class="class-thumb">${img}${badge}${c.price?`<div class="class-price-tag">$${Number(c.price).toLocaleString()}</div>`:''}</div>
+    <div class="class-body">
+      <div class="class-level">${c.level||'All Levels'} · ${classTypeLabel(c)}</div>
+      <div class="class-name">${c.title}</div>
+      <div class="class-blurb">${c.blurb||''}</div>
+      <div class="class-meta">
+        <span>⏱ ${c.duration||''}</span>
+        ${lessonCount?`<span>📚 ${lessonCount} lesson${lessonCount!==1?'s':''}</span>`:''}
+        ${isLive?`<span>📅 ${fmtClassDate(c.start_at)}</span>`:''}
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px">${seats}</div>
+      <button class="class-card-btn" onclick="event.stopPropagation();openClass('${c.id}')">${isLive?(full?'Join the Waitlist →':'View & Enroll →'):'View Course →'}</button>
+    </div>
+  </div>`;
+}
+
+function renderClasses(){
+  renderNextLive();
+  // Only classes Cece has marked active in the command center are offered.
+  let list=allClasses.filter(c=>c.active!==false);
+  if(_cf==='live') list=list.filter(c=>c.type==='live');
+  else if(_cf==='ondemand') list=list.filter(c=>c.type==='ondemand');
+  else if(_cf==='beginner') list=list.filter(c=>['Beginner','Intermediate'].includes(c.level));
+  else if(_cf==='advanced') list=list.filter(c=>['Advanced','Master'].includes(c.level));
+  // Follow the learning path (track / level), with any live sessions surfaced by date within a tie.
+  list.sort((a,b)=>{
+    const ta=(a.track!=null?a.track:LEVEL_RANK[a.level]||99), tb=(b.track!=null?b.track:LEVEL_RANK[b.level]||99);
+    if(ta!==tb) return ta-tb;
+    if(a.type==='live'&&b.type==='live') return new Date(a.start_at||0)-new Date(b.start_at||0);
+    return 0;
+  });
+  const cnt=document.getElementById('class-count'); if(cnt) cnt.textContent=list.length+' class'+(list.length!==1?'es':'');
+  const grid=document.getElementById('classes-grid'); if(!grid) return;
+  grid.innerHTML=list.length?list.map(classCardHTML).join(''):`<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🎨</div><div class="empty-h">No classes here yet</div><div class="empty-sub">Try another filter, or check back soon — new workshops are added often.</div></div>`;
+}
+
+function renderNextLive(){
+  const strip=document.getElementById('next-live-strip'); if(!strip) return;
+  const upcoming=allClasses.filter(c=>c.type==='live'&&c.start_at&&new Date(c.start_at)>new Date())
+    .sort((a,b)=>new Date(a.start_at)-new Date(b.start_at))[0];
+  if(!upcoming){ strip.style.display='none'; return; }
+  strip.style.display='block';
+  document.getElementById('next-live-inner').innerHTML=`
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="class-badge badge-live" style="position:static"><span class="live-dot"></span>Next Live</span>
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--ink2)">${upcoming.title}</div>
+          <div style="font-size:.78rem;color:var(--muted)">${fmtClassDate(upcoming.start_at)} · ${upcoming.duration||''}${upcoming.seats_left!=null?' · '+upcoming.seats_left+' seats left':''}</div>
+        </div>
+      </div>
+      <button class="cta-btn" style="background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid));color:#fff;box-shadow:0 4px 16px var(--gold-glow)" onclick="openClass('${upcoming.id}')">Reserve My Seat →</button>
+    </div>`;
+}
+
+function classFilter(f,btn){
+  _cf=f;
+  document.querySelectorAll('#class-filters .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else{ const map={all:0,live:1,ondemand:2,beginner:3,advanced:4}; document.querySelectorAll('#class-filters .filter-btn')[map[f]??0]?.classList.add('active'); }
+  renderClasses();
+}
+
+// ── CLASS DETAIL MODAL ──
+function openClass(id){
+  const c=allClasses.find(x=>x.id===id); if(!c) return;
+  activeClass=c;
+  const isLive=c.type==='live';
+  const full=isLive && c.seats_left!=null && Number(c.seats_left)<=0;
+  const lessons=(c.lessons||[]).map((l,i)=>`
+    <div class="cls-lesson">
+      <div class="cls-lesson-num">${i+1}</div>
+      <div class="cls-lesson-info"><div class="cls-lesson-title">${l.title}</div><div class="cls-lesson-dur">${l.duration||''}</div></div>
+      ${l.free_preview?'<span class="cls-preview-tag">Free preview</span>':''}
+    </div>`).join('');
+  const materials=(c.materials||[]).map(m=>`<div class="cls-supply">${m}</div>`).join('');
+  document.getElementById('cls-detail').innerHTML=`
+    ${c.image?`<div class="cls-modal-cover"><img src="${c.image}" alt="${c.title}"></div>`:''}
+    <div style="font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-accent);margin-bottom:8px">${c.level||'All Levels'} · ${classTypeLabel(c)}</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.75rem;font-weight:300;color:var(--ink);margin-bottom:6px">${c.title}</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:.78rem;color:var(--muted2);margin-bottom:14px">
+      <span>⏱ ${c.duration||''}</span>
+      ${isLive?`<span>📅 ${fmtClassDate(c.start_at)}</span>`:''}
+      ${isLive && c.seats_left!=null?`<span style="color:${full?'var(--danger)':'var(--gold-accent)'};font-weight:600">${full?'Waitlist only':c.seats_left+' seats left'}</span>`:'<span>♾ Lifetime access</span>'}
+      ${c.price?`<span style="color:var(--ink2);font-weight:700">$${Number(c.price).toLocaleString()}</span>`:''}
+    </div>
+    <p style="font-size:.9rem;color:var(--muted);line-height:1.85;margin-bottom:20px">${c.description||c.blurb||''}</p>
+    ${lessons?`<div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-accent);font-weight:600;margin-bottom:12px">${isLive?'What We’ll Cover':'Course Lessons'}</div>${lessons}`:''}
+    ${materials?`<div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-accent);font-weight:600;margin:22px 0 12px">What You’ll Need</div>${materials}`:''}
+    <button class="msubmit" style="margin-top:22px;background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid))" onclick="openEnroll('${c.id}')">${full?'Join the Waitlist →':(isLive?'Reserve My Seat — $'+Number(c.price).toLocaleString()+' →':'Enroll — $'+Number(c.price).toLocaleString()+' →')}</button>
+    <div style="font-size:.66rem;color:var(--muted2);text-align:center;margin-top:12px">Already enrolled? <button onclick="closeClass();openClassroom()" style="background:none;border:none;color:var(--gold-accent);cursor:pointer;font-size:.66rem;font-weight:600">Go to My Classroom →</button></div>`;
+  document.getElementById('classModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeClass(){ document.getElementById('classModal').classList.remove('open'); document.body.style.overflow=''; activeClass=null; }
+
+// ── ENROLL ──
+function openEnroll(id){
+  const c=allClasses.find(x=>x.id===id)||activeClass; if(!c) return;
+  enrollClass=c;
+  closeClass();
+  document.getElementById('enr-class-name').textContent=c.title;
+  document.getElementById('enr-class-sub').textContent=c.type==='live'
+    ? `Live workshop · ${fmtClassDate(c.start_at)} · ${c.duration||''}. Cece confirms your seat and sends the join link.`
+    : `On-demand course · ${c.duration||''}. Lifetime access unlocks in My Classroom once confirmed.`;
+  document.getElementById('enrollModal').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>document.getElementById('enr-name').focus(),60);
+}
+function closeEnroll(){ document.getElementById('enrollModal').classList.remove('open'); document.body.style.overflow=''; }
+
+async function submitEnroll(){
+  const name=document.getElementById('enr-name').value.trim();
+  const email=document.getElementById('enr-email').value.trim();
+  if(!name){ showToast('Please enter your name.'); return; }
+  if(!email){ showToast('Please enter your email.'); return; }
+  const phone=document.getElementById('enr-phone').value.trim();
+  const kit=document.getElementById('enr-kit').value;
+  const notes=document.getElementById('enr-notes').value.trim();
+  const c=enrollClass;
+  const kitNote=kit==='kit'?'Wants a supply kit shipped. ':'';
+  const fullNotes=(phone?('Phone: '+phone+'\n'):'')+kitNote+(notes||'');
+  const enrollment={
+    student_name:name, student_email:email, student_phone:phone||null,
+    class_id:c?c.id:null, class_title:c?c.title:'Class', class_type:c?c.type:null,
+    price:c?c.price:null, supply_kit:(kit==='kit'), status:'pending', notes:notes||null,
+    created_at:new Date().toISOString()
+  };
+  // 1) Enrollment row (Academy roster). 2) Order row so CRM + Sales agent see the lead.
+  if(CONFIGURED){
+    try{ await fetch(`${SUPABASE_URL}/rest/v1/class_enrollments`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(enrollment)});}catch(e){}
+    try{ await fetch(`${SUPABASE_URL}/rest/v1/orders`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({piece_title:(c?c.title:'Class')+' (Class Enrollment)',price:c?c.price:null,type:'class-enrollment',status:'pending',source:'website academy',customer_name:name,customer_email:email,notes:fullNotes,created_at:new Date().toISOString()})});}catch(e){}
+  }
+  // Remember locally so the student's Classroom works instantly (even offline).
+  rememberEnrollment(email,name,c);
+  // Email fallback so Cece always gets it.
+  const s=encodeURIComponent(`Class Enrollment — ${c?c.title:''} — ${name}`);
+  const b=encodeURIComponent(`New class enrollment!\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone||'Not provided'}\n\nClass: ${c?c.title:''} (${c?classTypeLabel(c):''})\n${c&&c.type==='live'?'Session: '+fmtClassDate(c.start_at)+'\n':''}Price: ${c&&c.price?'$'+c.price:'—'}\nSupply kit: ${kit==='kit'?'Yes — ship a kit':'No'}\n\nNotes:\n${notes||'None'}`);
+  window.open(`mailto:hello@cecethepiece.com?subject=${s}&body=${b}`);
+  closeEnroll();
+  showToast('🎉 You’re enrolled! Check My Classroom for your class.',true);
+  ['enr-name','enr-phone','enr-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  setTimeout(()=>{ crStudent={name,email}; goTo('classroom'); loadMyClasses(email); },700);
+}
+
+// Private-workshop & gift-a-class inquiries reuse the Contact form.
+function openClassInquiry(kind){
+  goTo('contact');
+  setTimeout(()=>{
+    const sub=kind==='gift'?'Gift a Class':'Private Workshop Inquiry';
+    const msg=kind==='gift'
+      ?"Hi Cece,\n\nI'd like to gift a class.\n\n• Which class (or let recipient choose): \n• Recipient's name: \n• Occasion / date needed: \n\nThank you!"
+      :"Hi Cece,\n\nI'd like to book a private virtual workshop.\n\n• Occasion: \n• Group size: \n• Preferred dates: \n• Which class / theme: \n• Ship supply kits to guests? \n\nLooking forward to it!";
+    const sEl=document.getElementById('cf-subject'), mEl=document.getElementById('cf-msg');
+    if(sEl)sEl.value=sub; if(mEl)mEl.value=msg;
+    document.getElementById('cf-name')?.focus();
+    showToast('Template loaded — fill in your details!',true);
+  },120);
+}
+
+// ═══════════════ MY CLASSROOM ═══════════════
+// Enrollments the visitor made on this device (so access is instant), plus a
+// live lookup by email against Supabase for classes enrolled elsewhere.
+function loadLocalEnrollments(){ try{ return JSON.parse(localStorage.getItem('cece_enrollments')||'[]'); }catch(e){ return []; } }
+function rememberEnrollment(email,name,c){
+  if(!c) return;
+  try{
+    const all=loadLocalEnrollments();
+    if(!all.some(e=>e.email===email && e.class_id===c.id)) all.push({email:(email||'').toLowerCase(),name,class_id:c.id,class_title:c.title});
+    localStorage.setItem('cece_enrollments',JSON.stringify(all));
+  }catch(e){}
+}
+function loadProgress(){ try{ return JSON.parse(localStorage.getItem('cece_cr_progress')||'{}'); }catch(e){ return {}; } }
+function saveProgress(p){ try{ localStorage.setItem('cece_cr_progress',JSON.stringify(p)); }catch(e){} }
+
+function renderClassroomGate(){
+  // Remember the last student on this device.
+  if(!crStudent){ try{ const s=JSON.parse(localStorage.getItem('cece_cr_student')||'null'); if(s&&s.email){ crStudent=s; } }catch(e){} }
+  if(crStudent&&crStudent.email){ loadMyClasses(crStudent.email); }
+  else{ showCrGate(); }
+}
+function showCrGate(){
+  document.getElementById('cr-gate').style.display='block';
+  document.getElementById('cr-shell').style.display='none';
+  document.getElementById('cr-empty').style.display='none';
+  if(crTimer){ clearInterval(crTimer); crTimer=null; }
+}
+function openClassroom(){ goTo('classroom'); }
+
+async function loadMyClasses(emailArg){
+  const email=(emailArg||document.getElementById('cr-email').value||'').trim().toLowerCase();
+  if(!email){ showToast('Please enter your email.'); return; }
+  const name=(crStudent&&crStudent.email===email)?crStudent.name:'';
+  crStudent={email,name:name||email.split('@')[0]};
+  try{ localStorage.setItem('cece_cr_student',JSON.stringify(crStudent)); }catch(e){}
+  if(!allClasses.length) allClasses=await fetchClasses();
+
+  // Gather enrolled class ids: local first, then Supabase by email.
+  const ids=new Set();
+  loadLocalEnrollments().filter(e=>e.email===email).forEach(e=>ids.add(e.class_id));
+  if(CONFIGURED){
+    try{
+      const r=await fetch(`${SUPABASE_URL}/rest/v1/class_enrollments?select=class_id,student_name&student_email=eq.${encodeURIComponent(email)}`,
+        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+      if(r.ok){ const rows=await r.json(); rows.forEach(row=>{ if(row.class_id) ids.add(row.class_id); if(row.student_name && !crStudent.name) crStudent.name=row.student_name; }); }
+    }catch(e){}
+  }
+  crClasses=allClasses.filter(c=>ids.has(c.id));
+  if(!crClasses.length){
+    document.getElementById('cr-gate').style.display='none';
+    document.getElementById('cr-shell').style.display='none';
+    document.getElementById('cr-empty').style.display='block';
+    return;
+  }
+  document.getElementById('cr-gate').style.display='none';
+  document.getElementById('cr-empty').style.display='none';
+  document.getElementById('cr-shell').style.display='grid';
+  document.getElementById('cr-student-name').textContent='Signed in as '+(crStudent.name||email);
+  crActiveId=crClasses[0].id; crActiveLesson=0;
+  renderCrList(); renderCrMain();
+}
+function crSignOut(){
+  crStudent=null; crClasses=[]; crActiveId=null;
+  try{ localStorage.removeItem('cece_cr_student'); }catch(e){}
+  const em=document.getElementById('cr-email'); if(em) em.value='';
+  showCrGate();
+}
+
+function classProgressPct(c){
+  const total=(c.lessons||[]).length; if(!total) return 0;
+  const p=loadProgress()[c.id]; const done=(p&&p.done)?p.done.length:0;
+  return Math.round(done/total*100);
+}
+function renderCrList(){
+  const el=document.getElementById('cr-class-list'); if(!el) return;
+  el.innerHTML=crClasses.map(c=>{
+    const pct=classProgressPct(c);
+    const live=c.type==='live';
+    return `<div class="cr-class-item ${c.id===crActiveId?'active':''}" onclick="selectCrClass('${c.id}')">
+      <div class="cr-class-item-title">${c.title}</div>
+      <div class="cr-class-item-meta">${live?'🔴 Live · '+fmtClassDate(c.start_at).split(' · ')[0]:'▶ '+((c.lessons||[]).length)+' lessons · '+pct+'%'}</div>
+      ${live?'':`<div class="cr-progress-bar"><div class="cr-progress-fill" style="width:${pct}%"></div></div>`}
+    </div>`;
+  }).join('');
+}
+function selectCrClass(id){ crActiveId=id; crActiveLesson=0; renderCrList(); renderCrMain(); }
+
+function liveState(c){
+  // returns {status:'soon'|'live'|'past', msg}
+  if(!c.start_at) return {status:'soon'};
+  const start=new Date(c.start_at).getTime();
+  const now=Date.now();
+  const durMin=(/([\d.]+)\s*hour/i.exec(c.duration||'')?parseFloat(RegExp.$1)*60:120);
+  const openFrom=start-15*60*1000, closeAt=start+durMin*60*1000;
+  if(now<openFrom) return {status:'soon'};
+  if(now>=openFrom && now<=closeAt) return {status:'live'};
+  return {status:'past'};
+}
+function fmtCountdown(ms){
+  if(ms<0) ms=0;
+  const s=Math.floor(ms/1000), d=Math.floor(s/86400), h=Math.floor(s%86400/3600), m=Math.floor(s%3600/60), ss=s%60;
+  if(d>0) return `${d}d ${h}h ${m}m`;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+}
+// Turn a lesson/stream URL into an inline player. Supports YouTube, Vimeo,
+// Twitch (VODs + live channels) and direct video files. Returns null for
+// links that can't be embedded (Zoom, Google Meet) so the caller shows a
+// "Join" button instead — the right pattern for those platforms.
+function classVideoEmbed(url){
+  if(!url) return null;
+  const u=(''+url).trim();
+  const host=(location.hostname||'localhost');
+  let m=u.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|live\/|shorts\/)|youtu\.be\/)([\w-]{6,})/);
+  if(m) return `<iframe src="https://www.youtube.com/embed/${m[1]}" title="Class video" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>`;
+  m=u.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if(m) return `<iframe src="https://player.vimeo.com/video/${m[1]}" title="Class video" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe>`;
+  m=u.match(/twitch\.tv\/videos\/(\d+)/);
+  if(m) return `<iframe src="https://player.twitch.tv/?video=${m[1]}&parent=${host}&autoplay=false" title="Twitch video" allowfullscreen></iframe>`;
+  m=u.match(/(?:player\.)?twitch\.tv\/(?:\?channel=)?([A-Za-z0-9_]{3,25})(?:$|[/?])/);
+  if(m && !/videos/.test(u)) return `<iframe src="https://player.twitch.tv/?channel=${m[1]}&parent=${host}&autoplay=false" title="Twitch live" allowfullscreen></iframe>`;
+  if(/\.(mp4|webm|ogg|ogv|mov)(\?|#|$)/i.test(u)) return `<video src="${u}" controls playsinline></video>`;
+  return null; // Zoom / Meet / unknown → join button
+}
+function isZoomLike(url){ return /zoom\.us|meet\.google|teams\.microsoft|webex\./i.test(url||''); }
+
+function renderCrMain(){
+  const c=crClasses.find(x=>x.id===crActiveId); if(!c) return;
+  const main=document.getElementById('cr-main');
+  if(crTimer){ clearInterval(crTimer); crTimer=null; }
+
+  if(c.type==='live'){
+    main.innerHTML=`
+      <div id="cr-live-banner-wrap"></div>
+      <div id="cr-live-stream"></div>
+      <div style="font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-accent);font-weight:600;margin-bottom:6px">Live Workshop</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--ink2);margin-bottom:8px">${c.title}</h2>
+      <p style="font-size:.86rem;color:var(--muted);line-height:1.8;margin-bottom:18px">${c.description||c.blurb||''}</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px">
+        <button class="cta-btn" style="background:transparent;color:var(--gold-accent);border:1.5px solid var(--gold-border);box-shadow:none" onclick="addToCalendar('${c.id}')">📅 Add to Calendar</button>
+      </div>
+      <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-accent);font-weight:600;margin-bottom:12px">What We’ll Cover</div>
+      ${(c.lessons||[]).map((l,i)=>`<div class="cls-lesson"><div class="cls-lesson-num">${i+1}</div><div class="cls-lesson-info"><div class="cls-lesson-title">${l.title}</div><div class="cls-lesson-dur">${l.duration||''}</div></div></div>`).join('')}
+      <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-accent);font-weight:600;margin:22px 0 12px">Your Supply List</div>
+      ${(c.materials||[]).map(m=>`<div class="cls-supply">${m}</div>`).join('')}`;
+    const paint=()=>{
+      const st=liveState(c), wrap=document.getElementById('cr-live-banner-wrap'); if(!wrap) return;
+      const stream=document.getElementById('cr-live-stream');
+      const embed=(st.status==='live')?classVideoEmbed(c.join_url):null;
+      if(stream) stream.innerHTML=embed?`<div class="cr-video">${embed}</div>`:'';
+      if(st.status==='live'){
+        const action=embed
+          ? (c.join_url?`<a class="cr-live-join" href="${c.join_url}" target="_blank" rel="noopener">Open full screen ↗</a>`:'')
+          : (c.join_url?`<a class="cr-live-join" href="${c.join_url}" target="_blank" rel="noopener">${isZoomLike(c.join_url)?'Join on '+(/zoom/i.test(c.join_url)?'Zoom':'Video')+' →':'Join the Class →'}</a>`:`<span style="font-size:.8rem;opacity:.95">Join link posts here at start — refresh if you don’t see it.</span>`);
+        wrap.innerHTML=`<div class="cr-live-banner"><div><div style="font-weight:700;font-size:1.05rem">🔴 Class is live now!</div><div style="font-size:.8rem;opacity:.9">${fmtClassDate(c.start_at)}${embed?' · streaming below':''}</div></div>${action}</div>`;
+      } else if(st.status==='past'){
+        wrap.innerHTML=`<div class="cr-live-banner" style="background:linear-gradient(135deg,var(--gold-accent),var(--gold-mid))"><div><div style="font-weight:700;font-size:1.05rem">This session has ended</div><div style="font-size:.8rem;opacity:.9">A recording will appear in your Classroom within 48 hours.</div></div></div>`;
+        if(crTimer){ clearInterval(crTimer); crTimer=null; }
+      } else {
+        const ms=new Date(c.start_at).getTime()-Date.now();
+        wrap.innerHTML=`<div class="cr-live-banner"><div><div style="font-weight:700;font-size:1.05rem">Starts in <span class="cr-countdown">${fmtCountdown(ms)}</span></div><div style="font-size:.8rem;opacity:.9">${fmtClassDate(c.start_at)}</div></div>${c.join_url?`<a class="cr-live-join" href="${c.join_url}" target="_blank" rel="noopener">Join link ready →</a>`:`<span style="font-size:.8rem;opacity:.95">Join button unlocks 15 min before start.</span>`}</div>`;
+      }
+    };
+    paint(); crTimer=setInterval(paint,1000);
+    return;
+  }
+
+  // On-demand course: video player + lesson list with progress.
+  const lessons=c.lessons||[];
+  const prog=loadProgress()[c.id]||{done:[]};
+  const cur=lessons[crActiveLesson]||lessons[0]||{};
+  const pct=classProgressPct(c);
+  const embed=classVideoEmbed(cur.video_url);
+  const video=embed
+    ? embed
+    : (cur.video_url
+        ? `<div class="cr-video-empty"><div style="font-size:2rem">🔗</div><div style="font-weight:600">${cur.title||'Lesson'}</div><a class="cr-live-join" href="${cur.video_url}" target="_blank" rel="noopener" style="margin-top:6px">Open this lesson ↗</a></div>`
+        : `<div class="cr-video-empty"><div style="font-size:2rem">🎬</div><div style="font-weight:600">${cur.title||'Lesson'}</div><div style="font-size:.8rem;max-width:340px">Your lesson video plays here. Cece uploads each lesson to your Classroom — you’ll get an email the moment it’s ready.</div></div>`);
+  main.innerHTML=`
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:12px">
+      <div><div style="font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-accent);font-weight:600">On-Demand Course</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.45rem;color:var(--ink2)">${c.title}</h2></div>
+      <div style="text-align:right"><div style="font-size:.72rem;color:var(--muted2)">${pct}% complete</div><div class="cr-progress-bar" style="width:120px"><div class="cr-progress-fill" style="width:${pct}%"></div></div></div>
+    </div>
+    <div class="cr-video">${video}</div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px">
+      <div><div style="font-size:.95rem;font-weight:600;color:var(--ink2)">Lesson ${crActiveLesson+1}: ${cur.title||''}</div><div style="font-size:.74rem;color:var(--muted2)">${cur.duration||''}</div></div>
+      <button class="cta-btn" style="background:${(prog.done||[]).includes(crActiveLesson)?'var(--gold-soft)':'linear-gradient(135deg,var(--gold-accent),var(--gold-mid))'};color:${(prog.done||[]).includes(crActiveLesson)?'var(--gold-accent)':'#fff'};box-shadow:none;border:1px solid var(--gold-border)" onclick="crToggleDone(${crActiveLesson})">${(prog.done||[]).includes(crActiveLesson)?'✓ Completed':'Mark Complete'}</button>
+    </div>
+    <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-accent);font-weight:600;margin-bottom:12px">Lessons</div>
+    ${lessons.map((l,i)=>{
+      const done=(prog.done||[]).includes(i);
+      return `<div class="cr-lesson-row ${i===crActiveLesson?'playing':''}" onclick="crPlay(${i})">
+        <div class="cr-check ${done?'done':''}">${done?'✓':''}</div>
+        <div style="flex:1;min-width:0"><div style="font-size:.85rem;color:var(--ink2);font-weight:500">${i+1}. ${l.title}</div><div style="font-size:.7rem;color:var(--muted2)">${l.duration||''}</div></div>
+        <div style="font-size:1rem;color:var(--gold-accent)">${i===crActiveLesson?'▶':'▷'}</div>
+      </div>`;
+    }).join('')}
+    <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-accent);font-weight:600;margin:24px 0 12px">Supply List</div>
+    ${(c.materials||[]).map(m=>`<div class="cls-supply">${m}</div>`).join('')}`;
+}
+function crPlay(i){ crActiveLesson=i; renderCrMain(); document.getElementById('cr-main').scrollTop=0; }
+function crToggleDone(i){
+  const p=loadProgress(); const cur=p[crActiveId]||{done:[]};
+  const set=new Set(cur.done||[]);
+  if(set.has(i)) set.delete(i); else set.add(i);
+  cur.done=[...set]; cur.lastLesson=i; p[crActiveId]=cur; saveProgress(p);
+  renderCrList(); renderCrMain();
+}
+
+// Download a .ics so students can add a live class to their calendar.
+function addToCalendar(id){
+  const c=(crClasses.find(x=>x.id===id))||allClasses.find(x=>x.id===id); if(!c||!c.start_at) return;
+  const start=new Date(c.start_at);
+  const durMin=(/([\d.]+)\s*hour/i.exec(c.duration||'')?parseFloat(RegExp.$1)*60:120);
+  const end=new Date(start.getTime()+durMin*60000);
+  const z=d=>d.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//cecespieces Academy//EN','BEGIN:VEVENT',
+    'UID:'+c.id+'@cecespieces','DTSTAMP:'+z(new Date()),'DTSTART:'+z(start),'DTEND:'+z(end),
+    'SUMMARY:'+c.title+' — cecespieces Academy',
+    'DESCRIPTION:Your live online art class with Cece.'+(c.join_url?' Join: '+c.join_url:''),
+    (c.join_url?'URL:'+c.join_url:''),'END:VEVENT','END:VCALENDAR'].filter(Boolean).join('\r\n');
+  const blob=new Blob([ics],{type:'text/calendar'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=c.title.replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.ics'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  showToast('📅 Calendar invite downloaded!',true);
 }
 
 // ── LIGHTBOX ──
@@ -1528,7 +2288,8 @@ function closePanelSplash(){ clearTimeout(splashTimer); document.getElementById(
 
 function openPiece(id, skipSplash){
   const p=allPieces.find(x=>String(x.id)===String(id));if(!p)return;
-  if(!skipSplash){ var _cfg=splashConfigFor(p); if(_cfg && _cfg.slides.length){ openPanelSplash(id); return; } }
+  // Product clicks open the piece directly — the auto slideshow popup was
+  // removed per artist feedback (it delayed getting to the product).
   activePiece=p;
   const isSold=(p.status||'available')==='sold';
   buildLbGallery(p);
@@ -1589,7 +2350,7 @@ async function lbInquire(){
   window.open(`mailto:hello@cecethepiece.com?subject=${s}&body=${b}`);
 }
 function lbCopy(){navigator.clipboard.writeText(window.location.href).then(()=>showToast('Link copied!',true));}
-function lbShare(){if(!activePiece)return;if(navigator.share)navigator.share({title:activePiece.title+" — cecepieces",url:window.location.href});else lbCopy();}
+function lbShare(){if(!activePiece)return;if(navigator.share)navigator.share({title:activePiece.title+" — cecespieces",url:window.location.href});else lbCopy();}
 
 // ── HUB LOGIN ──
 // The team signs in here (on Cece's own site) with their Supabase Auth
@@ -1702,7 +2463,7 @@ function panelImgFail(img){
 // Staged Settings → prefill a rental request with the pieces the visitor selected.
 function requestSetting(btn, eventType, sceneTitle){
   const block = btn.closest('.scene-block');
-  const picks = block ? Array.from(block.querySelectorAll('.scene-pick:checked')).map(c=>c.dataset.title) : [];
+  const picks = block ? Array.from(block.querySelectorAll('.scene-fig')).map(c=>c.dataset.title).filter(Boolean) : [];
   openRentalModal();
   selectedEvent = eventType;
   document.querySelectorAll('#event-grid .event-btn').forEach(b=>{ const oc=b.getAttribute('onclick')||''; b.classList.toggle('on', oc.indexOf("'"+eventType+"'")>=0); });
@@ -1744,6 +2505,7 @@ const prefills={
   trade:{sub:'Trade Pricing Inquiry',msg:"Hi Cece,\n\nI'm an interior design professional interested in trade pricing.\n\n• My firm/studio: \n• Project types: \n• What I'm looking for: "},
   urn:{sub:'Custom Memorial Piece Inquiry',msg:"Hi Cece,\n\nI'm interested in a custom memorial piece.\n\n• Colors or themes: \n• Timeline: \n• Special inclusions: \n\nThank you for creating such meaningful work."},
   stager:{sub:'Stager Program Inquiry',msg:"Hi Cece,\n\nI'm a home stager interested in your rental program.\n\n• My market area: \n• How often I stage: \n• What I'm looking for: "},
+  collaborate:{sub:'Collaboration Inquiry',msg:"Hi Cece,\n\nI'd love to collaborate with you.\n\n• Who I am / my brand: \n• What I have in mind: \n• Timeline: \n\nExcited to connect!"},
 };
 
 function prefillContact(type){
@@ -1820,11 +2582,18 @@ setInterval(async()=>{
     if(currentPage==='rentals') renderRentals();
     if(currentPage==='about')   renderAbout();
   }
+  // Pick up class offerings edited in the command center (what/when/price).
+  const freshC=await fetchClasses();
+  if(JSON.stringify(freshC)!==JSON.stringify(allClasses)){
+    allClasses=freshC;
+    if(currentPage==='classes') renderClasses();
+  }
 },30000);
 
 // ── BOOT ──
 (async function(){
   allPieces=await fetchPieces()||[];
+  allClasses=await fetchClasses()||[];
   goTo('home');
   // Render version stamp in footer
   const vs = document.getElementById('site-version-stamp');
