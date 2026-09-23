@@ -672,6 +672,9 @@ footer::before{display:none}
       <div class="filters reveal" id="shop-filters">
         <button class="filter-btn active" onclick="shopFilter('all',this)">All</button>
         <button class="filter-btn" onclick="shopFilter('available',this)">Available</button>
+        <button class="filter-btn" onclick="shopSeries('signature',this)">✦ Signature Series</button>
+        <button class="filter-btn" onclick="shopSeries('legacy',this)">✦ Legacy Series</button>
+        <button class="filter-btn" onclick="shopSeries('grounding',this)">✦ Grounding</button>
         <button class="filter-btn" onclick="shopTypeFilter('Resin Art',this)">Resin Art</button>
         <button class="filter-btn" onclick="shopTypeFilter('Painting',this)">Painting</button>
         <button class="filter-btn" onclick="shopTypeFilter('Mixed Media',this)">Mixed Media</button>
@@ -679,6 +682,8 @@ footer::before{display:none}
         <button class="filter-btn" onclick="shopTypeFilter('Preservation',this)">Preservation</button>
         <button class="filter-btn" onclick="shopTypeFilter('Statement Panel',this)">Statement Panels</button>
         <button class="filter-btn" onclick="shopTypeFilter('Seasonal Gift',this)">Seasonal &amp; Gifts</button>
+        <button class="filter-btn" onclick="shopTypeFilter('Small Piece',this)">Small Pieces</button>
+        <button class="filter-btn" onclick="shopTypeFilter('Limited Edition Print',this)">Prints</button>
         <span class="results-count" id="shop-count"></span>
       </div>
       <div class="pieces-grid" id="shop-grid">
@@ -1734,7 +1739,7 @@ function renderHome(){
 // Pieces are grouped by category (medium) in a set order so the shop never
 // looks random. Any unknown category sorts to the end.
 const CAT_ORDER=['Memorial Piece','Preservation','Resin Art','Statement Panel','Mixed Media','Painting','Seasonal Gift','Drawing','Sculpture','Photography'];
-const CAT_LABEL={'Resin Art':'Resin Art','Statement Panel':'Statement Panels','Memorial Piece':'Memorial Pieces','Preservation':'Preservation','Seasonal Gift':'Seasonal & Gifts','Painting':'Paintings','Mixed Media':'Mixed Media','Drawing':'Drawings','Sculpture':'Sculpture','Photography':'Photography'};
+const CAT_LABEL={'Resin Art':'Resin Art','Statement Panel':'Statement Panels','Memorial Piece':'Memorial Pieces','Preservation':'Preservation','Seasonal Gift':'Seasonal & Gifts','Painting':'Paintings','Mixed Media':'Mixed Media','Drawing':'Drawings','Sculpture':'Sculpture','Photography':'Photography','Original Gallery':'Original Gallery Works','Limited Edition Print':'Limited-Edition Prints','Small Piece':'Small Pieces & Grounding'};
 function catKey(p){return p.type==='Decorative Urn'?'Memorial Piece':(p.type||'Other');}
 function catRank(t){const i=CAT_ORDER.indexOf(t);return i<0?CAT_ORDER.length:i;}
 function catHeadHTML(label){return `<div class="shop-cat-head" style="grid-column:1/-1;font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--ink2);margin:26px 0 8px;padding-bottom:10px;border-bottom:1px solid var(--light-border);text-align:center">${label}</div>`;}
@@ -1742,12 +1747,15 @@ function renderShop(){
   let list=allPieces;
   if(_sf==='available') list=list.filter(p=>(p.status||'available')==='available');
   else if(_sf==='sold') list=list.filter(p=>p.status==='sold');
-  if(_st) list=list.filter(p=> _st==='Memorial Piece' ? (p.type==='Memorial Piece'||p.type==='Decorative Urn') : p.type===_st);
+  if(_st){
+    if(String(_st).startsWith('series:')){ const set=SERIES[String(_st).slice(7)]||[]; list=list.filter(p=>set.includes(p.type)); }
+    else list=list.filter(p=> _st==='Memorial Piece' ? (p.type==='Memorial Piece'||p.type==='Decorative Urn') : p.type===_st);
+  }
   document.getElementById('shop-count').textContent=list.length+' piece'+(list.length!==1?'s':'');
   const grid=document.getElementById('shop-grid');
   if(!list.length){ grid.innerHTML=`<div class="empty-state"><div class="empty-icon">🎨</div><div class="empty-h">No pieces found</div><div class="empty-sub">Try a different filter, or check back soon.</div></div>`; return; }
   // A single category selected → flat grid; otherwise group under category headings.
-  if(_st){ grid.innerHTML=list.map(pieceCardHTML).join(''); return; }
+  if(_st && !String(_st).startsWith('series:')){ grid.innerHTML=list.map(pieceCardHTML).join(''); return; }
   const groups={};
   list.forEach(p=>{const k=catKey(p);(groups[k]=groups[k]||[]).push(p);});
   const keys=Object.keys(groups).sort((a,b)=>catRank(a)-catRank(b)||a.localeCompare(b));
@@ -1760,6 +1768,19 @@ function shopFilter(f,btn){
   if(btn) btn.classList.add('active');
   else{const btns=document.querySelectorAll('#shop-filters .filter-btn');if(f==='available')btns[1]?.classList.add('active');else btns[0]?.classList.add('active');}
   renderShop();
+}
+// Product "Series" from the business plan — group piece types into collections.
+const SERIES={
+  signature:['Resin Art','Mixed Media','Statement Panel','Painting','Original Gallery'],
+  legacy:['Memorial Piece','Decorative Urn','Preservation'],
+  grounding:['Small Piece','Seasonal Gift','Limited Edition Print']
+};
+function shopSeries(key,btn){
+  _sf='all';_st='series:'+key;
+  document.querySelectorAll('#shop-filters .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderShop();
+  document.getElementById('shop-grid').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function shopTypeFilter(type,btn){
   _sf='all';_st=type;
