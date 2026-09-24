@@ -8,7 +8,10 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecespieces — public website)
-  LAST UPDATED: 2026-09-23_0215 UTC
+  LAST UPDATED: 2026-09-24_0214 UTC
+  CHANGE: 2026-09-24_0214 — Removed duplicate products: pieces loaded from the
+          database are now de-duplicated by title (newest copy kept), so a
+          piece published twice from the Hub only shows once.
   CHANGE: 2026-09-23_0215 — About the Artist: placed Cece's real bio (dancer →
           resin, Chicago → Renton, pandemic healing, memorial mission) and a
           "From the Stage to the Studio" Concept blurb; corrected location to
@@ -1462,7 +1465,7 @@ const STRIPE_CHECKOUT_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co/functions/
 
 // ── VERSION TRACKING ──────────────────────────────────────────
 const SITE_VERSION  = 'v3.1';
-const SITE_BUILD    = '2026-09-16';
+const SITE_BUILD    = '2026-09-24';
 const SITE_LABEL    = 'Custom-piece deposits + art/class checkout';
 // ─────────────────────────────────────────────────────────────
 const CONFIGURED = true;
@@ -1489,8 +1492,20 @@ async function fetchPieces() {
     if (!r.ok) throw new Error();
     const rows = await r.json();
     // Show the curated catalog until the database has its own pieces.
-    return (rows && rows.length) ? rows : sampleData();
+    return (rows && rows.length) ? dedupePieces(rows) : sampleData();
   } catch(e) { return sampleData(); }
+}
+
+// Hide duplicate rows (same piece published more than once). Rows arrive
+// newest-first, so the most recent copy of each title is the one kept.
+function dedupePieces(rows){
+  const seen=new Set();
+  return rows.filter(p=>{
+    const k=String(p.title||'').trim().toLowerCase().replace(/\s+/g,' ');
+    if(!k) return true;
+    if(seen.has(k)) return false;
+    seen.add(k); return true;
+  });
 }
 
 // ── CATALOG SEED ──
