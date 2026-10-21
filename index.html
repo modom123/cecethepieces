@@ -38,7 +38,8 @@
           `gallery` table, row "walk"): each frame can be a shop piece photo
           or colorway, a photo not in the shop, or an upload/Photo Studio
           edit; placards still take the shop's names. Defaults if none saved.
-  CHANGE: 2026-10-21_2110 — Home page shows no prices (showcase cards).
+  CHANGE: 2026-10-21_2110 — Home page shows no prices or Buy buttons — Featured
+          Works is a pure showcase (View Piece only); pricing lives in the shop.
   CHANGE: 2026-09-23_0215 — About the Artist: placed Cece's real bio (dancer →
           resin, Chicago → Renton, pandemic healing, memorial mission) and a
           "From the Stage to the Studio" Concept blurb; corrected location to
@@ -2023,15 +2024,15 @@ function renderHome(){
   // Showcase: the newest available piece large, two more beside it.
   const avail=allPieces.filter(p=>(p.status||'available')==='available').sort((a,b)=>(b.image?1:0)-(a.image?1:0)).slice(0,3);
   const fg=document.getElementById('home-featured');
-  // No prices on the home page (artist request) — they show in the shop and on each piece.
-  const buyLbl=p=>depositOf(p)?'Pay Deposit':(p.price?'Buy Now':'Inquire');
+  // Showcase only: no prices or Buy buttons on the home page (artist request) —
+  // pricing and buying happen in the shop and on each piece.
   const img=p=>p.image?`<img src="${p.image}" alt="${p.title}" loading="lazy">`:'';
   if(!avail.length){ fg.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted);font-size:.9rem">No pieces currently available — check back soon!</div>'; }
   else{
     const [f,...rest]=avail;
     fg.innerHTML=`<div class="sc-feature" onclick="openPiece('${f.id}')"><div class="sc-img">${img(f)}</div>
       <div class="sc-cap"><div class="sc-type">${f.type||'Original Art'}</div><div class="sc-title">${f.title}</div>
-      <div class="sc-actions"><button class="cta-btn cta-primary" onclick="event.stopPropagation();openPiece('${f.id}')">View Piece →</button><button class="cta-btn cta-secondary" onclick="event.stopPropagation();quickBuy('${f.id}')">${buyLbl(f)}</button></div></div></div>`
+      <div class="sc-actions"><button class="cta-btn cta-primary" onclick="event.stopPropagation();openPiece('${f.id}')">View Piece →</button></div></div></div>`
       +(rest.length?`<div class="sc-stack">${rest.map(p=>`<div class="sc-side" onclick="openPiece('${p.id}')"><div class="sc-img">${img(p)}</div>
         <div class="sc-cap"><div class="sc-type">${p.type||'Original Art'}</div><div class="sc-title">${p.title}</div>
         <button class="sc-link" onclick="event.stopPropagation();openPiece('${p.id}')">View →</button></div></div>`).join('')}</div>`:'');
