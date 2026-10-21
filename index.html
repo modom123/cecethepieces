@@ -8,7 +8,17 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecespieces — public website)
-  LAST UPDATED: 2026-09-23_0215 UTC
+  LAST UPDATED: 2026-10-21_1830 UTC
+  CHANGE: 2026-10-21_1830 — Gallery Walk splash: a cinematic, letterboxed
+          entry where visitors walk a dark, spot-lit museum corridor past ten
+          framed pieces (brass placards, gilded doors, film grain, auto-tour)
+          before entering the site. Plays gallery-music.mp3 from the repo if
+          present (real recorded track; silent until uploaded). Shown once
+          per session; "Walk the Gallery" on the home hero replays it.
+          2026-10-21_1840 — Splash is now the first page on every visit (no
+          longer once per session) and the walk runs 7 seconds shorter
+          (faster opening titles/doors, 5.15s per piece instead of 5.6s).
+          Added the recorded soundtrack as gallery-music.mp3.
   CHANGE: 2026-09-23_0215 — About the Artist: placed Cece's real bio (dancer →
           resin, Chicago → Renton, pandemic healing, memorial mission) and a
           "From the Stage to the Studio" Concept blurb; corrected location to
@@ -535,6 +545,199 @@ footer::before{display:none}
 </head>
 <body>
 
+<!-- ═══════════ GALLERY WALK SPLASH ═══════════
+  ADDED: 2026-10-21_1830 UTC — Cinematic "walk through the gallery" entry
+  splash: letterboxed title sequence, gilded doors that open onto a dark
+  museum corridor, ten spot-lit pieces with brass placards, and a recorded
+  jazz soundtrack (gallery-music.mp3, see GI_MUSIC_URL). It is the first
+  page of the website: shown on every visit; ?nogallery or a Stripe
+  ?checkout= return skips it. Scroll, swipe, arrow keys or the auto-tour move the
+  camera; "Skip" or the final "Enter" hands off to the normal site.
+-->
+<style>
+  #gi{position:fixed;inset:0;z-index:9999;background:#050406;color:#efe6d2;overflow:hidden;font-family:'Jost',system-ui,sans-serif;
+      --gold:#d4af6a;--gold2:#f3dca0;--gold3:#8a6a32;--wall:#120e14;--wall2:#08070a;opacity:1;transition:opacity 1.4s ease}
+  #gi.gi-hidden{display:none}
+  #gi.gi-leaving{opacity:0;pointer-events:none}
+  #gi *{box-sizing:border-box}
+  #gi button{font-family:inherit;cursor:pointer}
+
+  /* ── the room ── */
+  .gi-room{position:absolute;inset:0;perspective:1300px;perspective-origin:50% 44%;overflow:hidden;transition:transform 2.2s cubic-bezier(.6,0,.2,1),filter 2.2s ease}
+  #gi.gi-leaving .gi-room{transform:scale(1.35);filter:blur(6px) brightness(1.6)}
+  .gi-wall{position:absolute;left:0;right:0;top:0;bottom:24%;
+    background:
+      radial-gradient(ellipse 60% 55% at 50% 42%,rgba(212,175,106,.10),transparent 70%),
+      repeating-linear-gradient(90deg,transparent 0 238px,rgba(212,175,106,.07) 238px 239px,transparent 239px 246px,rgba(0,0,0,.35) 246px 247px,transparent 247px 480px),
+      linear-gradient(180deg,#07060a 0%,var(--wall) 22%,#17121a 70%,#0d0a0f 100%)}
+  .gi-ceiling{position:absolute;left:0;right:0;top:0;height:13%;background:linear-gradient(180deg,#000 0%,rgba(0,0,0,.6) 60%,transparent);}
+  .gi-rail{position:absolute;left:0;right:0;top:12.5%;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,106,.35) 15%,rgba(212,175,106,.35) 85%,transparent);box-shadow:0 0 12px rgba(212,175,106,.25)}
+  .gi-wainscot{position:absolute;left:0;right:0;bottom:24%;height:9%;
+    background:repeating-linear-gradient(90deg,rgba(0,0,0,.0) 0 200px,rgba(212,175,106,.12) 200px 201px,rgba(0,0,0,0) 201px 400px),linear-gradient(180deg,#0f0c11,#09070b);
+    border-top:1px solid rgba(212,175,106,.35);box-shadow:0 -1px 0 rgba(0,0,0,.6)}
+  .gi-floor{position:absolute;left:0;right:0;bottom:0;height:24%;
+    background:
+      radial-gradient(ellipse 45% 70% at 50% 0%,rgba(243,220,160,.13),transparent 70%),
+      repeating-linear-gradient(100deg,rgba(255,255,255,.015) 0 2px,transparent 2px 90px),
+      linear-gradient(180deg,#1a1519 0%,#0b090c 55%,#030203 100%);
+    border-top:1px solid rgba(212,175,106,.18)}
+  .gi-world{position:absolute;inset:0;transform-style:preserve-3d}
+
+  /* ── a bay: lamp + framed piece + placard ── */
+  .gi-bay{position:absolute;left:50%;top:44%;width:0;height:0;transform-style:preserve-3d;will-change:transform,opacity}
+  .gi-piece{position:absolute;left:0;top:0;transform:translate(-50%,-50%);cursor:pointer}
+  .gi-beam{position:absolute;left:50%;bottom:50%;width:min(70vw,760px);height:62vh;transform:translateX(-50%);pointer-events:none;
+    background:radial-gradient(ellipse 50% 100% at 50% 0%,rgba(255,236,190,.22),rgba(255,236,190,.06) 55%,transparent 75%);
+    clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);opacity:calc(.15 + var(--lit,0)*.85);mix-blend-mode:screen;transition:opacity .3s}
+  .gi-lamp{position:absolute;left:50%;top:calc(-44vh + 12.5vh);width:34px;height:20px;transform:translateX(-50%);
+    background:linear-gradient(180deg,#2a2226,#0c0a0c);border-radius:4px 4px 10px 10px;border-bottom:2px solid rgba(255,236,190,calc(.3 + var(--lit,0)*.7));
+    box-shadow:0 6px 20px rgba(255,236,190,calc(var(--lit,0)*.55))}
+  .gi-frame{position:relative;padding:clamp(10px,1.6vw,22px);
+    background:linear-gradient(135deg,#7a5a24 0%,#f3dca0 18%,#b8913f 34%,#fff1c4 50%,#a07a30 66%,#e9c97f 82%,#6d4f1e 100%);
+    box-shadow:0 0 0 1px #3d2c10,0 30px 60px rgba(0,0,0,.75),0 0 90px rgba(255,226,160,calc(var(--lit,0)*.18)),inset 0 0 0 2px rgba(255,248,220,.35);
+    -webkit-box-reflect:below 6vh linear-gradient(transparent 62%,rgba(255,255,255,.13))}
+  .gi-frame::after{content:'';position:absolute;inset:clamp(10px,1.6vw,22px);box-shadow:inset 0 0 0 2px rgba(60,40,10,.7),inset 0 3px 8px rgba(0,0,0,.6);pointer-events:none}
+  .gi-mat{background:#f2ece0;padding:clamp(12px,2.2vw,34px);box-shadow:inset 0 0 18px rgba(80,60,30,.25)}
+  .gi-art{display:block;background-color:#1a1418;background-repeat:no-repeat;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25),0 1px 0 rgba(255,255,255,.6)}
+  .gi-dim{position:absolute;inset:-2px;background:#050406;opacity:calc((1 - var(--lit,0))*.62);pointer-events:none;transition:opacity .2s}
+  .gi-plaque{position:absolute;left:0;top:0;transform:translate(-50%,0);margin-top:var(--plaqueY,30vh);min-width:230px;max-width:min(84vw,420px);text-align:center;
+    padding:12px 22px 13px;background:linear-gradient(160deg,#2b2318,#15110c);border:1px solid rgba(212,175,106,.5);
+    box-shadow:0 10px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(243,220,160,.18);opacity:0;transition:opacity .9s ease,transform .9s ease;transform:translate(-50%,10px)}
+  .gi-bay.on .gi-plaque{opacity:1;transform:translate(-50%,0)}
+  .gi-plaque .no{display:block;font-size:.62rem;letter-spacing:.38em;color:var(--gold);text-transform:uppercase;margin-bottom:5px}
+  .gi-plaque b{display:block;font-family:'Playfair Display',serif;font-weight:400;font-style:italic;font-size:clamp(1.15rem,2vw,1.5rem);color:#fbf3df;line-height:1.2}
+  .gi-plaque i{display:block;font-style:normal;font-size:.76rem;color:rgba(239,230,210,.72);margin-top:5px;letter-spacing:.04em}
+  .gi-plaque em{display:block;font-style:normal;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(212,175,106,.85);margin-top:7px}
+
+  /* text bays (opening title wall + finale) */
+  .gi-card{position:absolute;left:0;top:0;transform:translate(-50%,-50%);width:min(86vw,760px);text-align:center}
+  .gi-eyebrow{font-size:.7rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold)}
+  .gi-h{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(2.6rem,8vw,6.2rem);line-height:1.02;margin:.25em 0 .2em;
+    background:linear-gradient(100deg,#9c7a3c 0%,#f6e3ae 25%,#c79e52 45%,#fff3cf 60%,#b48a42 80%,#e9cf8e 100%);background-size:200% 100%;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:giShimmer 7s linear infinite;
+    filter:drop-shadow(0 4px 24px rgba(212,175,106,.25))}
+  .gi-h em{font-style:italic}
+  .gi-sub{font-size:clamp(.9rem,1.5vw,1.05rem);color:rgba(239,230,210,.75);line-height:1.8;max-width:520px;margin:0 auto;font-weight:300}
+  .gi-rule{width:120px;height:1px;margin:22px auto;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .gi-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+  .gi-btn{border:1px solid var(--gold);background:linear-gradient(135deg,#b8913f,#f3dca0 50%,#b8913f);color:#1a1206;padding:15px 34px;font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;font-weight:600;
+    box-shadow:0 10px 40px rgba(212,175,106,.28);transition:transform .3s,box-shadow .3s}
+  .gi-btn:hover{transform:translateY(-2px);box-shadow:0 14px 50px rgba(212,175,106,.45)}
+  .gi-btn.ghost{background:transparent;color:var(--gold2)}
+  @keyframes giShimmer{to{background-position:-200% 0}}
+
+  /* ── gilded doors ── */
+  .gi-doors{position:absolute;inset:0;z-index:5;display:flex;pointer-events:none;perspective:1600px}
+  .gi-door{flex:1;position:relative;background:
+      linear-gradient(90deg,rgba(0,0,0,.5),transparent 12%,transparent 88%,rgba(0,0,0,.5)),
+      repeating-linear-gradient(0deg,#140f12 0 3px,#110d10 3px 7px);
+    transition:transform 2.6s cubic-bezier(.65,0,.25,1);transform-style:preserve-3d}
+  .gi-door::before{content:'';position:absolute;inset:7% 12%;border:2px solid rgba(212,175,106,.55);box-shadow:inset 0 0 0 10px rgba(0,0,0,.25),inset 0 0 0 11px rgba(212,175,106,.3)}
+  .gi-door::after{content:'';position:absolute;top:72%;width:10px;height:90px;margin-top:-45px;border-radius:5px;background:linear-gradient(90deg,#7a5a24,#f3dca0,#8a6a32);box-shadow:0 0 18px rgba(243,220,160,.4)}
+  .gi-door.l{transform-origin:0 50%;border-right:1px solid rgba(212,175,106,.6)} .gi-door.l::after{right:6%}
+  .gi-door.r{transform-origin:100% 50%;border-left:1px solid rgba(212,175,106,.6)} .gi-door.r::after{left:6%}
+  #gi.gi-open .gi-door.l{transform:rotateY(-104deg)}
+  #gi.gi-open .gi-door.r{transform:rotateY(104deg)}
+  .gi-gate{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;text-align:center;transition:opacity 1.2s ease}
+  .gi-gate .gi-h{font-size:clamp(2.4rem,7vw,5.4rem)}
+  #gi.gi-started .gi-gate{opacity:0;pointer-events:none}
+  .gi-presents{position:absolute;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;opacity:0;text-align:center}
+  #gi.gi-titles .gi-presents{animation:giPresents 2.4s ease forwards}
+  @keyframes giPresents{0%{opacity:0;letter-spacing:.2em}25%{opacity:1}75%{opacity:1}100%{opacity:0;letter-spacing:.6em}}
+
+  /* ── cinematic layer: letterbox, grain, vignette, motes ── */
+  .gi-bar{position:absolute;left:0;right:0;height:0;background:#000;z-index:20;transition:height 1.8s cubic-bezier(.6,0,.2,1);overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,3vw,40px)}
+  .gi-bar.t{top:0} .gi-bar.b{bottom:0}
+  #gi.gi-started .gi-bar{height:clamp(54px,9vh,92px)}
+  .gi-vignette{position:absolute;inset:0;z-index:15;pointer-events:none;background:radial-gradient(ellipse 75% 70% at 50% 46%,transparent 55%,rgba(0,0,0,.75) 100%)}
+  .gi-grain{position:absolute;inset:-50%;z-index:16;pointer-events:none;opacity:.09;mix-blend-mode:overlay;animation:giGrain .9s steps(6) infinite}
+  @keyframes giGrain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-2%,6%)}80%{transform:translate(5%,2%)}100%{transform:translate(0,0)}}
+  .gi-motes{position:absolute;left:50%;top:10%;width:min(50vw,520px);height:62%;transform:translateX(-50%);z-index:14;pointer-events:none;opacity:0;transition:opacity 3s}
+  #gi.gi-open .gi-motes{opacity:1}
+  .gi-motes span{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(255,240,205,.8);box-shadow:0 0 6px rgba(255,240,205,.9);animation:giMote linear infinite}
+  @keyframes giMote{0%{transform:translate(0,0);opacity:0}15%{opacity:.8}85%{opacity:.6}100%{transform:translate(var(--dx),var(--dy));opacity:0}}
+
+  /* ── HUD (lives in the letterbox bars) ── */
+  .gi-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:#efe6d2;letter-spacing:.02em}
+  .gi-logo em{color:var(--gold);font-style:italic}
+  .gi-hud-r{display:flex;gap:10px;align-items:center}
+  .gi-chip{background:transparent;border:1px solid rgba(212,175,106,.45);color:var(--gold2);padding:8px 14px;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;transition:background .3s}
+  .gi-chip:hover{background:rgba(212,175,106,.12)}
+  .gi-prog{display:flex;align-items:center;gap:clamp(6px,1.4vw,16px);margin:0 auto}
+  .gi-tick{background:none;border:0;color:rgba(239,230,210,.35);font-family:'Playfair Display',serif;font-size:.78rem;padding:4px 2px;transition:color .4s,transform .4s}
+  .gi-tick.on{color:var(--gold2);transform:scale(1.25)}
+  .gi-hint{position:absolute;right:clamp(16px,3vw,40px);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(239,230,210,.45)}
+  .gi-skip-top{position:absolute;top:18px;right:18px;z-index:30}
+  #gi.gi-started .gi-skip-top{display:none}
+
+  @media (max-width:760px){
+    .gi-hint,.gi-tick{display:none}
+    .gi-prog::after{content:attr(data-of);font-size:.6rem;letter-spacing:.2em;color:rgba(239,230,210,.45);margin-left:6px}
+    .gi-logo{font-size:.95rem}
+    .gi-chip{padding:7px 10px;font-size:.58rem;letter-spacing:.16em}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .gi-grain,.gi-h{animation:none}
+    .gi-door{transition-duration:.6s}
+    .gi-motes{display:none}
+  }
+</style>
+
+<div id="gi" class="gi-hidden" role="dialog" aria-label="cecespieces gallery — a walk through ten original works">
+  <div class="gi-room">
+    <div class="gi-wall"></div><div class="gi-ceiling"></div><div class="gi-rail"></div>
+    <div class="gi-wainscot"></div><div class="gi-floor"></div>
+    <div class="gi-world" id="giWorld"></div>
+  </div>
+  <div class="gi-motes" id="giMotes"></div>
+  <div class="gi-vignette"></div>
+  <div class="gi-grain" id="giGrain"></div>
+
+  <div class="gi-doors"><div class="gi-door l"></div><div class="gi-door r"></div></div>
+
+  <div class="gi-gate">
+    <div style="padding:0 20px">
+      <div class="gi-eyebrow">Original Works by Cece</div>
+      <div class="gi-h">cecespieces<br><em>The Collection</em></div>
+      <div class="gi-rule"></div>
+      <p class="gi-sub">Step inside a private viewing — ten pieces, poured by hand, each existing exactly once.</p>
+      <div class="gi-btns">
+        <button class="gi-btn" id="giEnter">Enter the Gallery ♪</button>
+      </div>
+      <div style="margin-top:14px;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(239,230,210,.4)">Best with sound on</div>
+    </div>
+  </div>
+  <button class="gi-chip gi-skip-top" data-gi-skip>Skip to site</button>
+
+  <div class="gi-presents">
+    <div class="gi-eyebrow" style="font-size:.8rem">cecespieces presents</div>
+    <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.4rem,3vw,2.2rem);color:#efe6d2;margin-top:14px">a private viewing</div>
+  </div>
+
+  <div class="gi-bar t">
+    <div class="gi-logo">ceces<em>pieces</em></div>
+    <div class="gi-hud-r">
+      <button class="gi-chip" id="giTour" aria-pressed="true">❚❚ Tour</button>
+      <button class="gi-chip" id="giSound" aria-pressed="true">♪ Sound</button>
+      <button class="gi-chip" data-gi-skip>Skip ›</button>
+    </div>
+  </div>
+  <div class="gi-bar b">
+    <div class="gi-prog" id="giProg"></div>
+    <div class="gi-hint">Scroll · swipe · ← → to walk</div>
+  </div>
+</div>
+<script>
+(function(){
+  // Decide synchronously (before the site paints) whether to show the walk.
+  // The walk is the website's front page, so it shows on every visit.
+  var q=location.search, show=true;
+  if(/[?&](nogallery|checkout)=?/.test(q)) show=false;
+  if(show){ document.getElementById('gi').classList.remove('gi-hidden'); document.documentElement.style.overflow='hidden'; }
+})();
+</script>
+<!-- ═══════════ /GALLERY WALK SPLASH (markup) ═══════════ -->
+
 <!-- NAV -->
 <nav class="nav" id="mainNav">
   <button class="nav-logo" onclick="goTo('home')">ceces<em>pieces</em></button>
@@ -561,6 +764,7 @@ footer::before{display:none}
       <button class="cta-btn cta-primary" onclick="goTo('shop')">Browse the Collection →</button>
       <button class="cta-btn cta-secondary" onclick="goTo('rentals')">Rent for an Event</button>
     </div>
+    <button onclick="openGalleryWalk()" style="background:none;border:0;margin-top:18px;font-family:inherit;font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;color:var(--lav3);cursor:pointer">✦ Walk the Gallery</button>
     <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
   </section>
 
@@ -1461,8 +1665,8 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const STRIPE_CHECKOUT_URL = 'https://tssicoxzxcfijdlvtpqm.supabase.co/functions/v1/create-checkout';
 
 // ── VERSION TRACKING ──────────────────────────────────────────
-const SITE_VERSION  = 'v3.1';
-const SITE_BUILD    = '2026-09-16';
+const SITE_VERSION  = 'v3.2';
+const SITE_BUILD    = '2026-10-21';
 const SITE_LABEL    = 'Custom-piece deposits + art/class checkout';
 // ─────────────────────────────────────────────────────────────
 const CONFIGURED = true;
@@ -2760,5 +2964,205 @@ setInterval(async()=>{
   if(co){ history.replaceState(null,'',location.pathname); }
 })();
 </script>
+
+<!-- ═══════════ GALLERY WALK SPLASH (logic) — added 2026-10-21_1830 UTC ═══════════ -->
+<script>
+(function(){
+  const gi=document.getElementById('gi');
+  if(!gi) return;
+  const IMG='https://raw.githubusercontent.com/modom123/cecethepieces/main/';
+  // Real recorded soundtrack. Upload a licensed jazz track to the repo root
+  // with this exact name (e.g. a free-for-commercial-use track from Pixabay
+  // Music). If the file is missing, the walk stays silent and the Sound
+  // button hides itself.
+  const GI_MUSIC_URL=IMG+'gallery-music.mp3';
+  const GI_MUSIC_VOL=.55;
+  const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // crop = [x, y, w, h] as fractions of the photo — frames the artwork only.
+  const PIECES=[
+    {src:'81746D25-6F5A-426B-8BB6-6EC446155E6D.jpeg',W:575,H:1024,crop:[.225,.19,.54,.62],title:'Lagoon Arch',medium:'Resin geode on an arched panel, gilded veins',series:'Signature Series'},
+    {src:'IMG_4081.jpeg',W:575,H:1024,crop:[.24,.21,.52,.58],title:'Crimson Agate',medium:'Resin geode statement panel, crystal druzy',series:'Signature Series'},
+    {src:'IMG_4082.jpeg',W:575,H:1024,crop:[.235,.215,.52,.575],title:'Glacier Agate',medium:'Resin geode statement panel, silver & ice',series:'Signature Series'},
+    {src:'Gemini_Generated_Image_xscbqexscbqexscb.jpg',W:1210,H:864,crop:[.372,.25,.352,.33],title:'Ocean Islands',medium:'Resin & living moss — mixed media',series:'Mixed Media'},
+    {src:'IMG_4080.jpeg',W:575,H:1024,crop:[.23,.205,.535,.585],title:'Midnight Agate',medium:'Resin geode with silver druzy, obsidian tones',series:'Signature Series'},
+    {src:'IMG_4027.jpeg',W:1024,H:559,crop:[.285,.04,.375,.775],title:'Golden River',medium:'Resin river on reclaimed wood, gold leaf',series:'Grounding Series'},
+    {src:'IMG_4085.jpeg',W:575,H:1024,crop:[.235,.215,.505,.565],title:'Blush Quartz',medium:'Resin geode, rose & champagne gold',series:'Signature Series'},
+    {src:'IMG_4033.jpeg',W:1024,H:559,crop:[.25,.03,.41,.8],title:'Silver River',medium:'Framed resin river, botanical inlay',series:'Grounding Series'},
+    {src:'IMG_4069.jpeg',W:875,H:1024,crop:[.04,.04,.92,.76],title:'Laura & John',medium:'Anniversary bouquet preserved in resin',series:'Preservation'},
+    {src:'IMG_4037.jpeg',W:938,H:1024,crop:[.16,.2,.69,.52],title:'Amethyst Shore',medium:'Memorial beach block — sand, shells & tide',series:'Legacy Series'},
+  ];
+  const ROMAN=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+  const N=PIECES.length+2;                 // opening wall + 10 pieces + finale
+  const world=document.getElementById('giWorld');
+  const prog=document.getElementById('giProg');
+  const bays=[];
+
+  // ── build the corridor ──
+  function textBay(html){ const b=document.createElement('div'); b.className='gi-bay'; b.innerHTML=`<div class="gi-card">${html}</div>`; return b; }
+  bays.push(textBay(`<div class="gi-eyebrow">Gallery Hall</div><div class="gi-h" style="font-size:clamp(2.2rem,6vw,4.6rem)">Ten Pieces.<br><em>Each Exists Once.</em></div><div class="gi-rule"></div><p class="gi-sub">Poured by hand in Renton, Washington — resin, stone, wood and memory.</p>`));
+  PIECES.forEach((p,i)=>{
+    const b=document.createElement('div'); b.className='gi-bay';
+    b.innerHTML=`<div class="gi-beam"></div><div class="gi-lamp"></div>
+      <div class="gi-piece" role="img" aria-label="${p.title} — ${p.medium}"><div class="gi-frame"><div class="gi-mat"><div class="gi-art"></div></div><div class="gi-dim"></div></div></div>
+      <div class="gi-plaque"><span class="no">No. ${ROMAN[i]}</span><b>${p.title}</b><i>${p.medium}</i><em>${p.series}</em></div>`;
+    const [x,y,w,h]=p.crop, art=b.querySelector('.gi-art');
+    art.style.backgroundSize=`${100/w}% ${100/h}%`;
+    art.style.backgroundPosition=`${w<1?x/(1-w)*100:0}% ${h<1?y/(1-h)*100:0}%`;
+    p.aspect=(w*p.W)/(h*p.H); p.el=b; p.art=art;
+    b.querySelector('.gi-piece').addEventListener('click',()=>{ stopTour(); target=i+1; });
+    bays.push(b);
+  });
+  bays.push(textBay(`<div class="gi-eyebrow">The Collection Awaits</div><div class="gi-h" style="font-size:clamp(2.2rem,6vw,4.8rem)">Every piece has a story.<br><em>Yours is waiting.</em></div><div class="gi-rule"></div>
+    <div class="gi-btns"><button class="gi-btn" data-gi-go="home">Enter cecespieces</button><button class="gi-btn ghost" data-gi-go="shop">Shop the Collection</button></div>`));
+  bays.forEach(b=>world.appendChild(b));
+  for(let i=0;i<N;i++){
+    const t=document.createElement('button'); t.className='gi-tick'; t.type='button';
+    t.textContent=i===0?'◆':i===N-1?'✦':ROMAN[i-1];
+    t.setAttribute('aria-label',i===0?'Entrance':i===N-1?'Finale':'Piece '+ROMAN[i-1]);
+    t.onclick=()=>{ stopTour(); target=i; };
+    prog.appendChild(t);
+  }
+  const ticks=[...prog.children];
+
+  // dust motes drifting in the centre spotlight
+  if(!reduce){ const m=document.getElementById('giMotes'); for(let i=0;i<18;i++){ const s=document.createElement('span');
+    s.style.cssText=`left:${10+Math.random()*80}%;top:${Math.random()*85}%;--dx:${(Math.random()*60-30).toFixed(0)}px;--dy:${(-40-Math.random()*80).toFixed(0)}px;animation-duration:${(7+Math.random()*8).toFixed(1)}s;animation-delay:-${(Math.random()*10).toFixed(1)}s;opacity:.${3+(i%6)}`;
+    m.appendChild(s);} }
+  // film grain texture
+  (function(){ const c=document.createElement('canvas'); c.width=c.height=160; const x=c.getContext('2d'), d=x.createImageData(160,160);
+    for(let i=0;i<d.data.length;i+=4){ const v=Math.random()*255|0; d.data[i]=d.data[i+1]=d.data[i+2]=v; d.data[i+3]=255; }
+    x.putImageData(d,0,0); document.getElementById('giGrain').style.backgroundImage=`url(${c.toDataURL()})`; })();
+
+  // ── sizing ──
+  let spacing=900, vw=0, vh=0;
+  function layout(){
+    vw=innerWidth; vh=innerHeight; const mobile=vw<760;
+    spacing=mobile?vw*.92:Math.min(vw*.62,1050);
+    const maxH=vh*(mobile?.40:.46), maxW=vw*(mobile?.58:.40);
+    PIECES.forEach(p=>{
+      let h=maxH, w=h*p.aspect; if(w>maxW){ w=maxW; h=w/p.aspect; }
+      p.art.style.width=w+'px'; p.art.style.height=h+'px';
+      const pad=Math.min(Math.max(vw*.016,10),22)+Math.min(Math.max(vw*.022,12),34);
+      p.el.style.setProperty('--plaqueY',(h/2+pad+(mobile?14:26))+'px');
+    });
+  }
+  layout(); addEventListener('resize',()=>{ layout(); dirty=true; });
+
+  function loadNear(c){ PIECES.forEach((p,i)=>{ if(!p.loaded && Math.abs(i+1-c)<3.5){ p.loaded=1; p.art.style.backgroundImage=`url("${IMG+p.src}")`; } }); }
+  loadNear(0);
+
+  // ── camera ──
+  let cur=0, target=0, dirty=true, running=false, lastOn=-1, started=false;
+  function frame(){
+    if(!running) return;
+    const ease=touring?(reduce?.2:.028):(reduce?.35:.085);
+    const diff=target-cur;
+    if(Math.abs(diff)>.0004){ cur+=diff*ease; dirty=true; } else if(cur!==target){ cur=target; dirty=true; }
+    if(dirty){ render(Math.abs(diff)); dirty=false; }
+    requestAnimationFrame(frame);
+  }
+  function render(speed){
+    const bob=reduce?0:Math.sin(cur*Math.PI*4)*Math.min(speed*30,5);   // footsteps
+    world.style.transform=`translateY(${bob.toFixed(2)}px)`;
+    const wall=gi.querySelector('.gi-wall'); wall.style.backgroundPosition=`0 0, ${(-cur*spacing*.35).toFixed(1)}px 0, 0 0`;
+    gi.querySelector('.gi-wainscot').style.backgroundPosition=`${(-cur*spacing*.35).toFixed(1)}px 0, 0 0`;
+    bays.forEach((b,i)=>{
+      const d=i-cur, ad=Math.abs(d);
+      if(ad>3.2){ b.style.visibility='hidden'; return; }
+      b.style.visibility='';
+      const rot=Math.max(-50,Math.min(50,-d*30)), z=-Math.min(ad,3)*300;
+      b.style.transform=`translate3d(${(d*spacing).toFixed(1)}px,0,${z.toFixed(1)}px) rotateY(${rot.toFixed(2)}deg)`;
+      b.style.opacity=Math.max(0,1-Math.max(0,ad-1.4)*.7).toFixed(3);
+      b.style.setProperty('--lit',Math.max(0,1-ad*1.1).toFixed(3));
+    });
+    const on=Math.round(cur);
+    if(on!==lastOn && Math.abs(cur-on)<.22){
+      bays.forEach((b,i)=>b.classList.toggle('on',i===on)); ticks.forEach((t,i)=>t.classList.toggle('on',i===on));
+      prog.dataset.of=on===0?'Entrance':on===N-1?'Finale':`${ROMAN[on-1]} / X`;
+      lastOn=on; loadNear(on);
+    } else if(Math.abs(cur-on)>=.22 && lastOn!==-1){ bays.forEach(b=>b.classList.remove('on')); lastOn=-1; }
+  }
+
+  // ── auto tour ──
+  let touring=false, tourTimer=null;
+  const tourBtn=document.getElementById('giTour');
+  function startTour(){ touring=true; tourBtn.textContent='❚❚ Tour'; tourBtn.setAttribute('aria-pressed','true'); clearInterval(tourTimer);
+    tourTimer=setInterval(()=>{ if(target<N-1){ target=Math.round(target)+1; } else stopTour(); },5150); }
+  function stopTour(){ if(!touring) return; touring=false; clearInterval(tourTimer); tourBtn.textContent='▶ Tour'; tourBtn.setAttribute('aria-pressed','false'); }
+  tourBtn.onclick=()=>{ if(touring) stopTour(); else { if(target>=N-1) target=0; startTour(); } };
+
+  // ── input: wheel, touch, keys ──
+  let snapT=null;
+  const clamp=v=>Math.max(0,Math.min(N-1,v));
+  function nudge(v){ if(!started) return; stopTour(); target=clamp(target+v); clearTimeout(snapT); snapT=setTimeout(()=>{ target=clamp(Math.round(target)); },170); }
+  gi.addEventListener('wheel',e=>{ e.preventDefault(); const dlt=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY; nudge(Math.max(-.6,Math.min(.6,dlt*.0018))); },{passive:false});
+  let tx=0, ty=0, t0=0, tt=0;
+  gi.addEventListener('touchstart',e=>{ if(!started) return; const t=e.touches[0]; tx=t.clientX; ty=t.clientY; t0=target; tt=Date.now(); stopTour(); },{passive:true});
+  gi.addEventListener('touchmove',e=>{ if(!started) return; const t=e.touches[0], dx=t.clientX-tx, dy=t.clientY-ty;
+    const dl=Math.abs(dx)>Math.abs(dy)?-dx:-dy; target=clamp(t0+dl/(spacing*.8)); e.preventDefault(); },{passive:false});
+  gi.addEventListener('touchend',()=>{ if(!started) return; const moved=target-t0, fast=Date.now()-tt<300;
+    target=clamp(fast&&Math.abs(moved)>.04?(moved>0?Math.ceil(target):Math.floor(target)):Math.round(target)); });
+  function onKey(e){
+    if(gi.classList.contains('gi-hidden')) return;
+    if(e.key==='Escape'){ e.preventDefault(); leave('home'); return; }
+    if(!started){ if(e.key==='Enter'){ e.preventDefault(); begin(); } return; }
+    if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); stopTour(); target=clamp(Math.round(target)+1); }
+    else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); stopTour(); target=clamp(Math.round(target)-1); }
+  }
+  document.addEventListener('keydown',onKey);
+
+  // ── soundtrack (real recording; silent if the file isn't uploaded yet) ──
+  const audio=new Audio(); audio.loop=true; audio.preload='auto'; audio.volume=0;
+  const soundBtn=document.getElementById('giSound');
+  let muted=false, fadeT=null; try{ muted=localStorage.getItem('cece_gallery_muted')==='1'; }catch(e){}
+  soundBtn.style.display='none';
+  audio.addEventListener('canplay',()=>{ soundBtn.style.display=''; },{once:true});
+  audio.addEventListener('error',()=>{ soundBtn.style.display='none'; });
+  function fadeTo(v,ms,done){ clearInterval(fadeT); const from=audio.volume, steps=Math.max(1,Math.round(ms/50)); let k=0;
+    fadeT=setInterval(()=>{ k++; audio.volume=Math.max(0,Math.min(1,from+(v-from)*k/steps)); if(k>=steps){ clearInterval(fadeT); done&&done(); } },50); }
+  function syncSoundBtn(){ soundBtn.textContent=muted?'♪ Sound off':'♪ Sound'; soundBtn.setAttribute('aria-pressed',String(!muted)); }
+  syncSoundBtn();
+  soundBtn.onclick=()=>{ muted=!muted; try{ localStorage.setItem('cece_gallery_muted',muted?'1':'0'); }catch(e){}
+    syncSoundBtn(); if(muted) fadeTo(0,600,()=>audio.pause()); else { audio.play().catch(()=>{}); fadeTo(GI_MUSIC_VOL,1200); } };
+
+  // ── the opening sequence ──
+  function begin(){
+    if(started) return; started=true;
+    if(!audio.src) audio.src=GI_MUSIC_URL;
+    if(!muted){ audio.play().then(()=>fadeTo(GI_MUSIC_VOL,4000)).catch(()=>{}); }
+    gi.classList.add('gi-started','gi-titles');
+    running=true; requestAnimationFrame(frame);
+    setTimeout(()=>{ gi.classList.add('gi-open'); },reduce?200:1400);
+    setTimeout(()=>{ startTour(); target=1; },reduce?600:3600);
+  }
+  document.getElementById('giEnter').onclick=begin;
+  // start fetching the music as soon as the gate shows so it's ready on click
+  if(!gi.classList.contains('gi-hidden')) audio.src=GI_MUSIC_URL;
+
+  function leave(page){
+    stopTour(); running=false;
+    gi.classList.add('gi-leaving');
+    if(!audio.paused) fadeTo(0,1800,()=>audio.pause());
+    setTimeout(()=>{
+      gi.classList.add('gi-hidden'); gi.classList.remove('gi-leaving','gi-open','gi-started','gi-titles');
+      document.documentElement.style.overflow='';
+      if(page && typeof goTo==='function') goTo(page);
+    },reduce?300:1500);
+  }
+  gi.querySelectorAll('[data-gi-skip]').forEach(b=>b.onclick=()=>leave('home'));
+  gi.querySelectorAll('[data-gi-go]').forEach(b=>b.onclick=()=>leave(b.dataset.giGo));
+
+  // Re-open from the site ("Walk the Gallery")
+  window.openGalleryWalk=function(){
+    started=false; cur=target=0; lastOn=-1; dirty=true;
+    gi.classList.remove('gi-hidden'); document.documentElement.style.overflow='hidden';
+    if(!audio.src) audio.src=GI_MUSIC_URL;
+    render(0);
+  };
+  render(0);
+})();
+</script>
+<!-- ═══════════ /GALLERY WALK SPLASH (logic) ═══════════ -->
 </body>
 </html>
