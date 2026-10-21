@@ -19,6 +19,11 @@
           longer once per session) and the walk runs 7 seconds shorter
           (faster opening titles/doors, 5.15s per piece instead of 5.6s).
           Added the recorded soundtrack as gallery-music.mp3.
+  CHANGE: 2026-10-21_1945 — Edit-list follow-ups: home page is now a showcase
+          (one featured piece large, two beside it, and "Shop by Collection"
+          tiles with hand-picked covers, incl. a proper Mixed Media cover);
+          slow background slideshow behind the hero; removed the Trade /
+          designer pricing quick inquiry from Contact.
   CHANGE: 2026-09-23_0215 — About the Artist: placed Cece's real bio (dancer →
           resin, Chicago → Renton, pandemic healing, memorial mission) and a
           "From the Stage to the Studio" Concept blurb; corrected location to
@@ -268,7 +273,47 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .hero-title em{font-style:italic;background:linear-gradient(135deg,var(--purple2) 0%,var(--pink2) 50%,var(--blue2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-sub{font-size:.95rem;color:var(--muted);max-width:460px;line-height:1.85;margin:0 auto 48px;opacity:0;animation:fadeUp .9s .5s forwards;font-weight:400}
 .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .9s .65s forwards}
-.hero-scroll{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp .9s 1.1s forwards}
+.sc-head{text-align:center;margin-bottom:38px}
+.sc-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:28px;align-items:stretch}
+.sc-feature{background:var(--light);border:1px solid var(--light-border);border-radius:14px;padding:22px;box-shadow:0 18px 50px rgba(60,40,110,.10);display:flex;flex-direction:column;cursor:pointer}
+.sc-feature .sc-img{aspect-ratio:4/3;border-radius:8px;overflow:hidden;background:var(--surface2)}
+.sc-feature img,.sc-side img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s ease}
+.sc-feature:hover img,.sc-side:hover img{transform:scale(1.04)}
+.sc-cap{padding:18px 4px 2px;text-align:center}
+.sc-type{font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--lav)}
+.sc-title{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,2.4vw,1.9rem);color:var(--ink2);margin:6px 0 4px}
+.sc-price{font-size:1rem;color:var(--muted);margin-bottom:14px}
+.sc-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.sc-stack{display:grid;grid-template-rows:1fr 1fr;gap:28px}
+.sc-side{background:var(--light);border:1px solid var(--light-border);border-radius:14px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;cursor:pointer;box-shadow:0 10px 30px rgba(60,40,110,.07)}
+.sc-side .sc-img{overflow:hidden;background:var(--surface2);min-height:180px}
+.sc-side .sc-cap{display:flex;flex-direction:column;justify-content:center;padding:18px}
+.sc-side .sc-title{font-size:1.25rem}
+.sc-side .sc-price{margin-bottom:10px}
+.sc-link{background:none;border:0;color:var(--lav3);font-family:inherit;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-weight:600}
+.sc-cols-head{text-align:center;font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--ink2);margin:60px 0 22px}
+.sc-cols{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+.sc-col{position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden;cursor:pointer;border:0;padding:0;background:var(--surface2);font-family:inherit}
+.sc-col img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s ease}
+.sc-col:hover img{transform:scale(1.06)}
+.sc-col::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(13,11,20,.78))}
+.sc-col span{position:absolute;left:0;right:0;bottom:16px;z-index:1;color:#fff;text-align:center;font-family:'Playfair Display',serif;font-size:1.12rem;line-height:1.25}
+.sc-col span small{display:block;font-family:'Jost',sans-serif;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;opacity:.85;margin-top:5px}
+@media (max-width:860px){
+  .sc-grid{grid-template-columns:1fr}
+  .sc-stack{grid-template-rows:auto}
+  .sc-cols{grid-template-columns:1fr 1fr}
+  .sc-cols .sc-col:last-child{grid-column:1/-1;aspect-ratio:16/9}
+}
+.hero-slides{position:absolute;inset:0;z-index:0;overflow:hidden}
+.hero-slides::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(250,249,255,.84) 0%,rgba(243,240,255,.78) 55%,rgba(243,240,255,.93) 100%)}
+.hero-slide{position:absolute;inset:-2%;background-size:cover;background-position:center;opacity:0;animation:heroSlide 35s linear infinite}
+.hero-slide:first-child{opacity:1}
+@keyframes heroSlide{0%{opacity:0;transform:scale(1.02)}4%{opacity:1}20%{opacity:1}25%{opacity:0;transform:scale(1.1)}100%{opacity:0;transform:scale(1.1)}}
+.hero>.hero-eyebrow,.hero>.hero-title,.hero>.hero-sub,.hero>.hero-btns,.hero>button{position:relative;z-index:2}
+.hero-bg,.hero-grain{z-index:1}
+@media (prefers-reduced-motion:reduce){.hero-slide{animation:none}}
+.hero-scroll{z-index:2;position:absolute;bottom:34px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp .9s 1.1s forwards}
 .hero-scroll span{font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
 .scroll-line{width:1px;height:38px;background:linear-gradient(to bottom,var(--lav),transparent);animation:scrollPulse 2s infinite}
 @keyframes scrollPulse{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
@@ -773,6 +818,7 @@ footer::before{display:none}
 <!-- ═══════════ HOME ═══════════ -->
 <div class="page" id="page-home">
   <section class="hero">
+    <div class="hero-slides" aria-hidden="true"><div class="hero-slide" style="background-image:url('https://raw.githubusercontent.com/modom123/cecethepieces/main/Gemini_Generated_Image_391xt6391xt6391x.jpg');animation-delay:0s"></div><div class="hero-slide" style="background-image:url('https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4027.jpeg');animation-delay:7s"></div><div class="hero-slide" style="background-image:url('https://raw.githubusercontent.com/modom123/cecethepieces/main/Gemini_Generated_Image_xscbqexscbqexscb.jpg');animation-delay:14s"></div><div class="hero-slide" style="background-image:url('https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4023.jpeg');animation-delay:21s"></div><div class="hero-slide" style="background-image:url('https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4033.jpeg');animation-delay:28s"></div></div>
     <div class="hero-bg"></div>
     <div class="hero-grain"></div>
     <div class="hero-eyebrow">Original Artwork by Cece</div>
@@ -786,18 +832,19 @@ footer::before{display:none}
     <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
   </section>
 
-  <!-- Featured -->
+  <!-- Showcase: one featured piece, two companions, and collection tiles -->
   <section class="section" style="background:var(--light2)">
     <div class="inner">
-      <div class="section-header reveal">
-        <div><div class="section-label">Just Listed</div><h2 class="section-h" style="-webkit-text-fill-color:var(--ink);color:var(--ink)">New <em style="font-style:italic;background:linear-gradient(135deg,var(--lav3),var(--lav));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Available</em> Work</h2></div>
-        <button class="view-all" onclick="goTo('shop')">View Full Collection <span>→</span></button>
+      <div class="sc-head reveal">
+        <div class="section-label" style="justify-content:center">The Showcase</div>
+        <h2 class="section-h" style="-webkit-text-fill-color:var(--ink);color:var(--ink)">Featured <em style="font-style:italic;background:linear-gradient(135deg,var(--lav3),var(--lav));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Works</em></h2>
       </div>
-      <div class="pieces-grid" id="home-featured">
-        <div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
-        <div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
-        <div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div><div class="sk-line w35"></div></div></div>
+      <div class="sc-grid reveal" id="home-featured">
+        <div class="skeleton"><div class="sk-img"></div><div class="sk-body"><div class="sk-line"></div><div class="sk-line w70"></div></div></div>
       </div>
+      <div class="sc-cols-head reveal">Shop by Collection</div>
+      <div class="sc-cols reveal" id="home-collections"></div>
+      <div style="display:flex;justify-content:center;margin-top:34px"><button class="view-all" onclick="goTo('shop')">View Full Collection <span>→</span></button></div>
     </div>
   </section>
 
@@ -1394,7 +1441,6 @@ footer::before{display:none}
           <div style="font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--purple2);margin-bottom:14px">Quick Inquiries</div>
           <button onclick="prefillContact('commission')" class="quick-btn">🎨 Commission a custom piece</button>
           <button onclick="prefillContact('rental')" class="quick-btn">🎪 Ask about a rental</button>
-          <button onclick="prefillContact('trade')" class="quick-btn">🏷️ Trade / designer pricing</button>
           <button onclick="prefillContact('urn')" class="quick-btn">🕊️ Custom memorial piece</button>
           <button onclick="prefillContact('stager')" class="quick-btn">🏠 Stager program inquiry</button>
           <button onclick="prefillContact('collaborate')" class="quick-btn">🤝 Collaborate with Cece</button>
@@ -1945,9 +1991,33 @@ function rentalCardHTML(p){
 
 // ── RENDER HOME ──
 function renderHome(){
-  const avail=allPieces.filter(p=>(p.status||'available')==='available').slice(0,3);
+  // Showcase: the newest available piece large, two more beside it.
+  const avail=allPieces.filter(p=>(p.status||'available')==='available').sort((a,b)=>(b.image?1:0)-(a.image?1:0)).slice(0,3);
   const fg=document.getElementById('home-featured');
-  fg.innerHTML=avail.length?avail.map(pieceCardHTML).join(''):'<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted);font-size:.9rem">No pieces currently available — check back soon!</div>';
+  const price=p=>p.price?(p.type==='Statement Panel'?'From ':'')+'$'+Number(p.price).toLocaleString():'Price on inquiry';
+  const buyLbl=p=>depositOf(p)?'Pay Deposit':(p.price?'Buy Now':'Inquire');
+  const img=p=>p.image?`<img src="${p.image}" alt="${p.title}" loading="lazy">`:'';
+  if(!avail.length){ fg.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted);font-size:.9rem">No pieces currently available — check back soon!</div>'; }
+  else{
+    const [f,...rest]=avail;
+    fg.innerHTML=`<div class="sc-feature" onclick="openPiece('${f.id}')"><div class="sc-img">${img(f)}</div>
+      <div class="sc-cap"><div class="sc-type">${f.type||'Original Art'}</div><div class="sc-title">${f.title}</div><div class="sc-price">${price(f)}</div>
+      <div class="sc-actions"><button class="cta-btn cta-primary" onclick="event.stopPropagation();openPiece('${f.id}')">View Piece →</button><button class="cta-btn cta-secondary" onclick="event.stopPropagation();quickBuy('${f.id}')">${buyLbl(f)}</button></div></div></div>`
+      +(rest.length?`<div class="sc-stack">${rest.map(p=>`<div class="sc-side" onclick="openPiece('${p.id}')"><div class="sc-img">${img(p)}</div>
+        <div class="sc-cap"><div class="sc-type">${p.type||'Original Art'}</div><div class="sc-title">${p.title}</div><div class="sc-price">${price(p)}</div>
+        <button class="sc-link" onclick="event.stopPropagation();openPiece('${p.id}')">View →</button></div></div>`).join('')}</div>`:'');
+  }
+  // Collection tiles with hand-picked cover photos (artist request: a showcase
+  // instead of products lined up, and the right Mixed Media cover).
+  const COLLECTIONS=[
+    ['Memorial Piece','Memorial Pieces','IMG_4036.jpeg'],
+    ['Preservation','Preservation','IMG_4069.jpeg'],
+    ['Resin Art','Resin Art','IMG_4027.jpeg'],
+    ['Statement Panel','Statement Panels','IMG_4081.jpeg'],
+    ['Mixed Media','Mixed Media','Gemini_Generated_Image_xscbqexscbqexscb.jpg','55% 38%'],
+  ];
+  const hc=document.getElementById('home-collections');
+  if(hc) hc.innerHTML=COLLECTIONS.map(([t,l,src,pos])=>`<button class="sc-col" onclick="goShopCat('${t}')"><img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/${src}" alt="${l}" loading="lazy"${pos?` style="object-position:${pos}"`:''}><span>${l}<small>Explore →</small></span></button>`).join('');
   const rentable=allPieces.filter(p=>p.for_rent).slice(0,4);
   const rpg=document.getElementById('home-rental-preview');
   // Lead with a styled/staged lifestyle photo so the rental section shows the
@@ -2009,6 +2079,11 @@ function shopSeries(key,btn){
   if(btn) btn.classList.add('active');
   renderShop();
   document.getElementById('shop-grid').scrollIntoView({behavior:'smooth',block:'start'});
+}
+// Open the shop already filtered to one collection (home "Shop by Collection").
+function goShopCat(type){
+  goTo('shop');
+  setTimeout(()=>{ const b=[...document.querySelectorAll('#shop-filters .filter-btn')].find(x=>(x.getAttribute('onclick')||'').includes(`'${type}'`)); shopTypeFilter(type,b); },60);
 }
 function shopTypeFilter(type,btn){
   _sf='all';_st=type;
@@ -2853,7 +2928,6 @@ async function submitRental(){
 const prefills={
   commission:{sub:'Commission Inquiry',msg:"Hi Cece,\n\nI'm interested in commissioning a custom piece.\n\n• Size: \n• Color palette: \n• Space it's going in: \n• Budget range: \n\nLooking forward to hearing from you!"},
   rental:{sub:'Rental Inquiry',msg:"Hi Cece,\n\nI'm interested in renting a piece for an upcoming event.\n\n• Event type: \n• Date: \n• Venue: \n• Duration: \n\nPlease let me know what's available!"},
-  trade:{sub:'Trade Pricing Inquiry',msg:"Hi Cece,\n\nI'm an interior design professional interested in trade pricing.\n\n• My firm/studio: \n• Project types: \n• What I'm looking for: "},
   urn:{sub:'Custom Memorial Piece Inquiry',msg:"Hi Cece,\n\nI'm interested in a custom memorial piece.\n\n• Colors or themes: \n• Timeline: \n• Special inclusions: \n\nThank you for creating such meaningful work."},
   stager:{sub:'Stager Program Inquiry',msg:"Hi Cece,\n\nI'm a home stager interested in your rental program.\n\n• My market area: \n• How often I stage: \n• What I'm looking for: "},
   collaborate:{sub:'Collaboration Inquiry',msg:"Hi Cece,\n\nI'd love to collaborate with you.\n\n• Who I am / my brand: \n• What I have in mind: \n• Timeline: \n\nExcited to connect!"},
