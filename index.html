@@ -34,6 +34,10 @@
           lavender walls with blush/sky washes, pale marble floor, champagne
           gold frames, white mats and placards, lavender buttons and white
           letterbox bars.
+  CHANGE: 2026-10-21_2100 — Gallery reads the hub's "Gallery Walk" picks (public
+          `gallery` table, row "walk"): each frame can be a shop piece photo
+          or colorway, a photo not in the shop, or an upload/Photo Studio
+          edit; placards still take the shop's names. Defaults if none saved.
   CHANGE: 2026-09-23_0215 — About the Artist: placed Cece's real bio (dancer →
           resin, Chicago → Renton, pandemic healing, memorial mission) and a
           "From the Stage to the Studio" Concept blurb; corrected location to
@@ -3108,6 +3112,16 @@ setInterval(async()=>{
     {src:'IMG_4069.jpeg',W:875,H:1024,crop:[.04,.04,.92,.76],title:'Laura & John',medium:'Anniversary bouquet preserved in resin',series:'Preservation'},
     {src:'IMG_4037.jpeg',W:938,H:1024,crop:[.16,.2,.69,.52],title:'Amethyst Shore',medium:'Memorial beach block — sand, shells & tide',series:'Legacy Series'},
   ];
+  // Hand-measured crops for the default photos (by file name). Photos chosen in
+  // the hub's Gallery Walk page use these when they match, else the full photo.
+  const GI_CROPS=Object.fromEntries(PIECES.map(p=>[p.src,p.crop]));
+  const giFile=u=>String(u||'').split('?')[0].split('/').pop();
+  const giUrl=src=>/^(https?:|data:|blob:)/.test(src)?src:IMG+src;
+  function giSetCrop(p){
+    const [x,y,w,h]=p.crop;
+    p.art.style.backgroundSize=`${100/w}% ${100/h}%`;
+    p.art.style.backgroundPosition=`${w<1?x/(1-w)*100:0}% ${h<1?y/(1-h)*100:0}%`;
+  }
   const ROMAN=['I','II','III','IV','V','VI','VII','VIII','IX','X'];
   const N=PIECES.length+2;                 // opening wall + 10 pieces + finale
   const world=document.getElementById('giWorld');
@@ -3122,10 +3136,8 @@ setInterval(async()=>{
     b.innerHTML=`<div class="gi-beam"></div><div class="gi-lamp"></div>
       <div class="gi-piece" role="img" aria-label="${p.title} — ${p.medium}"><div class="gi-frame"><div class="gi-mat"><div class="gi-art"></div></div><div class="gi-dim"></div></div></div>
       <div class="gi-plaque"><span class="no">No. ${ROMAN[i]}</span><b>${p.title}</b><i>${p.medium}</i><em>${p.series}</em><button type="button" class="gi-shop" style="display:none">View in Shop →</button></div>`;
-    const [x,y,w,h]=p.crop, art=b.querySelector('.gi-art');
-    art.style.backgroundSize=`${100/w}% ${100/h}%`;
-    art.style.backgroundPosition=`${w<1?x/(1-w)*100:0}% ${h<1?y/(1-h)*100:0}%`;
-    p.aspect=(w*p.W)/(h*p.H); p.el=b; p.art=art;
+    p.el=b; p.art=b.querySelector('.gi-art'); giSetCrop(p);
+    p.aspect=(p.crop[2]*p.W)/(p.crop[3]*p.H);
     b.querySelector('.gi-piece').addEventListener('click',()=>{ stopTour(); target=i+1; });
     b.querySelector('.gi-shop').addEventListener('click',e=>{ e.stopPropagation(); if(p.pieceId) leave('shop',p.pieceId); });
     bays.push(b);
@@ -3151,33 +3163,67 @@ setInterval(async()=>{
     for(let i=0;i<d.data.length;i+=4){ const v=Math.random()*255|0; d.data[i]=d.data[i+1]=d.data[i+2]=v; d.data[i+3]=255; }
     x.putImageData(d,0,0); document.getElementById('giGrain').style.backgroundImage=`url(${c.toDataURL()})`; })();
 
-  // ── names from the shop ──
-  // Match each gallery photo to the shop piece that uses it (main photo or a
-  // colorway) and show that piece's real name, category and a shop link.
+  // ── names from the shop + the hub's Gallery Walk picks ──
+  // The hub saves 10 slots to the public `gallery` table (row id "walk"); each
+  // slot is a shop piece + which of its photos ({piece_id, img}) or an uploaded
+  // photo ({src}), with an optional placard name ({title}). Placards always
+  // take the shop's name (matched by piece, or by photo file for defaults).
+  let giCfg;   // undefined = still loading, null = none saved
+  try{
+    fetch(`${SUPABASE_URL}/rest/v1/gallery?id=eq.walk&select=data`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}})
+      .then(r=>r.ok?r.json():[]).then(rows=>{ const d=rows&&rows[0]&&rows[0].data; giCfg=(d&&Array.isArray(d.slots))?d.slots:null; })
+      .catch(()=>{ giCfg=null; });
+  }catch(e){ giCfg=null; }
+  setTimeout(()=>{ if(giCfg===undefined) giCfg=null; },8000);
+
+  const giVars=sp=>(typeof normalizeVariations==='function'?normalizeVariations(sp):[]).map(v=>typeof v==='string'?{image:v,label:''}:{image:v.image||v.src||'',label:v.label||''});
+  function giApplyCfg(slots){
+    PIECES.forEach((p,i)=>{
+      const sl=slots[i]; if(!sl) return;
+      // An uploaded photo (src) wins for the picture; a linked shop piece still
+      // supplies the placard name, category and View in Shop link.
+      let src=sl.src||'', sp=null, label='';
+      if(sl.piece_id!=null && sl.piece_id!==''){
+        sp=allPieces.find(x=>String(x.id)===String(sl.piece_id));
+        if(sp && !src){ const n=+sl.img||0; if(n>0){ const v=giVars(sp)[n-1]; if(v){ src=v.image; label=v.label; } } if(!src) src=sp.image||''; }
+      }
+      if(!src) return;
+      p.src=src; p.crop=GI_CROPS[giFile(src)]||[0,0,1,1]; p.forced=sp?{sp,label}:null; p.titleOverride=(sl.title||'').trim();
+      p.medium=label?label+' colorway':''; p.series='';   // filled from the shop by giSyncNames()
+      giSetCrop(p); p.loaded=0; p.art.style.backgroundImage='';
+      const im=new Image();
+      im.onload=()=>{ p.aspect=(p.crop[2]*im.naturalWidth)/(p.crop[3]*im.naturalHeight)||1; layout(); dirty=true; };
+      im.src=giUrl(src);
+    });
+  }
   function giSyncNames(){
-    if(typeof allPieces==='undefined' || !allPieces || !allPieces.length) return false;
-    const file=u=>String(u||'').split('?')[0].split('/').pop();
     const map={};
     allPieces.forEach(sp=>{
-      if(sp.image && !map[file(sp.image)]) map[file(sp.image)]={sp,label:''};
-      (typeof normalizeVariations==='function'?normalizeVariations(sp):[]).forEach(v=>{
-        const f=file(typeof v==='string'?v:(v.image||v.src)); if(f && !map[f]) map[f]={sp,label:(v&&v.label)||''};
-      });
+      if(sp.image && !map[giFile(sp.image)]) map[giFile(sp.image)]={sp,label:''};
+      giVars(sp).forEach(v=>{ const f=giFile(v.image); if(f && !map[f]) map[f]={sp,label:v.label}; });
     });
     PIECES.forEach(p=>{
-      const m=map[p.src]; if(!m) return;
-      p.pieceId=m.sp.id; p.title=m.sp.title;
-      if(m.label) p.medium=m.label+' colorway';
-      p.series=(typeof CAT_LABEL!=='undefined'&&CAT_LABEL[m.sp.type])||m.sp.type||p.series;
+      const m=p.forced||map[giFile(p.src)];
       const pl=p.el.querySelector('.gi-plaque');
-      pl.querySelector('b').textContent=p.title; pl.querySelector('i').textContent=p.medium; pl.querySelector('em').textContent=p.series;
-      pl.querySelector('.gi-shop').style.display='';
-      p.el.querySelector('.gi-piece').setAttribute('aria-label',p.title+' — '+p.medium);
+      if(m){
+        p.pieceId=m.sp.id; p.title=m.sp.title;
+        if(m.label) p.medium=m.label+' colorway';
+        else if(p.forced || !p.medium) p.medium=String(m.sp.materials||'').split(/[.;]/)[0].slice(0,70);
+        p.series=(typeof CAT_LABEL!=='undefined'&&CAT_LABEL[m.sp.type])||m.sp.type||p.series;
+      }
+      if(p.titleOverride) p.title=p.titleOverride;
+      pl.querySelector('b').textContent=p.title; pl.querySelector('i').textContent=p.medium||''; pl.querySelector('em').textContent=p.series||'';
+      pl.querySelector('.gi-shop').style.display=p.pieceId?'':'none';
+      p.el.querySelector('.gi-piece').setAttribute('aria-label',p.title+(p.medium?' — '+p.medium:''));
     });
-    setTimeout(()=>{ layout(); dirty=true; },0);   // placards changed size — refit the frames
-    return true;
+    layout(); dirty=true; loadNear(Math.round(cur));   // placards changed size — refit the frames
   }
-  if(!giSyncNames()){ let tries=0; const t=setInterval(()=>{ if(giSyncNames()||++tries>60) clearInterval(t); },500); }
+  (function giWait(tries){
+    if(tries<0){ setTimeout(()=>giWait(0),0); return; }   // run after the rest of this script initialises
+    const ready=typeof allPieces!=='undefined' && allPieces && allPieces.length;
+    if(ready && giCfg!==undefined){ if(giCfg) giApplyCfg(giCfg); giSyncNames(); return; }
+    if(tries<60) setTimeout(()=>giWait(tries+1),300);
+  })(-1);
 
   // ── sizing ──
   let spacing=900, vw=0, vh=0;
@@ -3206,7 +3252,7 @@ setInterval(async()=>{
   }
   layout(); addEventListener('resize',()=>{ layout(); dirty=true; });
 
-  function loadNear(c){ PIECES.forEach((p,i)=>{ if(!p.loaded && Math.abs(i+1-c)<3.5){ p.loaded=1; p.art.style.backgroundImage=`url("${IMG+p.src}")`; } }); }
+  function loadNear(c){ PIECES.forEach((p,i)=>{ if(!p.loaded && Math.abs(i+1-c)<3.5){ p.loaded=1; p.art.style.backgroundImage=`url("${giUrl(p.src)}")`; } }); }
   loadNear(0);
 
   // ── camera ──
