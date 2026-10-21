@@ -15,6 +15,10 @@
           before entering the site. Plays gallery-music.mp3 from the repo if
           present (real recorded track; silent until uploaded). Shown once
           per session; "Walk the Gallery" on the home hero replays it.
+          2026-10-21_1840 — Splash is now the first page on every visit (no
+          longer once per session) and the walk runs 7 seconds shorter
+          (faster opening titles/doors, 5.15s per piece instead of 5.6s).
+          Added the recorded soundtrack as gallery-music.mp3.
   CHANGE: 2026-09-23_0215 — About the Artist: placed Cece's real bio (dancer →
           resin, Chicago → Renton, pandemic healing, memorial mission) and a
           "From the Stage to the Studio" Concept blurb; corrected location to
@@ -544,11 +548,10 @@ footer::before{display:none}
 <!-- ═══════════ GALLERY WALK SPLASH ═══════════
   ADDED: 2026-10-21_1830 UTC — Cinematic "walk through the gallery" entry
   splash: letterboxed title sequence, gilded doors that open onto a dark
-  museum corridor, ten spot-lit pieces with brass placards, and a live,
-  generated lounge-jazz soundtrack (Web Audio — no audio file / licensing
-  needed; set GI_MUSIC_URL to play a real track instead). Shown once per
-  browser session; ?gallery forces it, ?nogallery or a Stripe ?checkout=
-  return skips it. Scroll, swipe, arrow keys or the auto-tour move the
+  museum corridor, ten spot-lit pieces with brass placards, and a recorded
+  jazz soundtrack (gallery-music.mp3, see GI_MUSIC_URL). It is the first
+  page of the website: shown on every visit; ?nogallery or a Stripe
+  ?checkout= return skips it. Scroll, swipe, arrow keys or the auto-tour move the
   camera; "Skip" or the final "Enter" hands off to the normal site.
 -->
 <style>
@@ -628,7 +631,7 @@ footer::before{display:none}
   .gi-door{flex:1;position:relative;background:
       linear-gradient(90deg,rgba(0,0,0,.5),transparent 12%,transparent 88%,rgba(0,0,0,.5)),
       repeating-linear-gradient(0deg,#140f12 0 3px,#110d10 3px 7px);
-    transition:transform 3.2s cubic-bezier(.65,0,.25,1);transform-style:preserve-3d}
+    transition:transform 2.6s cubic-bezier(.65,0,.25,1);transform-style:preserve-3d}
   .gi-door::before{content:'';position:absolute;inset:7% 12%;border:2px solid rgba(212,175,106,.55);box-shadow:inset 0 0 0 10px rgba(0,0,0,.25),inset 0 0 0 11px rgba(212,175,106,.3)}
   .gi-door::after{content:'';position:absolute;top:72%;width:10px;height:90px;margin-top:-45px;border-radius:5px;background:linear-gradient(90deg,#7a5a24,#f3dca0,#8a6a32);box-shadow:0 0 18px rgba(243,220,160,.4)}
   .gi-door.l{transform-origin:0 50%;border-right:1px solid rgba(212,175,106,.6)} .gi-door.l::after{right:6%}
@@ -639,7 +642,7 @@ footer::before{display:none}
   .gi-gate .gi-h{font-size:clamp(2.4rem,7vw,5.4rem)}
   #gi.gi-started .gi-gate{opacity:0;pointer-events:none}
   .gi-presents{position:absolute;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;opacity:0;text-align:center}
-  #gi.gi-titles .gi-presents{animation:giPresents 3.6s ease forwards}
+  #gi.gi-titles .gi-presents{animation:giPresents 2.4s ease forwards}
   @keyframes giPresents{0%{opacity:0;letter-spacing:.2em}25%{opacity:1}75%{opacity:1}100%{opacity:0;letter-spacing:.6em}}
 
   /* ── cinematic layer: letterbox, grain, vignette, motes ── */
@@ -727,9 +730,8 @@ footer::before{display:none}
 <script>
 (function(){
   // Decide synchronously (before the site paints) whether to show the walk.
-  var q=location.search, show=false;
-  try{ show=!sessionStorage.getItem('cece_gallery_seen'); }catch(e){ show=true; }
-  if(/[?&]gallery\b/.test(q)) show=true;
+  // The walk is the website's front page, so it shows on every visit.
+  var q=location.search, show=true;
   if(/[?&](nogallery|checkout)=?/.test(q)) show=false;
   if(show){ document.getElementById('gi').classList.remove('gi-hidden'); document.documentElement.style.overflow='hidden'; }
 })();
@@ -3086,7 +3088,7 @@ setInterval(async()=>{
   let touring=false, tourTimer=null;
   const tourBtn=document.getElementById('giTour');
   function startTour(){ touring=true; tourBtn.textContent='❚❚ Tour'; tourBtn.setAttribute('aria-pressed','true'); clearInterval(tourTimer);
-    tourTimer=setInterval(()=>{ if(target<N-1){ target=Math.round(target)+1; } else stopTour(); },5600); }
+    tourTimer=setInterval(()=>{ if(target<N-1){ target=Math.round(target)+1; } else stopTour(); },5150); }
   function stopTour(){ if(!touring) return; touring=false; clearInterval(tourTimer); tourBtn.textContent='▶ Tour'; tourBtn.setAttribute('aria-pressed','false'); }
   tourBtn.onclick=()=>{ if(touring) stopTour(); else { if(target>=N-1) target=0; startTour(); } };
 
@@ -3131,8 +3133,8 @@ setInterval(async()=>{
     if(!muted){ audio.play().then(()=>fadeTo(GI_MUSIC_VOL,4000)).catch(()=>{}); }
     gi.classList.add('gi-started','gi-titles');
     running=true; requestAnimationFrame(frame);
-    setTimeout(()=>{ gi.classList.add('gi-open'); },reduce?200:2600);
-    setTimeout(()=>{ startTour(); target=1; },reduce?600:5600);
+    setTimeout(()=>{ gi.classList.add('gi-open'); },reduce?200:1400);
+    setTimeout(()=>{ startTour(); target=1; },reduce?600:3600);
   }
   document.getElementById('giEnter').onclick=begin;
   // start fetching the music as soon as the gate shows so it's ready on click
@@ -3140,7 +3142,6 @@ setInterval(async()=>{
 
   function leave(page){
     stopTour(); running=false;
-    try{ sessionStorage.setItem('cece_gallery_seen','1'); }catch(e){}
     gi.classList.add('gi-leaving');
     if(!audio.paused) fadeTo(0,1800,()=>audio.pause());
     setTimeout(()=>{
