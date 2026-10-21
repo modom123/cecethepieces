@@ -30,6 +30,10 @@
           Shop" link that opens that exact piece. Placards fit above the
           letterbox (beside the frame on shorter screens); fixed clicks on
           frames/placards being swallowed by the 3D scene layer.
+  CHANGE: 2026-10-21_2030 — Gallery re-themed to match the site's pastel look:
+          lavender walls with blush/sky washes, pale marble floor, champagne
+          gold frames, white mats and placards, lavender buttons and white
+          letterbox bars.
   CHANGE: 2026-09-23_0215 — About the Artist: placed Cece's real bio (dancer →
           resin, Chicago → Renton, pandemic healing, memorial mission) and a
           "From the Stage to the Studio" Concept blurb; corrected location to
@@ -606,8 +610,11 @@ footer::before{display:none}
   camera; "Skip" or the final "Enter" hands off to the normal site.
 -->
 <style>
-  #gi{position:fixed;inset:0;z-index:9999;background:#050406;color:#efe6d2;overflow:hidden;font-family:'Jost',system-ui,sans-serif;
-      --gold:#d4af6a;--gold2:#f3dca0;--gold3:#8a6a32;--wall:#120e14;--wall2:#08070a;opacity:1;transition:opacity 1.4s ease}
+  /* Pastel theme (2026-10-21_2030): matches the website — lavender walls,
+     pale marble floor, champagne-gold frames, white placards, lavender CTAs. */
+  #gi{position:fixed;inset:0;z-index:9999;background:#f6f3ff;color:#1e1830;overflow:hidden;font-family:'Jost',system-ui,sans-serif;
+      --gold:#c9a45c;--gold2:#a8843f;--lav:#7c5cbf;--lav2:#9b7de0;--lav3:#5c3fa0;--ink:#1e1830;--muted:#4a4060;--line:rgba(124,92,191,.22);
+      opacity:1;transition:opacity 1.4s ease}
   #gi.gi-hidden{display:none}
   #gi.gi-leaving{opacity:0;pointer-events:none}
   #gi *{box-sizing:border-box}
@@ -615,23 +622,25 @@ footer::before{display:none}
 
   /* ── the room ── */
   .gi-room{position:absolute;inset:0;perspective:1300px;perspective-origin:50% 44%;overflow:hidden;transition:transform 2.2s cubic-bezier(.6,0,.2,1),filter 2.2s ease}
-  #gi.gi-leaving .gi-room{transform:scale(1.35);filter:blur(6px) brightness(1.6)}
+  #gi.gi-leaving .gi-room{transform:scale(1.35);filter:blur(6px) brightness(1.12)}
   .gi-wall{position:absolute;left:0;right:0;top:0;bottom:24%;
     background:
-      radial-gradient(ellipse 60% 55% at 50% 42%,rgba(212,175,106,.10),transparent 70%),
-      repeating-linear-gradient(90deg,transparent 0 238px,rgba(212,175,106,.07) 238px 239px,transparent 239px 246px,rgba(0,0,0,.35) 246px 247px,transparent 247px 480px),
-      linear-gradient(180deg,#07060a 0%,var(--wall) 22%,#17121a 70%,#0d0a0f 100%)}
-  .gi-ceiling{position:absolute;left:0;right:0;top:0;height:13%;background:linear-gradient(180deg,#000 0%,rgba(0,0,0,.6) 60%,transparent);}
-  .gi-rail{position:absolute;left:0;right:0;top:12.5%;height:2px;background:linear-gradient(90deg,transparent,rgba(212,175,106,.35) 15%,rgba(212,175,106,.35) 85%,transparent);box-shadow:0 0 12px rgba(212,175,106,.25)}
+      radial-gradient(ellipse 45% 60% at 8% 55%,rgba(255,208,223,.45),transparent 70%),
+      radial-gradient(ellipse 45% 60% at 92% 50%,rgba(205,228,255,.5),transparent 70%),
+      radial-gradient(ellipse 60% 55% at 50% 40%,rgba(255,255,255,.9),transparent 70%),
+      repeating-linear-gradient(90deg,transparent 0 238px,rgba(201,164,92,.18) 238px 239px,transparent 239px 246px,rgba(124,92,191,.07) 246px 247px,transparent 247px 480px),
+      linear-gradient(180deg,#fdfcff 0%,#f4f0ff 35%,#ece6fb 100%)}
+  .gi-ceiling{position:absolute;left:0;right:0;top:0;height:13%;background:linear-gradient(180deg,#e9e2f8 0%,rgba(233,226,248,.5) 60%,transparent)}
+  .gi-rail{position:absolute;left:0;right:0;top:12.5%;height:2px;background:linear-gradient(90deg,transparent,rgba(201,164,92,.55) 15%,rgba(201,164,92,.55) 85%,transparent)}
   .gi-wainscot{position:absolute;left:0;right:0;bottom:24%;height:9%;
-    background:repeating-linear-gradient(90deg,rgba(0,0,0,.0) 0 200px,rgba(212,175,106,.12) 200px 201px,rgba(0,0,0,0) 201px 400px),linear-gradient(180deg,#0f0c11,#09070b);
-    border-top:1px solid rgba(212,175,106,.35);box-shadow:0 -1px 0 rgba(0,0,0,.6)}
+    background:repeating-linear-gradient(90deg,transparent 0 200px,rgba(201,164,92,.22) 200px 201px,transparent 201px 400px),linear-gradient(180deg,#f1ecfc,#e8e1f7);
+    border-top:1px solid rgba(201,164,92,.5);box-shadow:0 -1px 0 #fff}
   .gi-floor{position:absolute;left:0;right:0;bottom:0;height:24%;
     background:
-      radial-gradient(ellipse 45% 70% at 50% 0%,rgba(243,220,160,.13),transparent 70%),
-      repeating-linear-gradient(100deg,rgba(255,255,255,.015) 0 2px,transparent 2px 90px),
-      linear-gradient(180deg,#1a1519 0%,#0b090c 55%,#030203 100%);
-    border-top:1px solid rgba(212,175,106,.18)}
+      radial-gradient(ellipse 45% 70% at 50% 0%,rgba(255,255,255,.85),transparent 70%),
+      repeating-linear-gradient(100deg,rgba(124,92,191,.035) 0 2px,transparent 2px 90px),
+      linear-gradient(180deg,#f3eefb 0%,#e6def4 55%,#d9cfec 100%);
+    border-top:1px solid rgba(201,164,92,.35)}
   .gi-world{position:absolute;inset:0;transform-style:preserve-3d;pointer-events:none}
   .gi-piece,.gi-plaque,.gi-card{pointer-events:auto}
 
@@ -639,60 +648,59 @@ footer::before{display:none}
   .gi-bay{position:absolute;left:50%;top:44%;width:0;height:0;transform-style:preserve-3d;will-change:transform,opacity}
   .gi-piece{position:absolute;left:0;top:0;transform:translate(-50%,-50%);cursor:pointer}
   .gi-beam{position:absolute;left:50%;bottom:50%;width:min(70vw,760px);height:62vh;transform:translateX(-50%);pointer-events:none;
-    background:radial-gradient(ellipse 50% 100% at 50% 0%,rgba(255,236,190,.22),rgba(255,236,190,.06) 55%,transparent 75%);
-    clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);opacity:calc(.15 + var(--lit,0)*.85);mix-blend-mode:screen;transition:opacity .3s}
+    background:radial-gradient(ellipse 50% 100% at 50% 0%,rgba(255,255,255,.75),rgba(255,250,240,.25) 55%,transparent 75%);
+    clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);opacity:calc(.1 + var(--lit,0)*.9);transition:opacity .3s}
   .gi-lamp{position:absolute;left:50%;top:calc(-44vh + 12.5vh);width:34px;height:20px;transform:translateX(-50%);
-    background:linear-gradient(180deg,#2a2226,#0c0a0c);border-radius:4px 4px 10px 10px;border-bottom:2px solid rgba(255,236,190,calc(.3 + var(--lit,0)*.7));
-    box-shadow:0 6px 20px rgba(255,236,190,calc(var(--lit,0)*.55))}
+    background:linear-gradient(180deg,#f7f2e6,#d9c49a);border-radius:4px 4px 10px 10px;border-bottom:2px solid rgba(255,255,255,calc(.4 + var(--lit,0)*.6));
+    box-shadow:0 6px 22px rgba(255,240,200,calc(var(--lit,0)*.9)),0 1px 3px rgba(92,63,160,.2)}
   .gi-frame{position:relative;padding:clamp(10px,1.6vw,22px);
-    background:linear-gradient(135deg,#7a5a24 0%,#f3dca0 18%,#b8913f 34%,#fff1c4 50%,#a07a30 66%,#e9c97f 82%,#6d4f1e 100%);
-    box-shadow:0 0 0 1px #3d2c10,0 30px 60px rgba(0,0,0,.75),0 0 90px rgba(255,226,160,calc(var(--lit,0)*.18)),inset 0 0 0 2px rgba(255,248,220,.35);
-    -webkit-box-reflect:below 6vh linear-gradient(transparent 62%,rgba(255,255,255,.13))}
-  .gi-frame::after{content:'';position:absolute;inset:clamp(10px,1.6vw,22px);box-shadow:inset 0 0 0 2px rgba(60,40,10,.7),inset 0 3px 8px rgba(0,0,0,.6);pointer-events:none}
-  .gi-mat{background:#f2ece0;padding:clamp(12px,2.2vw,34px);box-shadow:inset 0 0 18px rgba(80,60,30,.25)}
-  .gi-art{display:block;background-color:#1a1418;background-repeat:no-repeat;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25),0 1px 0 rgba(255,255,255,.6)}
-  .gi-dim{position:absolute;inset:-2px;background:#050406;opacity:calc((1 - var(--lit,0))*.62);pointer-events:none;transition:opacity .2s}
+    background:linear-gradient(135deg,#b39251 0%,#f4e4bd 18%,#cfae6b 34%,#fff6dc 50%,#c19d58 66%,#ecd6a0 82%,#a88848 100%);
+    box-shadow:0 0 0 1px rgba(140,110,50,.5),0 30px 60px rgba(92,63,160,.22),0 0 80px rgba(255,255,255,calc(var(--lit,0)*.7)),inset 0 0 0 2px rgba(255,250,235,.5);
+    -webkit-box-reflect:below 6vh linear-gradient(transparent 62%,rgba(255,255,255,.22))}
+  .gi-frame::after{content:'';position:absolute;inset:clamp(10px,1.6vw,22px);box-shadow:inset 0 0 0 2px rgba(150,120,60,.45),inset 0 3px 8px rgba(92,63,160,.15);pointer-events:none}
+  .gi-mat{background:#fff;padding:clamp(12px,2.2vw,34px);box-shadow:inset 0 0 18px rgba(124,92,191,.08)}
+  .gi-art{display:block;background-color:#efeaf8;background-repeat:no-repeat;box-shadow:inset 0 0 0 1px rgba(30,24,48,.12),0 1px 0 #fff}
+  .gi-dim{position:absolute;inset:-2px;background:#f3efff;opacity:calc((1 - var(--lit,0))*.55);pointer-events:none;transition:opacity .2s}
   .gi-plaque{position:absolute;left:0;top:0;transform:translate(-50%,0);margin-top:var(--plaqueY,30vh);min-width:230px;max-width:min(84vw,420px);text-align:center;
-    padding:12px 22px 13px;background:linear-gradient(160deg,#2b2318,#15110c);border:1px solid rgba(212,175,106,.5);
-    box-shadow:0 10px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(243,220,160,.18);opacity:0;transition:opacity .9s ease,transform .9s ease;transform:translate(-50%,10px)}
+    padding:13px 22px 14px;background:#fff;border:1px solid var(--line);border-top:2px solid var(--gold);
+    box-shadow:0 14px 40px rgba(92,63,160,.14);opacity:0;transition:opacity .9s ease,transform .9s ease;transform:translate(-50%,10px)}
   .gi-bay.on .gi-plaque{opacity:1;transform:translate(-50%,0)}
   /* Short screens: placard sits beside the frame instead of under it. */
   .gi-bay.side .gi-plaque{margin-top:0;left:var(--plaqueX,300px);transform:translate(0,calc(-50% + 10px));text-align:left}
   .gi-bay.side.on .gi-plaque{transform:translate(0,-50%)}
-  .gi-shop{margin-top:9px;background:none;border:0;border-top:1px solid rgba(212,175,106,.3);padding:8px 0 0;width:100%;color:var(--gold2);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;font-family:inherit}
-  .gi-shop:hover{color:#fff}
-  .gi-plaque .no{display:block;font-size:.62rem;letter-spacing:.38em;color:var(--gold);text-transform:uppercase;margin-bottom:5px}
-  .gi-plaque b{display:block;font-family:'Playfair Display',serif;font-weight:400;font-style:italic;font-size:clamp(1.15rem,2vw,1.5rem);color:#fbf3df;line-height:1.2}
-  .gi-plaque i{display:block;font-style:normal;font-size:.76rem;color:rgba(239,230,210,.72);margin-top:5px;letter-spacing:.04em}
-  .gi-plaque em{display:block;font-style:normal;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(212,175,106,.85);margin-top:7px}
+  .gi-shop{margin-top:9px;background:none;border:0;border-top:1px solid var(--line);padding:8px 0 0;width:100%;color:var(--lav3);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;font-family:inherit;font-weight:600}
+  .gi-shop:hover{color:var(--lav)}
+  .gi-plaque .no{display:block;font-size:.62rem;letter-spacing:.38em;color:var(--gold2);text-transform:uppercase;margin-bottom:5px}
+  .gi-plaque b{display:block;font-family:'Playfair Display',serif;font-weight:400;font-style:italic;font-size:clamp(1.15rem,2vw,1.5rem);color:var(--ink);line-height:1.2}
+  .gi-plaque i{display:block;font-style:normal;font-size:.78rem;color:var(--muted);margin-top:5px;letter-spacing:.03em}
+  .gi-plaque em{display:block;font-style:normal;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--lav);margin-top:7px}
 
   /* text bays (opening title wall + finale) */
   .gi-card{position:absolute;left:0;top:0;transform:translate(-50%,-50%);width:min(86vw,760px);text-align:center}
-  .gi-eyebrow{font-size:.7rem;letter-spacing:.5em;text-transform:uppercase;color:var(--gold)}
+  .gi-eyebrow{font-size:.7rem;letter-spacing:.5em;text-transform:uppercase;color:var(--lav);font-weight:500}
   .gi-h{font-family:'Playfair Display',serif;font-weight:400;font-size:clamp(2.6rem,8vw,6.2rem);line-height:1.02;margin:.25em 0 .2em;
-    background:linear-gradient(100deg,#9c7a3c 0%,#f6e3ae 25%,#c79e52 45%,#fff3cf 60%,#b48a42 80%,#e9cf8e 100%);background-size:200% 100%;
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:giShimmer 7s linear infinite;
-    filter:drop-shadow(0 4px 24px rgba(212,175,106,.25))}
+    background:linear-gradient(100deg,#5c3fa0 0%,#9b7de0 30%,#d687a8 55%,#7aa6e0 80%,#5c3fa0 100%);background-size:200% 100%;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:giShimmer 9s linear infinite}
   .gi-h em{font-style:italic}
-  .gi-sub{font-size:clamp(.9rem,1.5vw,1.05rem);color:rgba(239,230,210,.75);line-height:1.8;max-width:520px;margin:0 auto;font-weight:300}
+  .gi-sub{font-size:clamp(.9rem,1.5vw,1.05rem);color:var(--muted);line-height:1.8;max-width:520px;margin:0 auto;font-weight:400}
   .gi-rule{width:120px;height:1px;margin:22px auto;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
   .gi-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px}
-  .gi-btn{border:1px solid var(--gold);background:linear-gradient(135deg,#b8913f,#f3dca0 50%,#b8913f);color:#1a1206;padding:15px 34px;font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;font-weight:600;
-    box-shadow:0 10px 40px rgba(212,175,106,.28);transition:transform .3s,box-shadow .3s}
-  .gi-btn:hover{transform:translateY(-2px);box-shadow:0 14px 50px rgba(212,175,106,.45)}
-  .gi-btn.ghost{background:transparent;color:var(--gold2)}
+  .gi-btn{border:1px solid transparent;background:linear-gradient(135deg,#7c5cbf,#9b7de0);color:#fff;padding:15px 34px;font-size:.78rem;letter-spacing:.26em;text-transform:uppercase;font-weight:600;border-radius:2px;
+    box-shadow:0 10px 34px rgba(124,92,191,.35);transition:transform .3s,box-shadow .3s}
+  .gi-btn:hover{transform:translateY(-2px);box-shadow:0 14px 44px rgba(124,92,191,.5)}
+  .gi-btn.ghost{background:#fff;color:var(--lav3);border-color:rgba(124,92,191,.4);box-shadow:0 8px 24px rgba(124,92,191,.12)}
   @keyframes giShimmer{to{background-position:-200% 0}}
 
-  /* ── gilded doors ── */
+  /* ── doors ── */
   .gi-doors{position:absolute;inset:0;z-index:5;display:flex;pointer-events:none;perspective:1600px}
   .gi-door{flex:1;position:relative;background:
-      linear-gradient(90deg,rgba(0,0,0,.5),transparent 12%,transparent 88%,rgba(0,0,0,.5)),
-      repeating-linear-gradient(0deg,#140f12 0 3px,#110d10 3px 7px);
+      linear-gradient(90deg,rgba(92,63,160,.07),transparent 12%,transparent 88%,rgba(92,63,160,.07)),
+      repeating-linear-gradient(0deg,#f1ecfc 0 3px,#ede7fa 3px 7px);
     transition:transform 2.6s cubic-bezier(.65,0,.25,1);transform-style:preserve-3d}
-  .gi-door::before{content:'';position:absolute;inset:7% 12%;border:2px solid rgba(212,175,106,.55);box-shadow:inset 0 0 0 10px rgba(0,0,0,.25),inset 0 0 0 11px rgba(212,175,106,.3)}
-  .gi-door::after{content:'';position:absolute;top:50%;width:10px;height:90px;margin-top:-45px;border-radius:5px;background:linear-gradient(90deg,#7a5a24,#f3dca0,#8a6a32);box-shadow:0 0 18px rgba(243,220,160,.4)}
-  .gi-door.l{transform-origin:0 50%;border-right:1px solid rgba(212,175,106,.6)} .gi-door.l::after{right:6%}
-  .gi-door.r{transform-origin:100% 50%;border-left:1px solid rgba(212,175,106,.6)} .gi-door.r::after{left:6%}
+  .gi-door::before{content:'';position:absolute;inset:7% 12%;border:2px solid rgba(201,164,92,.6);box-shadow:inset 0 0 0 10px rgba(255,255,255,.45),inset 0 0 0 11px rgba(201,164,92,.35)}
+  .gi-door::after{content:'';position:absolute;top:50%;width:10px;height:90px;margin-top:-45px;border-radius:5px;background:linear-gradient(90deg,#b39251,#f4e4bd,#b89656);box-shadow:0 2px 10px rgba(140,110,50,.35)}
+  .gi-door.l{transform-origin:0 50%;border-right:1px solid rgba(201,164,92,.6)} .gi-door.l::after{right:6%}
+  .gi-door.r{transform-origin:100% 50%;border-left:1px solid rgba(201,164,92,.6)} .gi-door.r::after{left:6%}
   #gi.gi-open .gi-door.l{transform:rotateY(-104deg)}
   #gi.gi-open .gi-door.r{transform:rotateY(104deg)}
   .gi-gate{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;text-align:center;transition:opacity 1.2s ease}
@@ -701,53 +709,55 @@ footer::before{display:none}
   /* Title plaque: a solid framed panel in front of the doors, so the door
      seam, panel mouldings and handles never run through the lettering. */
   .gi-plate{position:relative;width:min(640px,calc(100vw - 32px));padding:clamp(40px,6vh,64px) clamp(22px,5vw,60px) clamp(34px,5vh,52px);
-    background:radial-gradient(ellipse 90% 70% at 50% 0%,#211a22 0%,#100d11 60%,#0b090c 100%);
-    border:1px solid rgba(212,175,106,.6);
-    box-shadow:0 0 0 7px #0b090c,0 0 0 8px rgba(212,175,106,.3),0 50px 100px rgba(0,0,0,.8)}
-  .gi-plate::before,.gi-plate::after{content:'';position:absolute;left:50%;width:11px;height:11px;margin-left:-5.5px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 0 4px #0b090c}
+    background:radial-gradient(ellipse 90% 70% at 50% 0%,#ffffff 0%,#fcfbff 60%,#f7f3ff 100%);
+    border:1px solid rgba(201,164,92,.65);
+    box-shadow:0 0 0 7px #f6f3ff,0 0 0 8px rgba(124,92,191,.25),0 40px 90px rgba(92,63,160,.22)}
+  .gi-plate::before,.gi-plate::after{content:'';position:absolute;left:50%;width:11px;height:11px;margin-left:-5.5px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 0 4px #f6f3ff}
   .gi-plate::before{top:-6px} .gi-plate::after{bottom:-6px}
   .gi-plate .gi-eyebrow{font-size:.66rem;letter-spacing:.42em;padding-left:.42em}
   .gi-plate .gi-rule{margin:20px auto 18px;width:84px}
-  .gi-plate .gi-sub{max-width:420px;font-size:clamp(.88rem,1.3vw,1rem);line-height:1.75;color:rgba(239,230,210,.78)}
+  .gi-plate .gi-sub{max-width:420px;font-size:clamp(.88rem,1.3vw,1rem);line-height:1.75}
   .gi-plate .gi-btns{margin-top:26px}
-  .gi-sound{margin-top:14px;font-size:.6rem;letter-spacing:.24em;padding-left:.24em;text-transform:uppercase;color:rgba(239,230,210,.42)}
+  .gi-sound{margin-top:14px;font-size:.6rem;letter-spacing:.24em;padding-left:.24em;text-transform:uppercase;color:rgba(74,64,96,.6)}
   @media (max-width:760px){
     .gi-plate .gi-eyebrow{font-size:.58rem;letter-spacing:.3em;padding-left:.3em}
     .gi-plate .gi-btn{width:100%;padding:15px 18px;letter-spacing:.22em}
   }
   #gi.gi-started .gi-gate{opacity:0;pointer-events:none}
   .gi-presents{position:absolute;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;opacity:0;text-align:center}
+  .gi-presents{background:radial-gradient(ellipse 34% 20% at 50% 50%,rgba(253,252,255,.98) 60%,rgba(253,252,255,0) 100%)}
+  .gi-presents-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.4rem,3vw,2.2rem);color:var(--ink);margin-top:14px}
   #gi.gi-titles .gi-presents{animation:giPresents 2.4s ease forwards}
   @keyframes giPresents{0%{opacity:0;letter-spacing:.2em}25%{opacity:1}75%{opacity:1}100%{opacity:0;letter-spacing:.6em}}
 
   /* ── cinematic layer: letterbox, grain, vignette, motes ── */
-  .gi-bar{position:absolute;left:0;right:0;height:0;background:#000;z-index:20;transition:height 1.8s cubic-bezier(.6,0,.2,1);overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,3vw,40px)}
-  .gi-bar.t{top:0} .gi-bar.b{bottom:0}
+  .gi-bar{position:absolute;left:0;right:0;height:0;background:#fdfcff;z-index:20;transition:height 1.8s cubic-bezier(.6,0,.2,1);overflow:hidden;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,3vw,40px)}
+  .gi-bar.t{top:0;box-shadow:0 1px 0 var(--line)} .gi-bar.b{bottom:0;box-shadow:0 -1px 0 var(--line)}
   #gi.gi-started .gi-bar{height:clamp(54px,9vh,92px)}
-  .gi-vignette{position:absolute;inset:0;z-index:15;pointer-events:none;background:radial-gradient(ellipse 75% 70% at 50% 46%,transparent 55%,rgba(0,0,0,.75) 100%)}
-  .gi-grain{position:absolute;inset:-50%;z-index:16;pointer-events:none;opacity:.09;mix-blend-mode:overlay;animation:giGrain .9s steps(6) infinite}
+  .gi-vignette{position:absolute;inset:0;z-index:15;pointer-events:none;background:radial-gradient(ellipse 80% 75% at 50% 46%,transparent 60%,rgba(124,92,191,.16) 100%)}
+  .gi-grain{position:absolute;inset:-50%;z-index:16;pointer-events:none;opacity:.05;mix-blend-mode:multiply;animation:giGrain .9s steps(6) infinite}
   @keyframes giGrain{0%{transform:translate(0,0)}20%{transform:translate(-4%,3%)}40%{transform:translate(3%,-5%)}60%{transform:translate(-2%,6%)}80%{transform:translate(5%,2%)}100%{transform:translate(0,0)}}
   .gi-motes{position:absolute;left:50%;top:10%;width:min(50vw,520px);height:62%;transform:translateX(-50%);z-index:14;pointer-events:none;opacity:0;transition:opacity 3s}
   #gi.gi-open .gi-motes{opacity:1}
-  .gi-motes span{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(255,240,205,.8);box-shadow:0 0 6px rgba(255,240,205,.9);animation:giMote linear infinite}
-  @keyframes giMote{0%{transform:translate(0,0);opacity:0}15%{opacity:.8}85%{opacity:.6}100%{transform:translate(var(--dx),var(--dy));opacity:0}}
+  .gi-motes span{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 6px rgba(155,125,224,.8),0 0 2px rgba(214,135,168,.8);animation:giMote linear infinite}
+  @keyframes giMote{0%{transform:translate(0,0);opacity:0}15%{opacity:.9}85%{opacity:.7}100%{transform:translate(var(--dx),var(--dy));opacity:0}}
 
   /* ── HUD (lives in the letterbox bars) ── */
-  .gi-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:#efe6d2;letter-spacing:.02em}
-  .gi-logo em{color:var(--gold);font-style:italic}
+  .gi-logo{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--ink);letter-spacing:.02em}
+  .gi-logo em{color:var(--lav);font-style:italic}
   .gi-hud-r{display:flex;gap:10px;align-items:center}
-  .gi-chip{background:transparent;border:1px solid rgba(212,175,106,.45);color:var(--gold2);padding:8px 14px;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;transition:background .3s}
-  .gi-chip:hover{background:rgba(212,175,106,.12)}
+  .gi-chip{background:#fff;border:1px solid rgba(124,92,191,.35);color:var(--lav3);padding:8px 14px;font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;transition:background .3s;font-weight:500}
+  .gi-chip:hover{background:#f3efff}
   .gi-prog{display:flex;align-items:center;gap:clamp(6px,1.4vw,16px);margin:0 auto}
-  .gi-tick{background:none;border:0;color:rgba(239,230,210,.35);font-family:'Playfair Display',serif;font-size:.78rem;padding:4px 2px;transition:color .4s,transform .4s}
-  .gi-tick.on{color:var(--gold2);transform:scale(1.25)}
-  .gi-hint{position:absolute;right:clamp(16px,3vw,40px);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(239,230,210,.45)}
+  .gi-tick{background:none;border:0;color:rgba(30,24,48,.32);font-family:'Playfair Display',serif;font-size:.8rem;padding:4px 2px;transition:color .4s,transform .4s}
+  .gi-tick.on{color:var(--lav3);transform:scale(1.25)}
+  .gi-hint{position:absolute;right:clamp(16px,3vw,40px);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(74,64,96,.6)}
   .gi-skip-top{position:absolute;top:18px;right:18px;z-index:30}
   #gi.gi-started .gi-skip-top{display:none}
 
   @media (max-width:760px){
     .gi-hint,.gi-tick{display:none}
-    .gi-prog::after{content:attr(data-of);font-size:.6rem;letter-spacing:.2em;color:rgba(239,230,210,.45);margin-left:6px}
+    .gi-prog::after{content:attr(data-of);font-size:.6rem;letter-spacing:.2em;color:rgba(74,64,96,.6);margin-left:6px}
     .gi-logo{font-size:.95rem}
     .gi-chip{padding:7px 10px;font-size:.58rem;letter-spacing:.16em}
   }
@@ -786,7 +796,7 @@ footer::before{display:none}
 
   <div class="gi-presents">
     <div class="gi-eyebrow" style="font-size:.8rem">cecespieces presents</div>
-    <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.4rem,3vw,2.2rem);color:#efe6d2;margin-top:14px">a private viewing</div>
+    <div class="gi-presents-sub">a private viewing</div>
   </div>
 
   <div class="gi-bar t">
