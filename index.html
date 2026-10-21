@@ -633,13 +633,31 @@ footer::before{display:none}
       repeating-linear-gradient(0deg,#140f12 0 3px,#110d10 3px 7px);
     transition:transform 2.6s cubic-bezier(.65,0,.25,1);transform-style:preserve-3d}
   .gi-door::before{content:'';position:absolute;inset:7% 12%;border:2px solid rgba(212,175,106,.55);box-shadow:inset 0 0 0 10px rgba(0,0,0,.25),inset 0 0 0 11px rgba(212,175,106,.3)}
-  .gi-door::after{content:'';position:absolute;top:72%;width:10px;height:90px;margin-top:-45px;border-radius:5px;background:linear-gradient(90deg,#7a5a24,#f3dca0,#8a6a32);box-shadow:0 0 18px rgba(243,220,160,.4)}
+  .gi-door::after{content:'';position:absolute;top:50%;width:10px;height:90px;margin-top:-45px;border-radius:5px;background:linear-gradient(90deg,#7a5a24,#f3dca0,#8a6a32);box-shadow:0 0 18px rgba(243,220,160,.4)}
   .gi-door.l{transform-origin:0 50%;border-right:1px solid rgba(212,175,106,.6)} .gi-door.l::after{right:6%}
   .gi-door.r{transform-origin:100% 50%;border-left:1px solid rgba(212,175,106,.6)} .gi-door.r::after{left:6%}
   #gi.gi-open .gi-door.l{transform:rotateY(-104deg)}
   #gi.gi-open .gi-door.r{transform:rotateY(104deg)}
   .gi-gate{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;text-align:center;transition:opacity 1.2s ease}
-  .gi-gate .gi-h{font-size:clamp(2.4rem,7vw,5.4rem)}
+  .gi-gate .gi-h{font-size:clamp(2.3rem,5vw,4.3rem);margin:.32em 0 .1em;line-height:1.06}
+  .gi-gate .gi-h em{white-space:nowrap}
+  /* Title plaque: a solid framed panel in front of the doors, so the door
+     seam, panel mouldings and handles never run through the lettering. */
+  .gi-plate{position:relative;width:min(640px,calc(100vw - 32px));padding:clamp(40px,6vh,64px) clamp(22px,5vw,60px) clamp(34px,5vh,52px);
+    background:radial-gradient(ellipse 90% 70% at 50% 0%,#211a22 0%,#100d11 60%,#0b090c 100%);
+    border:1px solid rgba(212,175,106,.6);
+    box-shadow:0 0 0 7px #0b090c,0 0 0 8px rgba(212,175,106,.3),0 50px 100px rgba(0,0,0,.8)}
+  .gi-plate::before,.gi-plate::after{content:'';position:absolute;left:50%;width:11px;height:11px;margin-left:-5.5px;background:var(--gold);transform:rotate(45deg);box-shadow:0 0 0 4px #0b090c}
+  .gi-plate::before{top:-6px} .gi-plate::after{bottom:-6px}
+  .gi-plate .gi-eyebrow{font-size:.66rem;letter-spacing:.42em;padding-left:.42em}
+  .gi-plate .gi-rule{margin:20px auto 18px;width:84px}
+  .gi-plate .gi-sub{max-width:420px;font-size:clamp(.88rem,1.3vw,1rem);line-height:1.75;color:rgba(239,230,210,.78)}
+  .gi-plate .gi-btns{margin-top:26px}
+  .gi-sound{margin-top:14px;font-size:.6rem;letter-spacing:.24em;padding-left:.24em;text-transform:uppercase;color:rgba(239,230,210,.42)}
+  @media (max-width:760px){
+    .gi-plate .gi-eyebrow{font-size:.58rem;letter-spacing:.3em;padding-left:.3em}
+    .gi-plate .gi-btn{width:100%;padding:15px 18px;letter-spacing:.22em}
+  }
   #gi.gi-started .gi-gate{opacity:0;pointer-events:none}
   .gi-presents{position:absolute;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;opacity:0;text-align:center}
   #gi.gi-titles .gi-presents{animation:giPresents 2.4s ease forwards}
@@ -696,7 +714,7 @@ footer::before{display:none}
   <div class="gi-doors"><div class="gi-door l"></div><div class="gi-door r"></div></div>
 
   <div class="gi-gate">
-    <div style="padding:0 20px">
+    <div class="gi-plate">
       <div class="gi-eyebrow">Original Works by Cece</div>
       <div class="gi-h">cecespieces<br><em>The Collection</em></div>
       <div class="gi-rule"></div>
@@ -704,7 +722,7 @@ footer::before{display:none}
       <div class="gi-btns">
         <button class="gi-btn" id="giEnter">Enter the Gallery ♪</button>
       </div>
-      <div style="margin-top:14px;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(239,230,210,.4)">Best with sound on</div>
+      <div class="gi-sound">Best with sound on</div>
     </div>
   </div>
   <button class="gi-chip gi-skip-top" data-gi-skip>Skip to site</button>
