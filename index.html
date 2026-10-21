@@ -38,6 +38,10 @@
           `gallery` table, row "walk"): each frame can be a shop piece photo
           or colorway, a photo not in the shop, or an upload/Photo Studio
           edit; placards still take the shop's names. Defaults if none saved.
+  CHANGE: 2026-10-21_2140 — Payment chooser on Buy Now: card / Apple Pay / Google
+          Pay / Cash App Pay (Stripe), or Venmo / Zelle — buyer gets the amount,
+          handle and a memo code; the order is saved as "awaiting payment" and
+          Cece marks it paid in the hub. Venmo/Zelle details come from the hub.
   CHANGE: 2026-10-21_2110 — Home page shows no prices or Buy buttons — Featured
           Works is a pure showcase (View Piece only); pricing lives in the shop.
   CHANGE: 2026-09-23_0215 — About the Artist: placed Cece's real bio (dancer →
@@ -1701,6 +1705,47 @@ footer::before{display:none}
   </div>
 </div>
 
+<!-- PAYMENT CHOOSER — card / Apple Pay / Google Pay / Cash App Pay via Stripe,
+     or Venmo / Zelle (manual: order saved as awaiting payment; Cece marks it
+     paid in the hub). Added 2026-10-21_2140 UTC. -->
+<div class="modal-bg" id="payModal" onclick="if(event.target.id==='payModal')closePay()">
+  <div class="modal-box" style="max-width:520px">
+    <button class="modal-close" onclick="closePay()">✕</button>
+    <div style="font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--purple2);margin-bottom:8px">Checkout</div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:300;color:var(--ink);margin-bottom:4px"><em id="pay-piece" style="font-style:italic;color:var(--purple2)">this piece</em></h2>
+    <p style="font-size:.86rem;color:var(--muted);margin-bottom:16px" id="pay-amount-line"></p>
+    <div id="pay-choose">
+      <div class="mlabel" style="margin-bottom:8px">How would you like to pay?</div>
+      <button class="pay-opt" onclick="payStripe()"><span class="pay-ico">💳</span><span><b>Card, Apple Pay, Google Pay or Cash App Pay</b><i>Secure checkout · instant confirmation</i></span></button>
+      <button class="pay-opt" id="pay-venmo-opt" onclick="payManual('venmo')"><span class="pay-ico" style="background:#e8f3ff;color:#008cff">V</span><span><b>Venmo</b><i id="pay-venmo-line"></i></span></button>
+      <button class="pay-opt" id="pay-zelle-opt" onclick="payManual('zelle')"><span class="pay-ico" style="background:#f3ebff;color:#6d1ed4">Z</span><span><b>Zelle</b><i id="pay-zelle-line"></i></span></button>
+    </div>
+    <div id="pay-manual" style="display:none">
+      <div class="mrow">
+        <div class="mf"><label class="mlabel">Your Name *</label><input class="minput" id="pay-name" placeholder="Full name"></div>
+        <div class="mf"><label class="mlabel">Email *</label><input class="minput" id="pay-email" type="email" placeholder="your@email.com"></div>
+      </div>
+      <div class="mf"><label class="mlabel">Phone (optional)</label><input class="minput" id="pay-phone" placeholder="(555) 000-0000"></div>
+      <div class="mf" id="pay-ship-wrap"><label class="mlabel">Shipping address</label><textarea class="mtextarea" id="pay-ship" style="min-height:64px" placeholder="Street, city, state, ZIP"></textarea></div>
+      <button class="msubmit" id="pay-manual-btn" onclick="submitManualPay()">Continue →</button>
+      <button class="pay-back" onclick="payBack()">← Other ways to pay</button>
+    </div>
+    <div id="pay-done" style="display:none"></div>
+  </div>
+</div>
+<style>
+  .pay-opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--light);border:1px solid var(--light-border);border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+  .pay-opt:hover{border-color:var(--lav);box-shadow:0 6px 20px var(--lav-glow)}
+  .pay-opt b{display:block;font-size:.9rem;color:var(--ink);font-weight:600}
+  .pay-opt i{display:block;font-style:normal;font-size:.74rem;color:var(--muted);margin-top:2px}
+  .pay-ico{flex-shrink:0;width:38px;height:38px;border-radius:50%;background:var(--lav-pale);display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700}
+  .pay-back{display:block;margin:12px auto 0;background:none;border:0;color:var(--lav3);font-family:inherit;font-size:.8rem;cursor:pointer}
+  .pay-box{background:var(--lav-pale);border:1px solid var(--lav-border);border-radius:12px;padding:16px 18px;margin:6px 0 14px}
+  .pay-box .row{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--lav-border2);font-size:.86rem}
+  .pay-box .row:last-child{border-bottom:0}
+  .pay-box .row span{color:var(--muted)} .pay-box .row b{color:var(--ink);text-align:right;word-break:break-all}
+</style>
+
 <!-- CLASS DETAIL MODAL -->
 <div class="modal-bg" id="classModal" onclick="if(event.target.id==='classModal')closeClass()">
   <div class="modal-box" style="max-width:640px">
@@ -2861,7 +2906,67 @@ function closeModalOutside(e){if(e.target.id==='rentalModal')closeRentalModal();
 
 // ── STRIPE CHECKOUT ──
 // Ask the create-checkout Edge Function for a secure Stripe session, then go.
-async function startCheckout(pieceId){
+// ── PAYMENT CHOOSER ──
+// Venmo/Zelle details are set in the hub (Payments → Venmo & Zelle) and read
+// from the public `gallery` table, row "pay". If none are set, Buy Now goes
+// straight to Stripe (cards, Apple/Google Pay, Cash App Pay).
+let payCfg=null, payPiece=null, payMethod='';
+fetch(`${SUPABASE_URL}/rest/v1/gallery?id=eq.pay&select=data`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}})
+  .then(r=>r.ok?r.json():[]).then(rows=>{ payCfg=(rows&&rows[0]&&rows[0].data)||null; }).catch(()=>{});
+function payAmount(p){ const d=depositOf(p); return d?{amt:Number(d),deposit:true}:{amt:Number(p.price)||0,deposit:false}; }
+function startCheckout(pieceId){
+  const p=allPieces.find(x=>String(x.id)===String(pieceId)); if(!p) return;
+  const venmo=payCfg&&(payCfg.venmo||'').replace(/^@/,''), zelle=payCfg&&payCfg.zelle;
+  if(!venmo && !zelle){ goStripeCheckout(pieceId); return; }
+  payPiece=p; const {amt,deposit}=payAmount(p);
+  document.getElementById('pay-piece').textContent=p.title;
+  document.getElementById('pay-amount-line').textContent=amt?(deposit?`Deposit due now: $${amt.toLocaleString()} — the balance is invoiced when Cece confirms your piece.`:`Total: $${amt.toLocaleString()}`):'';
+  document.getElementById('pay-venmo-opt').style.display=venmo?'':'none';
+  document.getElementById('pay-zelle-opt').style.display=zelle?'':'none';
+  document.getElementById('pay-venmo-line').textContent=venmo?'Pay @'+venmo+' · Cece confirms within 24 hours':'';
+  document.getElementById('pay-zelle-line').textContent=zelle?'Send to '+zelle+' · Cece confirms within 24 hours':'';
+  payBack(); closeLb && closeLb();
+  document.getElementById('payModal').classList.add('open'); document.body.style.overflow='hidden';
+}
+function closePay(){ document.getElementById('payModal').classList.remove('open'); document.body.style.overflow=''; }
+function payBack(){ ['pay-manual','pay-done'].forEach(id=>document.getElementById(id).style.display='none'); document.getElementById('pay-choose').style.display=''; }
+function payStripe(){ closePay(); if(payPiece) goStripeCheckout(payPiece.id); }
+function payManual(m){
+  payMethod=m;
+  document.getElementById('pay-choose').style.display='none';
+  document.getElementById('pay-manual').style.display='';
+  document.getElementById('pay-ship-wrap').style.display=payAmount(payPiece).deposit?'none':'';
+  document.getElementById('pay-manual-btn').textContent=m==='venmo'?'Continue to Venmo →':'Get Zelle details →';
+  setTimeout(()=>{ if(!/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||'')) document.getElementById('pay-name').focus(); },50);
+}
+async function submitManualPay(){
+  const name=document.getElementById('pay-name').value.trim(), email=document.getElementById('pay-email').value.trim();
+  if(!name){ showToast('Please enter your name.'); return; }
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ showToast('Please enter a valid email.'); return; }
+  const phone=document.getElementById('pay-phone').value.trim(), ship=document.getElementById('pay-ship').value.trim();
+  const p=payPiece, {amt,deposit}=payAmount(p);
+  const code='CP-'+Math.floor(1000+Math.random()*9000);
+  const venmo=(payCfg.venmo||'').replace(/^@/,''), zelle=payCfg.zelle, zname=payCfg.zelle_name||'Cece';
+  const label=payMethod==='venmo'?'Venmo':'Zelle';
+  const notes=`Paying by ${label}${payMethod==='venmo'?' @'+venmo:' to '+zelle} · memo code ${code}`+(phone?`\nPhone: ${phone}`:'')+(ship?`\nShip to: ${ship}`:'');
+  if(CONFIGURED){ try{ await fetch(`${SUPABASE_URL}/rest/v1/orders`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},
+    body:JSON.stringify({piece_id:p.id,piece_title:p.title,price:String(amt),type:deposit?'deposit':'purchase',status:'awaiting-payment',source:payMethod,customer_name:name,customer_email:email,notes,created_at:new Date().toISOString()})}); }catch(e){} }
+  const memo=`${code} ${p.title}`.slice(0,60);
+  const venmoUrl=`https://venmo.com/${encodeURIComponent(venmo)}?txn=pay&amount=${amt.toFixed(2)}&note=${encodeURIComponent(memo)}`;
+  document.getElementById('pay-manual').style.display='none';
+  const done=document.getElementById('pay-done'); done.style.display='';
+  done.innerHTML=`<div class="mlabel" style="margin-bottom:6px">Almost done — send your payment</div>
+    <div class="pay-box">
+      <div class="row"><span>Amount</span><b>$${amt.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</b></div>
+      ${payMethod==='venmo'?`<div class="row"><span>Venmo</span><b>@${venmo}</b></div>`:`<div class="row"><span>Zelle to</span><b>${zelle}</b></div><div class="row"><span>Name on Zelle</span><b>${zname}</b></div>`}
+      <div class="row"><span>Memo / note</span><b>${code}</b></div>
+    </div>
+    ${payMethod==='venmo'?`<a class="msubmit" style="display:block;text-align:center;text-decoration:none" href="${venmoUrl}" target="_blank" rel="noopener">Open Venmo →</a>`:'<p style="font-size:.82rem;color:var(--muted);line-height:1.7">Open your banking app, choose <b>Zelle</b>, and send the amount above. Please put the memo code in the note so Cece can match your payment.</p>'}
+    <p style="font-size:.78rem;color:var(--muted);line-height:1.7;margin-top:12px">Your order is saved. Once Cece sees your payment (usually within 24 hours), she'll email <b>${email.replace(/</g,'')}</b> to confirm${deposit?' and next steps for your custom piece':' and arrange delivery'}.</p>
+    <button class="pay-back" onclick="closePay()">Done</button>`;
+}
+
+async function goStripeCheckout(pieceId){
   if(!STRIPE_CHECKOUT_URL){ openInquiry(); return; }
   showToast('Taking you to secure checkout…',true);
   try{
