@@ -8,7 +8,7 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecespieces — public website)
-  LAST UPDATED: 2026-10-22_2215 UTC
+  LAST UPDATED: 2026-10-22_2245 UTC
   CHANGE: 2026-10-21_1830 — Gallery Walk splash: a cinematic, letterboxed
           entry where visitors walk a dark, spot-lit museum corridor past ten
           framed pieces (brass placards, gilded doors, film grain, auto-tour)
@@ -53,6 +53,11 @@
           incl. photo & story, rentals, contact, footer), contact email /
           Instagram / TikTok links, and the rental Staged Settings scenes
           (rendered into #scene-list). Missing values keep this file's text.
+  CHANGE: 2026-10-22_2245 — Piece options: customers pick a variation (Original /
+          Round / …) under the price; a variation with its own price changes
+          the price and checkout (create-checkout re-reads it server-side).
+          Support button on every page (nav, footer, floating) opens Donate /
+          Sponsor, configured in the hub (public gallery row "support").
   CHANGE: 2026-09-23_0215 — About the Artist: placed Cece's real bio (dancer →
           resin, Chicago → Renton, pandemic healing, memorial mission) and a
           "From the Stage to the Studio" Concept blurb; corrected location to
@@ -522,6 +527,12 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .lb-type{font-size:.54rem;letter-spacing:.2em;text-transform:uppercase;color:var(--purple2);font-weight:600;margin-bottom:8px}
 .lb-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:400;color:var(--ink2);line-height:1.1;margin-bottom:10px}
 .lb-price{font-family:'Jost',sans-serif;font-size:1.6rem;font-weight:600;background:linear-gradient(135deg,var(--purple2),var(--pink2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:18px}
+.lb-options{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0 14px}
+.lb-options:empty{display:none}
+.lb-opt{font-family:inherit;font-size:.74rem;padding:7px 12px;border-radius:20px;border:1.5px solid var(--border2);background:var(--surface);color:var(--ink2);cursor:pointer;transition:all .15s}
+.lb-opt:hover{border-color:var(--purple2)}
+.lb-opt.on{border-color:var(--purple2);background:var(--purple2);color:#fff}
+.lb-opt small{opacity:.75;margin-left:4px}
 .lb-price.sold{background:none;-webkit-text-fill-color:var(--muted2);color:var(--muted2);font-size:1.1rem;text-decoration:line-through}
 .lb-sold-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(192,0,74,.08);color:var(--danger);border:1px solid rgba(192,0,74,.2);font-size:.57rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:5px 12px;margin-bottom:14px;border-radius:3px}
 .lb-hr{height:1px;background:var(--lav-border2);margin:18px 0}
@@ -542,6 +553,19 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 .modal-bg.open{opacity:1;pointer-events:all}
 .modal-box{background:rgba(255,255,255,.65);border:1px solid var(--pink-border2);max-width:560px;width:100%;max-height:92vh;overflow-y:auto;padding:44px;position:relative;transform:translateY(14px);transition:transform .4s cubic-bezier(.34,1.56,.64,1);border-radius:6px;box-shadow:0 24px 60px rgba(139,63,255,.18)}
 .modal-bg.open .modal-box{transform:translateY(0)}
+/* Support (donate / sponsor) — added 2026-10-22_2245 UTC */
+.support-fab{position:fixed;left:22px;bottom:22px;z-index:90;font-family:'Jost',sans-serif;font-size:.74rem;letter-spacing:.06em;padding:11px 18px;border-radius:30px;border:none;cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--purple2),var(--pink2));box-shadow:0 6px 22px rgba(124,92,191,.35);transition:transform .2s}
+.support-fab:hover{transform:translateY(-2px)}
+.sup-tabs{display:flex;gap:6px;margin:6px 0 18px}
+.sup-tab{flex:1;font-family:inherit;font-size:.78rem;padding:9px;border-radius:8px;border:1.5px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer}
+.sup-tab.on{border-color:var(--purple2);color:var(--purple2);font-weight:600}
+.sup-amts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.sup-amt{font-family:inherit;font-size:.95rem;padding:12px 0;border-radius:8px;border:1.5px solid var(--border2);background:var(--surface);color:var(--ink2);cursor:pointer}
+.sup-amt.on{border-color:var(--purple2);background:var(--purple2);color:#fff}
+.sup-pack{border:1.5px solid var(--border2);border-radius:10px;padding:14px 16px;margin-bottom:10px;cursor:pointer;background:var(--surface);transition:border-color .15s}
+.sup-pack.on{border-color:var(--purple2);box-shadow:0 0 0 3px rgba(124,92,191,.12)}
+.sup-pack ul{margin:6px 0 0 18px;font-size:.78rem;color:var(--muted);line-height:1.6}
+@media(max-width:540px){.support-fab{left:12px;bottom:12px;padding:9px 14px}.sup-amts{grid-template-columns:repeat(2,1fr)}}
 .modal-close{position:absolute;top:16px;right:16px;width:34px;height:34px;background:var(--surface);color:var(--muted);border:1px solid var(--lav-border);font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .2s;border-radius:4px}
 .modal-close:hover{background:var(--lav);color:#fff;border-color:var(--lav)}
 .event-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 20px}
@@ -864,6 +888,7 @@ footer::before{display:none}
     <button class="nav-link" onclick="goTo('rentals')" data-p="rentals">Rentals</button>
     <button class="nav-link" onclick="goTo('classes')" data-p="classes">Classes</button>
     <button class="nav-link" onclick="goTo('about')" data-p="about">About</button>
+    <button class="nav-link sup-link" onclick="openSupport()" style="display:none">♡ Support</button>
     <button class="nav-link nav-cta" onclick="goTo('contact')" data-p="contact">Contact</button>
   </div>
   <button class="nav-mobile" onclick="toggleMenu()">☰</button>
@@ -1526,6 +1551,7 @@ footer::before{display:none}
     <div class="footer-grid">
       <div>
         <button class="footer-logo" onclick="goTo('home')">ceces<em>pieces</em></button>
+        <button class="sup-link" onclick="openSupport()" style="display:none;background:none;border:0;padding:0;margin:0 0 10px;font-family:inherit;font-size:.8rem;color:var(--purple2);cursor:pointer">💜 Support Cece's art →</button>
         <p data-edit="footer.tagline" class="footer-tagline">Original resin and mixed media artwork. Every piece made by hand.</p>
         <div class="footer-socials">
           <a href="https://instagram.com/cecesthepiece" target="_blank" class="footer-soc">📷</a>
@@ -1651,6 +1677,7 @@ footer::before{display:none}
       <div class="lb-type" id="lb-type"></div>
       <h2 class="lb-title" id="lb-title"></h2>
       <div class="lb-price" id="lb-price"></div>
+      <div class="lb-options" id="lb-options"></div>
       <div class="lb-sold-tag" id="lb-sold-tag" style="display:none">✕ &nbsp;This Piece is Sold</div>
       <div class="lb-hr"></div>
       <div class="lb-detail" id="lb-dims"></div>
@@ -1712,6 +1739,33 @@ footer::before{display:none}
 </div>
 
 <!-- INQUIRY MODAL -->
+<button class="support-fab sup-link" onclick="openSupport()" style="display:none">💜 Support Cece</button>
+<div class="modal-bg" id="supportModal" onclick="if(event.target===this)closeSupport()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeSupport()">✕</button>
+    <div style="font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--purple2);margin-bottom:8px">Support the Studio</div>
+    <div class="sup-tabs" id="sup-tabs"><button class="sup-tab on" id="sup-tab-donate" onclick="supTab('donate')">♡ Donate</button><button class="sup-tab" id="sup-tab-sponsor" onclick="supTab('sponsor')">✦ Sponsor</button></div>
+    <div id="sup-donate">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:300;color:var(--ink);margin-bottom:6px" id="sup-d-title"></h2>
+      <p style="font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:16px" id="sup-d-text"></p>
+      <div class="sup-amts" id="sup-amts"></div>
+      <div class="mf"><label class="mlabel">Or enter an amount ($)</label><input class="minput" id="sup-custom" inputmode="decimal" placeholder="e.g. 35" oninput="supPickAmt(null,this.value)"></div>
+    </div>
+    <div id="sup-sponsor" style="display:none">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:300;color:var(--ink);margin-bottom:6px" id="sup-s-title"></h2>
+      <p style="font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:16px" id="sup-s-intro"></p>
+      <div id="sup-packs"></div>
+    </div>
+    <div class="mrow">
+      <div class="mf"><label class="mlabel">Your Name</label><input class="minput" id="sup-name" placeholder="Name (optional)"></div>
+      <div class="mf"><label class="mlabel">Email</label><input class="minput" id="sup-email" type="email" placeholder="For your receipt"></div>
+    </div>
+    <div class="mf"><label class="mlabel">Note (optional)</label><input class="minput" id="sup-note" placeholder="A message for Cece"></div>
+    <button class="msubmit" id="sup-go" onclick="supCheckout()">Continue →</button>
+    <div style="font-size:.68rem;color:var(--muted2);text-align:center;margin-top:10px">Secure payment by Stripe — cards, Apple Pay &amp; Google Pay.</div>
+  </div>
+</div>
+
 <div class="modal-bg" id="inquiryModal" onclick="closeModalOutside(event)">
   <div class="modal-box">
     <button class="modal-close" onclick="closeInquiry()">✕</button>
@@ -2676,6 +2730,82 @@ function addToCalendar(id){
 }
 
 // ── LIGHTBOX ──
+// ── PIECE OPTIONS (variations with their own price) ──
+// activeVar: index into the piece's variations, or -1 for the original.
+let activeVar=-1;
+function varInfo(p,vi){
+  const v=normalizeVariations(p)[vi]; if(v==null) return null;
+  const o=typeof v==='string'?{}:v;
+  return {label:o.label||('Option '+(vi+1)), price:parseFloat(o.price)>0?String(o.price):''};
+}
+// The piece as the customer has configured it: price follows the chosen option.
+function effPiece(p){
+  if(!p || activeVar<0 || !activePiece || String(activePiece.id)!==String(p.id)) return p;
+  const vi=varInfo(p,activeVar); if(!vi) return p;
+  return Object.assign({},p,{price:vi.price||p.price,_opt:vi.label,_vi:activeVar});
+}
+function pickOption(vi){
+  activeVar=vi;
+  const gi=lbGallery.findIndex(g=>g.vi===vi); if(gi>=0) setLbImage(gi);
+  if(activePiece) renderLbBuy(activePiece);
+}
+function renderLbBuy(base){
+  const p=effPiece(base);
+  const isSold=(base.status||'available')==='sold';
+  const opts=normalizeVariations(base);
+  const optEl=document.getElementById('lb-options');
+  if(optEl){
+    const anyPrice=opts.some((v,i)=>varInfo(base,i).price);
+    const fmt=v=>'$'+Number(v).toLocaleString();
+    optEl.innerHTML=(!isSold && opts.length) ? `<button type="button" class="lb-opt${activeVar<0?' on':''}" onclick="pickOption(-1)">Original${anyPrice&&base.price?`<small>${fmt(base.price)}</small>`:''}</button>`+
+      opts.map((v,i)=>{const vi=varInfo(base,i);return `<button type="button" class="lb-opt${activeVar===i?' on':''}" onclick="pickOption(${i})">${seEsc(vi.label)}${vi.price?`<small>${fmt(vi.price)}</small>`:''}</button>`;}).join('') : '';
+  }
+  const prEl=document.getElementById('lb-price');
+  prEl.textContent=p.price?'$'+Number(p.price).toLocaleString():'Price on inquiry';
+  // Statement Panels are made to order, so price is a starting point.
+  if(p.type==='Statement Panel'&&p.price&&!isSold) prEl.textContent='From $'+Number(p.price).toLocaleString();
+  prEl.className='lb-price'+(isSold?' sold':'');
+  document.getElementById('lb-sold-tag').style.display=isSold?'inline-flex':'none';
+  const dimsEl=document.getElementById('lb-dims');
+  dimsEl.innerHTML=p.dimensions?`<strong>Dimensions:</strong> ${p.dimensions}`:'';
+  dimsEl.style.display=p.dimensions?'':'none';
+  if(p.type==='Statement Panel'){
+    dimsEl.innerHTML=(p.dimensions?`<strong>Dimensions:</strong> ${p.dimensions} `:'')+`<span style="color:var(--muted2)">— standard size shown; made to order in your dimensions.</span>`;
+    dimsEl.style.display='';
+  }
+  const matsEl=document.getElementById('lb-mats');
+  matsEl.innerHTML=p.materials?`<strong>Materials:</strong> ${p.materials}`:'';
+  matsEl.style.display=p.materials?'':'none';
+  document.getElementById('lb-desc').textContent=p.description||'An original, one-of-a-kind work by Cece. Certificate of authenticity included.';
+  const buyBtn=document.getElementById('lb-buy');
+  buyBtn.className='lb-buy'; buyBtn.target='';
+  const dep=depositOf(p);
+  const depNote=document.getElementById('lb-deposit-note');
+  if(depNote){
+    if(dep && !isSold){
+      depNote.style.display='';
+      depNote.innerHTML=`✦ <strong>Custom piece.</strong> Pay a <strong>$${Number(dep).toLocaleString()} deposit</strong> now to reserve it. Once Cece confirms the details${balanceOf(p)?` the remaining <strong>$${balanceOf(p).toLocaleString()}</strong>`:' the balance'} is invoiced by email before it ships.`;
+    } else { depNote.style.display='none'; depNote.innerHTML=''; }
+  }
+  if(isSold){
+    buyBtn.textContent='This Piece is Sold';buyBtn.className='lb-buy sold';buyBtn.href='#';buyBtn.onclick=e=>e.preventDefault();
+  } else if(dep && STRIPE_CHECKOUT_URL){
+    // Custom piece — deposit checkout (amount validated server-side).
+    buyBtn.textContent=`Pay Deposit — $${Number(dep).toLocaleString()} →`;buyBtn.href='#';
+    buyBtn.onclick=e=>{e.preventDefault();startCheckout(p.id);};
+  } else if(p.type==='Statement Panel'){
+    // Panels are custom-sized — route to inquiry instead of fixed checkout.
+    buyBtn.textContent='Inquire for Your Size →';buyBtn.href='#';buyBtn.onclick=e=>{e.preventDefault();openInquiry();};
+  } else if(STRIPE_CHECKOUT_URL && p.price){
+    // Real Stripe checkout (price validated server-side by the Edge Function)
+    buyBtn.textContent=`Buy Now — $${Number(p.price).toLocaleString()} →`;buyBtn.href='#';
+    buyBtn.onclick=e=>{e.preventDefault();startCheckout(p.id);};
+  } else if(p.payment_link){
+    buyBtn.textContent='Purchase This Piece →';buyBtn.href=p.payment_link;buyBtn.target='_blank';buyBtn.onclick=null;
+  } else {
+    buyBtn.textContent='Inquire to Purchase →';buyBtn.href='#';buyBtn.onclick=e=>{e.preventDefault();openInquiry();};
+  }
+}
 // ── VARIATION GALLERY ──
 // Normalizes a piece's variations into a gallery: main image first, then
 // each variation. Variations may be plain URLs or {image|src,label} objects.
@@ -2686,11 +2816,11 @@ function normalizeVariations(p){
 }
 function buildLbGallery(p){
   lbGallery=[]; lbIndex=0;
-  if(p.image) lbGallery.push({src:p.image,label:'Original'});
+  if(p.image) lbGallery.push({src:p.image,label:'Original',vi:-1});
   normalizeVariations(p).forEach((v,i)=>{
     const src=typeof v==='string'?v:(v.image||v.src||'');
     const label=(v&&v.label)?v.label:('Variation '+(i+1));
-    if(src) lbGallery.push({src,label});
+    if(src) lbGallery.push({src,label,vi:i});
   });
   const media=document.getElementById('lb-media');
   const thumbs=document.getElementById('lb-thumbs');
@@ -2717,6 +2847,8 @@ function setLbImage(i){
   img.src=g.src; img.alt=g.label||''; img.style.display=''; empty.style.display='none';
   document.getElementById('lb-var-badge').textContent=(lbIndex+1)+' / '+lbGallery.length;
   document.querySelectorAll('#lb-thumbs .lb-thumb').forEach((t,idx)=>t.classList.toggle('active',idx===lbIndex));
+  // Browsing the photos also picks that option (and its price).
+  if(activePiece && g.vi!=null && g.vi!==activeVar){ activeVar=g.vi; renderLbBuy(activePiece); }
 }
 function lbStep(d){ if(lbGallery.length>1) setLbImage(lbIndex+d); }
 
@@ -2829,51 +2961,8 @@ function openPiece(id, skipSplash){
   buildLbGallery(p);
   document.getElementById('lb-type').textContent=p.type||'Original Art';
   document.getElementById('lb-title').textContent=p.title;
-  const prEl=document.getElementById('lb-price');
-  prEl.textContent=p.price?'$'+Number(p.price).toLocaleString():'Price on inquiry';
-  // Statement Panels are made to order, so price is a starting point.
-  if(p.type==='Statement Panel'&&p.price&&!isSold) prEl.textContent='From $'+Number(p.price).toLocaleString();
-  prEl.className='lb-price'+(isSold?' sold':'');
-  document.getElementById('lb-sold-tag').style.display=isSold?'inline-flex':'none';
-  const dimsEl=document.getElementById('lb-dims');
-  dimsEl.innerHTML=p.dimensions?`<strong>Dimensions:</strong> ${p.dimensions}`:'';
-  dimsEl.style.display=p.dimensions?'':'none';
-  if(p.type==='Statement Panel'){
-    dimsEl.innerHTML=(p.dimensions?`<strong>Dimensions:</strong> ${p.dimensions} `:'')+`<span style="color:var(--muted2)">— standard size shown; made to order in your dimensions.</span>`;
-    dimsEl.style.display='';
-  }
-  const matsEl=document.getElementById('lb-mats');
-  matsEl.innerHTML=p.materials?`<strong>Materials:</strong> ${p.materials}`:'';
-  matsEl.style.display=p.materials?'':'none';
-  document.getElementById('lb-desc').textContent=p.description||'An original, one-of-a-kind work by Cece. Certificate of authenticity included.';
-  const buyBtn=document.getElementById('lb-buy');
-  buyBtn.className='lb-buy'; buyBtn.target='';
-  const dep=depositOf(p);
-  const depNote=document.getElementById('lb-deposit-note');
-  if(depNote){
-    if(dep && !isSold){
-      depNote.style.display='';
-      depNote.innerHTML=`✦ <strong>Custom piece.</strong> Pay a <strong>$${Number(dep).toLocaleString()} deposit</strong> now to reserve it. Once Cece confirms the details${balanceOf(p)?` the remaining <strong>$${balanceOf(p).toLocaleString()}</strong>`:' the balance'} is invoiced by email before it ships.`;
-    } else { depNote.style.display='none'; depNote.innerHTML=''; }
-  }
-  if(isSold){
-    buyBtn.textContent='This Piece is Sold';buyBtn.className='lb-buy sold';buyBtn.href='#';buyBtn.onclick=e=>e.preventDefault();
-  } else if(dep && STRIPE_CHECKOUT_URL){
-    // Custom piece — deposit checkout (amount validated server-side).
-    buyBtn.textContent=`Pay Deposit — $${Number(dep).toLocaleString()} →`;buyBtn.href='#';
-    buyBtn.onclick=e=>{e.preventDefault();startCheckout(p.id);};
-  } else if(p.type==='Statement Panel'){
-    // Panels are custom-sized — route to inquiry instead of fixed checkout.
-    buyBtn.textContent='Inquire for Your Size →';buyBtn.href='#';buyBtn.onclick=e=>{e.preventDefault();openInquiry();};
-  } else if(STRIPE_CHECKOUT_URL && p.price){
-    // Real Stripe checkout (price validated server-side by the Edge Function)
-    buyBtn.textContent=`Buy Now — $${Number(p.price).toLocaleString()} →`;buyBtn.href='#';
-    buyBtn.onclick=e=>{e.preventDefault();startCheckout(p.id);};
-  } else if(p.payment_link){
-    buyBtn.textContent='Purchase This Piece →';buyBtn.href=p.payment_link;buyBtn.target='_blank';buyBtn.onclick=null;
-  } else {
-    buyBtn.textContent='Inquire to Purchase →';buyBtn.href='#';buyBtn.onclick=e=>{e.preventDefault();openInquiry();};
-  }
+  activeVar=-1;
+  renderLbBuy(p);
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -2964,11 +3053,11 @@ fetch(`${SUPABASE_URL}/rest/v1/gallery?id=eq.pay&select=data`,{headers:{apikey:S
   .then(r=>r.ok?r.json():[]).then(rows=>{ payCfg=(rows&&rows[0]&&rows[0].data)||null; }).catch(()=>{});
 function payAmount(p){ const d=depositOf(p); return d?{amt:Number(d),deposit:true}:{amt:Number(p.price)||0,deposit:false}; }
 function startCheckout(pieceId){
-  const p=allPieces.find(x=>String(x.id)===String(pieceId)); if(!p) return;
+  const p=effPiece(allPieces.find(x=>String(x.id)===String(pieceId))); if(!p) return;
   const venmo=payCfg&&(payCfg.venmo||'').replace(/^@/,''), zelle=payCfg&&payCfg.zelle;
-  if(!venmo && !zelle){ goStripeCheckout(pieceId); return; }
+  if(!venmo && !zelle){ goStripeCheckout(pieceId, p._vi); return; }
   payPiece=p; const {amt,deposit}=payAmount(p);
-  document.getElementById('pay-piece').textContent=p.title;
+  document.getElementById('pay-piece').textContent=p.title+(p._opt?' — '+p._opt:'');
   document.getElementById('pay-amount-line').textContent=amt?(deposit?`Deposit due now: $${amt.toLocaleString()} — the balance is invoiced when Cece confirms your piece.`:`Total: $${amt.toLocaleString()}`):'';
   document.getElementById('pay-venmo-opt').style.display=venmo?'':'none';
   document.getElementById('pay-zelle-opt').style.display=zelle?'':'none';
@@ -2979,7 +3068,7 @@ function startCheckout(pieceId){
 }
 function closePay(){ document.getElementById('payModal').classList.remove('open'); document.body.style.overflow=''; }
 function payBack(){ ['pay-manual','pay-done'].forEach(id=>document.getElementById(id).style.display='none'); document.getElementById('pay-choose').style.display=''; }
-function payStripe(){ closePay(); if(payPiece) goStripeCheckout(payPiece.id); }
+function payStripe(){ closePay(); if(payPiece) goStripeCheckout(payPiece.id, payPiece._vi); }
 function payManual(m){
   payMethod=m;
   document.getElementById('pay-choose').style.display='none';
@@ -2997,9 +3086,9 @@ async function submitManualPay(){
   const code='CP-'+Math.floor(1000+Math.random()*9000);
   const venmo=(payCfg.venmo||'').replace(/^@/,''), zelle=payCfg.zelle, zname=payCfg.zelle_name||'Cece';
   const label=payMethod==='venmo'?'Venmo':'Zelle';
-  const notes=`Paying by ${label}${payMethod==='venmo'?' @'+venmo:' to '+zelle} · memo code ${code}`+(phone?`\nPhone: ${phone}`:'')+(ship?`\nShip to: ${ship}`:'');
+  const notes=(p._opt?`Option: ${p._opt} · `:'')+`Paying by ${label}${payMethod==='venmo'?' @'+venmo:' to '+zelle} · memo code ${code}`+(phone?`\nPhone: ${phone}`:'')+(ship?`\nShip to: ${ship}`:'');
   if(CONFIGURED){ try{ await fetch(`${SUPABASE_URL}/rest/v1/orders`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},
-    body:JSON.stringify({piece_id:p.id,piece_title:p.title,price:String(amt),type:deposit?'deposit':'purchase',status:'awaiting-payment',source:payMethod,customer_name:name,customer_email:email,notes,created_at:new Date().toISOString()})}); }catch(e){} }
+    body:JSON.stringify({piece_id:p.id,piece_title:p.title+(p._opt?' — '+p._opt:''),price:String(amt),type:deposit?'deposit':'purchase',status:'awaiting-payment',source:payMethod,customer_name:name,customer_email:email,notes,created_at:new Date().toISOString()})}); }catch(e){} }
   const memo=`${code} ${p.title}`.slice(0,60);
   const venmoUrl=`https://venmo.com/${encodeURIComponent(venmo)}?txn=pay&amount=${amt.toFixed(2)}&note=${encodeURIComponent(memo)}`;
   document.getElementById('pay-manual').style.display='none';
@@ -3015,14 +3104,14 @@ async function submitManualPay(){
     <button class="pay-back" onclick="closePay()">Done</button>`;
 }
 
-async function goStripeCheckout(pieceId){
+async function goStripeCheckout(pieceId, variation){
   if(!STRIPE_CHECKOUT_URL){ openInquiry(); return; }
   showToast('Taking you to secure checkout…',true);
   try{
     const r=await fetch(STRIPE_CHECKOUT_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json',apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`},
-      body:JSON.stringify({piece_id:pieceId})
+      body:JSON.stringify({piece_id:pieceId, ...(variation!=null&&variation>=0?{variation}:{})})
     });
     const d=await r.json().catch(()=>({}));
     if(r.ok && d.url){ window.location.href=d.url; return; }
@@ -3037,7 +3126,8 @@ async function goStripeCheckout(pieceId){
 // ── PIECE INQUIRY (lead capture → hub Orders → Sales agent) ──
 let inquiryPiece=null;
 function openInquiry(){
-  inquiryPiece=activePiece;
+  const ep=effPiece(activePiece);
+  inquiryPiece=ep&&ep._opt?Object.assign({},ep,{title:ep.title+' — '+ep._opt}):ep;
   document.getElementById('inq-piece-name').textContent=inquiryPiece?inquiryPiece.title:'this piece';
   closeLb();
   document.getElementById('inquiryModal').classList.add('open');
@@ -3260,6 +3350,83 @@ async function loadSiteContent(){
   }catch(e){}
 }
 
+// ── SUPPORT: DONATIONS & SPONSORSHIPS (added 2026-10-22_2245 UTC) ──
+// Settings are edited in the hub (Donations & Sponsors) and stored in the
+// public `gallery` row "support". Checkout prices for sponsorships are read
+// from that row by the create-checkout function, not from this page.
+const SUPPORT_DEFAULT={
+  donate:{enabled:true,title:"Support Cece's art",text:"Every gift helps buy materials and keeps the studio pouring. Thank you for being part of the story.",amounts:[10,25,50,100]},
+  sponsor:{enabled:true,title:'Become a Sponsor',intro:'Partner with Cece and help bring more original art, classes and community pours to life.',packages:[]}
+};
+let supCfg=SUPPORT_DEFAULT, supMode='donate', supAmt=null, supPack=null;
+function supSponsorOn(){ return supCfg.sponsor && supCfg.sponsor.enabled!==false && Array.isArray(supCfg.sponsor.packages) && supCfg.sponsor.packages.some(p=>p&&p.name&&parseFloat(p.price)>0); }
+function supDonateOn(){ return !supCfg.donate || supCfg.donate.enabled!==false; }
+async function loadSupport(){
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/gallery?id=eq.support&select=data`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+    const rows=r.ok?await r.json():[]; const d=(rows&&rows[0]&&rows[0].data)||null;
+    if(d) supCfg={donate:Object.assign({},SUPPORT_DEFAULT.donate,d.donate||{}),sponsor:Object.assign({},SUPPORT_DEFAULT.sponsor,d.sponsor||{})};
+  }catch(e){}
+  const on=STRIPE_CHECKOUT_URL && (supDonateOn()||supSponsorOn());
+  document.querySelectorAll('.sup-link').forEach(el=>el.style.display=on?'':'none');
+}
+function openSupport(mode){
+  const dOn=supDonateOn(), sOn=supSponsorOn();
+  document.getElementById('sup-tabs').style.display=(dOn&&sOn)?'':'none';
+  const fmt=v=>'$'+Number(v).toLocaleString();
+  const d=supCfg.donate, sp=supCfg.sponsor;
+  document.getElementById('sup-d-title').textContent=d.title||SUPPORT_DEFAULT.donate.title;
+  document.getElementById('sup-d-text').textContent=d.text||'';
+  const amts=(Array.isArray(d.amounts)&&d.amounts.length?d.amounts:SUPPORT_DEFAULT.donate.amounts).filter(a=>parseFloat(a)>0);
+  document.getElementById('sup-amts').innerHTML=amts.map(a=>`<button type="button" class="sup-amt" onclick="supPickAmt(this,${parseFloat(a)})">${fmt(a)}</button>`).join('');
+  document.getElementById('sup-s-title').textContent=sp.title||SUPPORT_DEFAULT.sponsor.title;
+  document.getElementById('sup-s-intro').textContent=sp.intro||'';
+  document.getElementById('sup-packs').innerHTML=(sp.packages||[]).map((p,i)=>(p&&p.name&&parseFloat(p.price)>0)?`<div class="sup-pack" data-i="${i}" onclick="supPickPack(${i})">
+      <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><strong style="font-size:.95rem;color:var(--ink2)">${seEsc(p.name)}</strong><span style="font-weight:600;color:var(--purple2)">${fmt(p.price)}${p.interval==='month'?'<small style="font-weight:400">/month</small>':''}</span></div>
+      ${p.perks&&p.perks.length?`<ul>${p.perks.filter(Boolean).map(x=>`<li>${seEsc(x)}</li>`).join('')}</ul>`:''}
+    </div>`:'').join('');
+  supAmt=null; supPack=null; document.getElementById('sup-custom').value='';
+  supTab(mode || (dOn?'donate':'sponsor'));
+  document.getElementById('supportModal').classList.add('open'); document.body.style.overflow='hidden';
+}
+function closeSupport(){ document.getElementById('supportModal').classList.remove('open'); document.body.style.overflow=''; }
+function supTab(m){
+  supMode=m;
+  document.getElementById('sup-donate').style.display=m==='donate'?'':'none';
+  document.getElementById('sup-sponsor').style.display=m==='sponsor'?'':'none';
+  document.getElementById('sup-tab-donate').classList.toggle('on',m==='donate');
+  document.getElementById('sup-tab-sponsor').classList.toggle('on',m==='sponsor');
+  supLabel();
+}
+function supPickAmt(btn,val){
+  document.querySelectorAll('#sup-amts .sup-amt').forEach(b=>b.classList.toggle('on',b===btn));
+  if(btn) document.getElementById('sup-custom').value='';
+  const n=parseFloat(String(val).replace(/[^0-9.]/g,'')); supAmt=n>0?n:null; supLabel();
+}
+function supPickPack(i){
+  supPack=i; document.querySelectorAll('#sup-packs .sup-pack').forEach(el=>el.classList.toggle('on',+el.dataset.i===i)); supLabel();
+}
+function supLabel(){
+  const b=document.getElementById('sup-go');
+  if(supMode==='donate') b.textContent=supAmt?`Donate $${supAmt.toLocaleString(undefined,{maximumFractionDigits:2})} →`:'Choose an amount';
+  else { const p=supPack!=null&&supCfg.sponsor.packages[supPack]; b.textContent=p?`Sponsor — ${p.name} →`:'Choose a package'; }
+}
+async function supCheckout(){
+  const name=document.getElementById('sup-name').value.trim(), email=document.getElementById('sup-email').value.trim(), note=document.getElementById('sup-note').value.trim();
+  if(email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ showToast('Please check your email address.'); return; }
+  const body={name,email,note};
+  if(supMode==='donate'){ if(!supAmt||supAmt<1){ showToast('Please choose an amount of at least $1.'); return; } body.donation={amount:supAmt}; }
+  else { if(supPack==null){ showToast('Please choose a package.'); return; } body.sponsor=supPack; }
+  const btn=document.getElementById('sup-go'); btn.disabled=true; btn.textContent='Taking you to secure checkout…';
+  try{
+    const r=await fetch(STRIPE_CHECKOUT_URL,{method:'POST',headers:{'Content-Type':'application/json',apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`},body:JSON.stringify(body)});
+    const d=await r.json().catch(()=>({}));
+    if(r.ok&&d.url){ window.location.href=d.url; return; }
+    showToast(d.error||'Checkout isn’t available right now — please try again soon.');
+  }catch(e){ showToast('Couldn’t reach secure checkout — please try again.'); }
+  btn.disabled=false; supLabel();
+}
+
 // ── AUTO REFRESH ──
 setInterval(async()=>{
   const oldLayout=JSON.stringify(shopLayout);
@@ -3285,6 +3452,7 @@ setInterval(async()=>{
   allClasses=await fetchClasses()||[];
   goTo('home');
   loadSiteContent();
+  loadSupport();
   // Render version stamp in footer
   const vs = document.getElementById('site-version-stamp');
   if (vs) vs.textContent = `Website ${SITE_VERSION} · ${SITE_BUILD}`;
@@ -3293,10 +3461,12 @@ setInterval(async()=>{
   const co=_p.get('checkout'), coType=_p.get('type');
   if(co==='success' && coType==='class'){
     setTimeout(()=>{ showToast('🎉 Payment received — welcome to class! Opening your Classroom…',true); goTo('classroom'); },400);
+  } else if(co==='success' && (coType==='donation'||coType==='sponsor')){
+    setTimeout(()=>showToast(coType==='sponsor'?'💜 Thank you for sponsoring! Cece will be in touch soon.':'💜 Thank you for your support — it means the world.',true),400);
   } else if(co==='success'){
     setTimeout(()=>showToast('🎉 Thank you! Your order is confirmed — Cece will be in touch about delivery.',true),400);
   } else if(co==='cancel'){
-    setTimeout(()=>showToast(coType==='class'?'Checkout canceled — your spot is still open when you’re ready.':'Checkout canceled — the piece is still available.'),400);
+    setTimeout(()=>showToast(coType==='class'?'Checkout canceled — your spot is still open when you’re ready.':(coType==='donation'||coType==='sponsor')?'Checkout canceled — nothing was charged.':'Checkout canceled — the piece is still available.'),400);
   }
   if(co){ history.replaceState(null,'',location.pathname); }
 })();
