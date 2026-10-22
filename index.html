@@ -8,7 +8,7 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecespieces — public website)
-  LAST UPDATED: 2026-10-22_2149 UTC
+  LAST UPDATED: 2026-10-22_2215 UTC
   CHANGE: 2026-10-21_1830 — Gallery Walk splash: a cinematic, letterboxed
           entry where visitors walk a dark, spot-lit museum corridor past ten
           framed pieces (brass placards, gilded doors, film grain, auto-tour)
@@ -48,6 +48,11 @@
           Arrange & Layout, public `gallery` row "shop_layout"): piece order,
           category order, columns (auto/2/3/4), centered or full-width grid,
           tight or roomy spacing. Desktop only; phones keep 2/1 columns.
+  CHANGE: 2026-10-22_2215 — Editable from the hub (Edit Website, public `gallery`
+          row "site_content"): elements tagged data-edit="<key>" (home, about
+          incl. photo & story, rentals, contact, footer), contact email /
+          Instagram / TikTok links, and the rental Staged Settings scenes
+          (rendered into #scene-list). Missing values keep this file's text.
   CHANGE: 2026-09-23_0215 — About the Artist: placed Cece's real bio (dancer →
           resin, Chicago → Renton, pandemic healing, memorial mission) and a
           "From the Stage to the Studio" Concept blurb; corrected location to
@@ -870,9 +875,9 @@ footer::before{display:none}
     <div class="hero-slides" aria-hidden="true"><div class="hero-slide" style="background-image:url('https://raw.githubusercontent.com/modom123/cecethepieces/main/Gemini_Generated_Image_391xt6391xt6391x.jpg');animation-delay:0s"></div><div class="hero-slide" style="background-image:url('https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4027.jpeg');animation-delay:7s"></div><div class="hero-slide" style="background-image:url('https://raw.githubusercontent.com/modom123/cecethepieces/main/Gemini_Generated_Image_xscbqexscbqexscb.jpg');animation-delay:14s"></div><div class="hero-slide" style="background-image:url('https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4023.jpeg');animation-delay:21s"></div><div class="hero-slide" style="background-image:url('https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4033.jpeg');animation-delay:28s"></div></div>
     <div class="hero-bg"></div>
     <div class="hero-grain"></div>
-    <div class="hero-eyebrow">Original Artwork by Cece</div>
-    <h1 class="hero-title">Pour. Flow.<br><em>Own Something</em><br>No One Else Has.</h1>
-    <p class="hero-sub">One-of-a-kind resin and mixed media pieces — original work, no compromises. Each piece exists exactly once.</p>
+    <div data-edit="home.eyebrow" class="hero-eyebrow">Original Artwork by Cece</div>
+    <h1 data-edit="home.title" class="hero-title">Pour. Flow.<br><em>Own Something</em><br>No One Else Has.</h1>
+    <p data-edit="home.sub" class="hero-sub">One-of-a-kind resin and mixed media pieces — original work, no compromises. Each piece exists exactly once.</p>
     <div class="hero-btns">
       <button class="cta-btn cta-primary" onclick="goTo('shop')">Browse the Collection →</button>
       <button class="cta-btn cta-secondary" onclick="goTo('rentals')">Rent for an Event</button>
@@ -903,18 +908,18 @@ footer::before{display:none}
       <div class="value-grid reveal">
         <div class="value-item">
           <div class="value-icon">✦</div>
-          <div class="value-title">One of a Kind</div>
-          <div class="value-desc">One-of-a-kind original art. When you own one of Cece's Pieces, nothing like it exists anywhere else in the world.</div>
+          <div data-edit="home.value1_title" class="value-title">One of a Kind</div>
+          <div class="value-desc" data-edit="home.value1_desc">One-of-a-kind original art. When you own one of Cece's Pieces, nothing like it exists anywhere else in the world.</div>
         </div>
         <div class="value-item">
           <div class="value-icon">🎪</div>
-          <div class="value-title">Available to Rent</div>
-          <div class="value-desc">Elevate your wedding, birthday, or staging project with statement art — without the long-term commitment.</div>
+          <div data-edit="home.value2_title" class="value-title">Available to Rent</div>
+          <div class="value-desc" data-edit="home.value2_desc">Elevate your wedding, birthday, or staging project with statement art — without the long-term commitment.</div>
         </div>
         <div class="value-item">
           <div class="value-icon">🎨</div>
-          <div class="value-title">Custom Commissions</div>
-          <div class="value-desc">Work directly with Cece to create something built around your space, palette, and vision.</div>
+          <div data-edit="home.value3_title" class="value-title">Custom Commissions</div>
+          <div class="value-desc" data-edit="home.value3_desc">Work directly with Cece to create something built around your space, palette, and vision.</div>
         </div>
       </div>
     </div>
@@ -926,8 +931,8 @@ footer::before{display:none}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center">
         <div class="reveal">
           <div class="section-label">Rent a Piece</div>
-          <h2 class="section-h" style="margin-bottom:16px">Art That <em>Transforms</em> Your Event</h2>
-          <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:24px;font-weight:400">Perfect for weddings, birthdays, house staging, and corporate events. Statement resin pieces that make spaces unforgettable — by the day, weekend, or week.</p>
+          <h2 data-edit="home.rent_title" class="section-h" style="margin-bottom:16px">Art That <em>Transforms</em> Your Event</h2>
+          <p data-edit="home.rent_text" style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:24px;font-weight:400">Perfect for weddings, birthdays, house staging, and corporate events. Statement resin pieces that make spaces unforgettable — by the day, weekend, or week.</p>
           <div class="pills" style="margin-bottom:28px">
             <span class="pill" style="border-color:var(--pink-border);color:var(--pink-accent);background:var(--pink-soft)">🎂 Birthdays</span>
             <span class="pill" style="border-color:var(--pink-border);color:var(--pink-accent);background:var(--pink-soft)">💍 Weddings</span>
@@ -951,10 +956,10 @@ footer::before{display:none}
     <div class="inner">
       <div style="max-width:760px;margin:0 auto;text-align:center" class="reveal">
         <div style="font-size:1rem;color:var(--purple2);margin-bottom:20px">✦</div>
-        <blockquote style="font-family:'Playfair Display',serif;font-size:clamp(1.65rem,3vw,2.4rem);font-weight:300;line-height:1.38;color:var(--ink-on-dark);margin-bottom:26px">"Every pour is <em style="font-style:italic;color:var(--purple2)">unrepeatable.</em> The moment the resin touches the surface, something entirely new comes into the world."</blockquote>
+        <blockquote data-edit="home.quote" style="font-family:'Playfair Display',serif;font-size:clamp(1.65rem,3vw,2.4rem);font-weight:300;line-height:1.38;color:var(--ink-on-dark);margin-bottom:26px">"Every pour is <em style="font-style:italic;color:var(--purple2)">unrepeatable.</em> The moment the resin touches the surface, something entirely new comes into the world."</blockquote>
         <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:32px">
           <div style="width:30px;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink))"></div>
-          <span style="font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2)">Cece — cecespieces</span>
+          <span data-edit="home.quote_by" style="font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2)">Cece — cecespieces</span>
           <div style="width:30px;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink))"></div>
         </div>
         <button class="cta-btn cta-secondary" onclick="goTo('about')">Read Cece's Story →</button>
@@ -966,7 +971,7 @@ footer::before{display:none}
   <section class="section-sm" style="background:var(--light)">
     <div class="inner">
       <div style="text-align:center;margin-bottom:28px" class="reveal">
-        <div style="font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--lav3);margin-bottom:6px">@cecesthepiece</div>
+        <div style="font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--lav3);margin-bottom:6px" data-edit="contact.instagram" data-edit-type="handle">@cecesthepiece</div>
         <h2 style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:300;color:var(--ink)">Follow the <em style="font-style:italic;color:var(--purple2)">Process</em></h2>
       </div>
       <div class="ig-grid reveal" id="home-ig">
@@ -1060,7 +1065,7 @@ footer::before{display:none}
     <div class="inner">
       <div class="section-label" style="color:var(--pink-accent)">Available to Rent</div>
       <h1 class="page-header-h" style="color:var(--ink2)">Rent a <em style="font-style:italic;background:linear-gradient(135deg,var(--pink-accent),var(--pink-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Piece</em></h1>
-      <p class="page-header-sub" style="color:var(--muted)">Perfect for weddings, birthdays, house staging & corporate events. Statement art that transforms any space — without the commitment of buying.</p>
+      <p data-edit="rentals.sub" class="page-header-sub" style="color:var(--muted)">Perfect for weddings, birthdays, house staging & corporate events. Statement art that transforms any space — without the commitment of buying.</p>
       <button class="cta-btn" style="margin-top:24px;display:inline-flex;background:linear-gradient(135deg,var(--pink-accent),var(--pink-mid));color:#fff;box-shadow:0 4px 20px var(--pink-glow)" onclick="openRentalModal()">Request a Rental →</button>
     </div>
   </div>
@@ -1073,10 +1078,10 @@ footer::before{display:none}
         <h2 class="section-h">How It <em>Works</em></h2>
       </div>
       <div class="steps-grid reveal">
-        <div class="step"><div class="step-num">01</div><div class="step-icon">📅</div><div class="step-title">Pick a Piece</div><div class="step-desc">Browse available works and choose the one that fits your space and event.</div></div>
-        <div class="step"><div class="step-num">02</div><div class="step-icon">💳</div><div class="step-title">Book & Pay</div><div class="step-desc">Fill out the form. A Stripe payment link is sent within 24 hours to hold your dates.</div></div>
-        <div class="step"><div class="step-num">03</div><div class="step-icon">🚚</div><div class="step-title">We Deliver</div><div class="step-desc">Piece arrives ready to display. White glove delivery available on request.</div></div>
-        <div class="step"><div class="step-num">04</div><div class="step-icon">📦</div><div class="step-title">Return</div><div class="step-desc">Return after your event. Deposit refunded within 3 days of safe return.</div></div>
+        <div class="step"><div class="step-num">01</div><div class="step-icon">📅</div><div class="step-title" data-edit="rentals.step1_title">Pick a Piece</div><div class="step-desc" data-edit="rentals.step1_desc">Browse available works and choose the one that fits your space and event.</div></div>
+        <div class="step"><div class="step-num">02</div><div class="step-icon">💳</div><div class="step-title" data-edit="rentals.step2_title">Book & Pay</div><div class="step-desc" data-edit="rentals.step2_desc">Fill out the form. A Stripe payment link is sent within 24 hours to hold your dates.</div></div>
+        <div class="step"><div class="step-num">03</div><div class="step-icon">🚚</div><div class="step-title" data-edit="rentals.step3_title">We Deliver</div><div class="step-desc" data-edit="rentals.step3_desc">Piece arrives ready to display. White glove delivery available on request.</div></div>
+        <div class="step"><div class="step-num">04</div><div class="step-icon">📦</div><div class="step-title" data-edit="rentals.step4_title">Return</div><div class="step-desc" data-edit="rentals.step4_desc">Return after your event. Deposit refunded within 3 days of safe return.</div></div>
       </div>
     </div>
   </section>
@@ -1101,9 +1106,10 @@ footer::before{display:none}
       <div style="text-align:center;margin-bottom:44px" class="reveal">
         <div class="section-label" style="justify-content:center;color:var(--pink-accent)">See It Styled</div>
         <h2 class="section-h">Staged <em>Settings</em></h2>
-        <p style="font-size:.92rem;color:var(--muted);max-width:600px;margin:12px auto 0;line-height:1.8">Three ready-made looks to picture the art in your space. Tap the pieces you like in a scene, then send them straight into a rental request — or mix and match.</p>
+        <p data-edit="rentals.scenes_intro" style="font-size:.92rem;color:var(--muted);max-width:600px;margin:12px auto 0;line-height:1.8">Three ready-made looks to picture the art in your space. Tap the pieces you like in a scene, then send them straight into a rental request — or mix and match.</p>
       </div>
 
+      <div id="scene-list">
       <div class="reveal scene-block" data-scene="wedding" style="margin-bottom:48px">
         <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px">
           <span style="font-size:1.5rem">💍</span>
@@ -1154,6 +1160,7 @@ footer::before{display:none}
         </div>
         <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" onclick="requestSetting(this,'Corporate Event','A Corporate Dinner')">Request these pieces for your event →</button>
       </div>
+      </div>
     </div>
   </section>
 
@@ -1180,7 +1187,7 @@ footer::before{display:none}
       <div class="reveal">
         <div class="section-label" style="color:var(--pink-accent)">Interior Designers & Stagers</div>
         <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:300;color:var(--ink2);line-height:1.15;margin-bottom:16px">Art That Makes <em style="font-style:italic;background:linear-gradient(135deg,var(--pink-accent),var(--pink-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Listings Sell</em></h2>
-        <p style="font-size:.88rem;color:var(--muted);line-height:1.9;font-weight:400">Recurring rental discounts, priority booking, and pieces that photograph beautifully. Statement art creates the emotional connection that closes the sale.</p>
+        <p data-edit="rentals.stager_text" style="font-size:.88rem;color:var(--muted);line-height:1.9;font-weight:400">Recurring rental discounts, priority booking, and pieces that photograph beautifully. Statement art creates the emotional connection that closes the sale.</p>
       </div>
       <div class="reveal" style="display:flex;flex-direction:column;gap:12px">
         <div style="display:flex;gap:14px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:3px"><span style="font-size:1.2rem">🏷️</span><div><div style="font-size:.82rem;font-weight:500;color:var(--ink2);margin-bottom:3px">Stager Program Rates</div><div style="font-size:.74rem;color:var(--muted)">Recurring discounts on weekly rentals for active stagers</div></div></div>
@@ -1400,7 +1407,7 @@ footer::before{display:none}
   <div class="page-header" style="background:var(--green-surface);border-bottom:1px solid var(--green-border)">
     <div class="inner">
       <div class="section-label" style="color:var(--green-accent)">The Artist</div>
-      <h1 class="page-header-h" style="color:var(--ink2)">About <em style="font-style:italic;background:linear-gradient(135deg,var(--green-accent),var(--green-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Cece</em></h1>
+      <h1 data-edit="about.title" class="page-header-h" style="color:var(--ink2)">About <em style="font-style:italic;background:linear-gradient(135deg,var(--green-accent),var(--green-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Cece</em></h1>
     </div>
   </div>
 
@@ -1409,18 +1416,20 @@ footer::before{display:none}
       <div class="about-split">
         <div class="reveal">
           <div style="border-radius:6px;overflow:hidden;box-shadow:0 10px 40px rgba(30,122,64,.12);background:var(--green-surface)">
-            <img src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4026.jpeg" alt="Cece creating a piece in the studio" style="width:100%;display:block" loading="lazy">
+            <img data-edit="about.photo" data-edit-type="img" src="https://raw.githubusercontent.com/modom123/cecethepieces/main/IMG_4026.jpeg" alt="Cece creating a piece in the studio" style="width:100%;display:block" loading="lazy">
           </div>
           <div style="margin-top:26px">
-            <div style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green-accent);margin-bottom:10px">The Concept — From the Stage to the Studio</div>
-            <p style="font-size:.9rem;color:var(--muted);line-height:1.9;font-weight:400">My work lives where reality meets abstraction. As a former dancer, the fluid motion of resin became my new choreography — one form of expression traded for another. In abstract realism the magic happens in the layers: a recognizable form on the base, veiled by translucent waves and "smoke" of resin, creating a depth a photograph can barely capture. I don't chase perfection; I chase connection. Every pour is intentional, organic, and one of a kind.</p>
+            <div data-edit="about.concept_label" style="font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--green-accent);margin-bottom:10px">The Concept — From the Stage to the Studio</div>
+            <p data-edit="about.concept" style="font-size:.9rem;color:var(--muted);line-height:1.9;font-weight:400">My work lives where reality meets abstraction. As a former dancer, the fluid motion of resin became my new choreography — one form of expression traded for another. In abstract realism the magic happens in the layers: a recognizable form on the base, veiled by translucent waves and "smoke" of resin, creating a depth a photograph can barely capture. I don't chase perfection; I chase connection. Every pour is intentional, organic, and one of a kind.</p>
           </div>
         </div>
         <div class="about-text reveal">
+          <div data-edit="about.bio" data-edit-type="paras">
           <p>I'm Cecilia — "Cece" — and before I ever picked up a resin bottle, I told stories with movement. Born in Chicago and shaped by the community of Renton, Washington, I spent years as a professional background dancer and choreographer.</p>
           <p>When the world slowed down during the pandemic, I turned to art as a form of healing. What began as a personal sanctuary quickly became a profound passion — and today Cece's Pieces is more than a small business. It's a community-driven studio working in abstract realism and mixed media.</p>
           <p>Whether I'm crafting an original gallery work or delicately preserving ashes and flowers into a memorial piece, my mission stays the same: to turn memories into tangible art. Every piece is completely original — when you own a Piece, you're holding a fragment of a story, a heartbeat, and hope, with a certificate of authenticity to prove it.</p>
-          <div class="pills">
+          </div>
+          <div class="pills" data-edit="about.tags" data-edit-type="pills">
             <span class="pill">Abstract Realism</span><span class="pill">Resin Art</span><span class="pill">Memorial Pieces</span>
             <span class="pill">Mixed Media</span><span class="pill">Renton, WA</span>
           </div>
@@ -1437,10 +1446,10 @@ footer::before{display:none}
         <h2 class="section-h" style="color:var(--ink2)">The <em style="font-style:italic;background:linear-gradient(135deg,var(--green-accent),var(--green-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Process</em></h2>
       </div>
       <div class="steps-grid reveal">
-        <div class="step"><div class="step-num">01</div><div class="step-icon">🧪</div><div class="step-title">Materials First</div><div class="step-desc">Epoxy resin, alcohol inks, pigment powders, gold leaf, glass — combinations that react in beautiful, unpredictable ways.</div></div>
-        <div class="step"><div class="step-num">02</div><div class="step-icon">⏳</div><div class="step-title">The Pour</div><div class="step-desc">Resin is poured, tilted, pushed. Heat tools coax movement. Every pour is a negotiation between intention and accident.</div></div>
-        <div class="step"><div class="step-num">03</div><div class="step-icon">✨</div><div class="step-title">The Cure</div><div class="step-desc">48–72 hours of curing time. No shortcuts. The chemistry needs time to do what chemistry does.</div></div>
-        <div class="step"><div class="step-num">04</div><div class="step-icon">✦</div><div class="step-title">The Seal</div><div class="step-desc">Sanded, sealed, sanded again. Glass-smooth and UV-resistant. Certificate of authenticity with every work.</div></div>
+        <div class="step"><div class="step-num">01</div><div class="step-icon">🧪</div><div class="step-title" data-edit="about.step1_title">Materials First</div><div class="step-desc" data-edit="about.step1_desc">Epoxy resin, alcohol inks, pigment powders, gold leaf, glass — combinations that react in beautiful, unpredictable ways.</div></div>
+        <div class="step"><div class="step-num">02</div><div class="step-icon">⏳</div><div class="step-title" data-edit="about.step2_title">The Pour</div><div class="step-desc" data-edit="about.step2_desc">Resin is poured, tilted, pushed. Heat tools coax movement. Every pour is a negotiation between intention and accident.</div></div>
+        <div class="step"><div class="step-num">03</div><div class="step-icon">✨</div><div class="step-title" data-edit="about.step3_title">The Cure</div><div class="step-desc" data-edit="about.step3_desc">48–72 hours of curing time. No shortcuts. The chemistry needs time to do what chemistry does.</div></div>
+        <div class="step"><div class="step-num">04</div><div class="step-icon">✦</div><div class="step-title" data-edit="about.step4_title">The Seal</div><div class="step-desc" data-edit="about.step4_desc">Sanded, sealed, sanded again. Glass-smooth and UV-resistant. Certificate of authenticity with every work.</div></div>
       </div>
     </div>
   </section>
@@ -1451,8 +1460,8 @@ footer::before{display:none}
       <div class="reveal">
         <div class="section-label" style="color:var(--green-accent)">A Special Category</div>
         <h2 class="section-h" style="color:var(--ink2);margin-bottom:16px">Memorial <em style="font-style:italic;background:linear-gradient(135deg,var(--green-accent),var(--green-mid));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Pieces</em></h2>
-        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:16px;font-weight:400">I create handcrafted memorial pieces because I believe the way we honor our loved ones should be as unique as they were. No exact duplicates, but a piece can be recreated in a similar design for multiples.</p>
-        <p style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:28px;font-weight:400">Custom colors, personal touches, embedded botanicals and metals can be worked in. The result is something that truly belongs to a specific person and a specific story.</p>
+        <p data-edit="about.memorial1" style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:16px;font-weight:400">I create handcrafted memorial pieces because I believe the way we honor our loved ones should be as unique as they were. No exact duplicates, but a piece can be recreated in a similar design for multiples.</p>
+        <p data-edit="about.memorial2" style="font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:28px;font-weight:400">Custom colors, personal touches, embedded botanicals and metals can be worked in. The result is something that truly belongs to a specific person and a specific story.</p>
         <button class="cta-btn" onclick="goTo('contact')" style="background:linear-gradient(135deg,var(--green-accent),var(--green-mid));color:#fff;box-shadow:0 4px 20px var(--green-glow)">Inquire About a Custom Memorial Piece →</button>
       </div>
       <div class="reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:3px" id="urn-grid">
@@ -1471,20 +1480,20 @@ footer::before{display:none}
     <div class="inner">
       <div class="section-label">Get in Touch</div>
       <h1 class="page-header-h">Let's <em>Talk</em></h1>
-      <p class="page-header-sub">Questions about a piece, shipping, rental booking, or commissioning something custom.</p>
+      <p data-edit="contact.sub" class="page-header-sub">Questions about a piece, shipping, rental booking, or commissioning something custom.</p>
     </div>
   </div>
   <section class="section" style="background:var(--surface)">
     <div class="inner" style="display:grid;grid-template-columns:1fr 1.5fr;gap:80px;align-items:start">
       <div class="reveal">
         <a href="mailto:hello@cecethepiece.com" style="display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--border2);text-decoration:none;color:var(--ink);transition:color .2s" onmouseover="this.style.color='var(--purple2)'" onmouseout="this.style.color='var(--ink)'">
-          <span style="font-size:1.2rem">✉️</span><div><div style="font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Email</div><div style="font-size:.88rem">hello@cecethepiece.com</div></div>
+          <span style="font-size:1.2rem">✉️</span><div><div style="font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Email</div><div style="font-size:.88rem" data-edit="contact.email">hello@cecethepiece.com</div></div>
         </a>
         <a href="https://instagram.com/cecesthepiece" target="_blank" style="display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--border2);text-decoration:none;color:var(--ink);transition:color .2s" onmouseover="this.style.color='var(--purple2)'" onmouseout="this.style.color='var(--ink)'">
-          <span style="font-size:1.2rem">📷</span><div><div style="font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Instagram</div><div style="font-size:.88rem">@cecesthepiece</div></div>
+          <span style="font-size:1.2rem">📷</span><div><div style="font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px">Instagram</div><div style="font-size:.88rem" data-edit="contact.instagram" data-edit-type="handle">@cecesthepiece</div></div>
         </a>
         <a href="https://tiktok.com/@cecethepiece" target="_blank" style="display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--border2);text-decoration:none;color:var(--ink);transition:color .2s" onmouseover="this.style.color='var(--purple2)'" onmouseout="this.style.color='var(--ink)'">
-          <span style="font-size:1.2rem">🎵</span><div><div style="font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px">TikTok</div><div style="font-size:.88rem">@cecethepiece</div></div>
+          <span style="font-size:1.2rem">🎵</span><div><div style="font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px">TikTok</div><div style="font-size:.88rem" data-edit="contact.tiktok" data-edit-type="handle">@cecethepiece</div></div>
         </a>
         <div style="margin-top:32px">
           <div style="font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--purple2);margin-bottom:14px">Quick Inquiries</div>
@@ -1504,7 +1513,7 @@ footer::before{display:none}
           <div class="cf-field"><label class="cf-label">Subject</label><input class="cf-input" id="cf-subject" placeholder="e.g. Commission inquiry, Question about a piece..."></div>
           <div class="cf-field"><label class="cf-label">Message *</label><textarea class="cf-textarea" id="cf-msg" placeholder="Tell me about your space, what you're looking for, or which piece caught your eye..." required></textarea></div>
           <button type="submit" class="cf-submit">Send Message →</button>
-          <div style="font-size:.7rem;color:var(--muted2);text-align:center;margin-top:10px">Typical response within 24–48 hours</div>
+          <div data-edit="contact.response" style="font-size:.7rem;color:var(--muted2);text-align:center;margin-top:10px">Typical response within 24–48 hours</div>
         </form>
       </div>
     </div>
@@ -1517,7 +1526,7 @@ footer::before{display:none}
     <div class="footer-grid">
       <div>
         <button class="footer-logo" onclick="goTo('home')">ceces<em>pieces</em></button>
-        <p class="footer-tagline">Original resin and mixed media artwork. Every piece made by hand.</p>
+        <p data-edit="footer.tagline" class="footer-tagline">Original resin and mixed media artwork. Every piece made by hand.</p>
         <div class="footer-socials">
           <a href="https://instagram.com/cecesthepiece" target="_blank" class="footer-soc">📷</a>
           <a href="https://tiktok.com/@cecethepiece" target="_blank" class="footer-soc">🎵</a>
@@ -2415,7 +2424,7 @@ async function submitEnroll(){
   }
   const s=encodeURIComponent(`Class Enrollment — ${c?c.title:''} — ${name}`);
   const b=encodeURIComponent(`New class enrollment!\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone||'Not provided'}\n\nClass: ${c?c.title:''} (${c?classTypeLabel(c):''})\n${c&&c.type==='live'?'Session: '+fmtClassDate(c.start_at)+'\n':''}Price: ${c&&c.price?'$'+c.price:'—'}\n\nNotes:\n${notes||'None'}`);
-  window.open(`mailto:hello@cecethepiece.com?subject=${s}&body=${b}`);
+  window.open(`mailto:${siteEmail()}?subject=${s}&body=${b}`);
   closeEnroll();
   showToast(paid?'✅ Enrollment received — Cece will email your payment link.':'🎉 You’re enrolled! Check My Classroom for your class.',true);
   ['enr-name','enr-phone','enr-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
@@ -2884,7 +2893,7 @@ async function lbInquire(){
   }
   const s=encodeURIComponent(`Inquiry: "${activePiece.title}"`);
   const b=encodeURIComponent(`Hi Cece,\n\nI'm interested in "${activePiece.title}"${activePiece.price?' ($'+activePiece.price+')':''}.\n\nThank you!`);
-  window.open(`mailto:hello@cecethepiece.com?subject=${s}&body=${b}`);
+  window.open(`mailto:${siteEmail()}?subject=${s}&body=${b}`);
 }
 function lbCopy(){navigator.clipboard.writeText(window.location.href).then(()=>showToast('Link copied!',true));}
 function lbShare(){if(!activePiece)return;if(navigator.share)navigator.share({title:activePiece.title+" — cecespieces",url:window.location.href});else lbCopy();}
@@ -3093,7 +3102,7 @@ async function submitRental(){
   if(CONFIGURED){try{await fetch(`${SUPABASE_URL}/rest/v1/rental_bookings`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({renter_name:name,renter_email:email,renter_phone:phone,piece_id:pieceId||null,event_type:selectedEvent,rental_period:period,start_date:start||null,end_date:end||null,status:'pending',notes,amount:null})});}catch(e){}}
   const s=encodeURIComponent(`Rental Request — ${selectedEvent} — ${name}`);
   const b=encodeURIComponent(`New rental request!\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone||'Not provided'}\n\nEvent: ${selectedEvent}\nPiece: ${piece?piece.title:'Not specified'}\nDates: ${sf} → ${ef}\nPeriod: ${pMap[period]||period}\n\nNotes:\n${notes||'None'}`);
-  window.open(`mailto:hello@cecethepiece.com?subject=${s}&body=${b}`);
+  window.open(`mailto:${siteEmail()}?subject=${s}&body=${b}`);
   closeRentalModal();
   showToast('✅ Request sent! Cece will reply within 24 hours.',true);
   ['rm-name','rm-phone','rm-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
@@ -3128,7 +3137,7 @@ function submitContact(e){
     headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},
     body:JSON.stringify({piece_title:sub,type:'inquiry',status:'pending',source:'website contact form',customer_name:name,customer_email:email,notes:msg,created_at:new Date().toISOString()})
   }).catch(()=>{});}catch(e){}}
-  window.open(`mailto:hello@cecethepiece.com?subject=${encodeURIComponent(sub+' — from '+name)}&body=${encodeURIComponent('From: '+name+' <'+email+'>\n\n'+msg)}`);
+  window.open(`mailto:${siteEmail()}?subject=${encodeURIComponent(sub+' — from '+name)}&body=${encodeURIComponent('From: '+name+' <'+email+'>\n\n'+msg)}`);
   showToast('✅ Message sent! Cece will reply within 24 hours.',true);
 }
 
@@ -3192,6 +3201,65 @@ document.getElementById('hubLoginForm').addEventListener('submit',onHubLoginSubm
   wrap.addEventListener('dragstart',e=>e.preventDefault());
 })();
 
+// ── EDITABLE SITE CONTENT ──
+// Text, photos, contact details and the rental "Staged Settings" scenes are
+// edited in the hub (Edit Website) and saved to the public `gallery` row
+// "site_content": { "<data-edit key>": value, ..., scenes:[...] }. A blank or
+// missing value keeps the text written in this file. *word* = accent italic,
+// a new line = line break; "paras" fields split paragraphs on a blank line,
+// "pills" fields take one tag per line.
+let siteContent = {};
+const DEFAULT_EMAIL = 'hello@cecethepiece.com';
+function siteEmail(){ return (siteContent['contact.email']||'').trim() || DEFAULT_EMAIL; }
+function seEsc(v){ return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function seRich(el, v){
+  // Reuse the element's own <em> styling for *accent* words.
+  const em = el.querySelector('em');
+  const open = em ? em.outerHTML.slice(0, em.outerHTML.indexOf('>')+1) : '<em>';
+  el.innerHTML = seEsc(v).replace(/\*([^*]+)\*/g, open+'$1</em>').replace(/\n/g,'<br>');
+}
+function applySiteContent(c){
+  document.querySelectorAll('[data-edit]').forEach(el=>{
+    const v = c[el.dataset.edit];
+    if (v==null || String(v).trim()==='') return;
+    const t = el.dataset.editType || 'text';
+    if (t==='img') el.src = v;
+    else if (t==='handle') el.textContent = '@'+String(v).trim().replace(/^@/,'');
+    else if (t==='paras') el.innerHTML = String(v).split(/\n\s*\n/).map(x=>x.trim()).filter(Boolean).map(x=>'<p>'+seEsc(x).replace(/\n/g,'<br>')+'</p>').join('');
+    else if (t==='pills') el.innerHTML = String(v).split(/\n/).map(x=>x.trim()).filter(Boolean).map(x=>`<span class="pill">${seEsc(x)}</span>`).join('');
+    else seRich(el, v);
+  });
+  const ig=(c['contact.instagram']||'').trim().replace(/^@/,''), tt=(c['contact.tiktok']||'').trim().replace(/^@/,'');
+  if (ig) document.querySelectorAll('a[href*="instagram.com/"]').forEach(a=>a.href='https://instagram.com/'+ig);
+  if (tt) document.querySelectorAll('a[href*="tiktok.com/"]').forEach(a=>a.href='https://tiktok.com/@'+tt);
+  if ((c['contact.email']||'').trim()) document.querySelectorAll('a[href^="mailto:"]').forEach(a=>a.href='mailto:'+siteEmail());
+  if (Array.isArray(c.scenes) && c.scenes.length) renderScenes(c.scenes);
+}
+// Rental "Staged Settings": [{emoji, title, event, blurb, items:[{title, image}]}]
+function renderScenes(list){
+  const box = document.getElementById('scene-list'); if (!box) return;
+  box.innerHTML = list.filter(sc=>sc && sc.title).map((sc,i,arr)=>`<div class="reveal visible scene-block" style="margin-bottom:${i<arr.length-1?48:0}px">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:6px">
+          <span style="font-size:1.5rem">${seEsc(sc.emoji||'✨')}</span>
+          <h3 style="font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--ink2);margin:0">${seEsc(sc.title)}</h3>
+        </div>
+        ${sc.blurb?`<p style="font-size:.9rem;color:var(--muted);line-height:1.8;max-width:660px;margin:0 0 4px">${seEsc(sc.blurb)}</p>`:''}
+        <div class="scene-hint">These pieces make up the look — request them all for your event, or mention the ones you love.</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px">
+          ${(sc.items||[]).filter(it=>it&&it.image).map(it=>`<figure class="scene-fig" data-title="${seEsc(it.title||'')}"><div class="scene-thumb"><img src="${seEsc(it.image)}" alt="${seEsc(it.title||'')}" loading="lazy"></div><figcaption style="font-size:.66rem;color:var(--muted);margin-top:5px;text-align:center">${seEsc(it.title||'')}</figcaption></figure>`).join('')}
+        </div>
+        <button class="cta-btn" style="margin-top:18px;display:inline-flex;background:transparent;color:var(--pink-accent);border:1.5px solid var(--pink-border);box-shadow:none" data-event="${seEsc(sc.event||'Other')}" data-scene-title="${seEsc(sc.title)}" onclick="requestSetting(this,this.dataset.event,this.dataset.sceneTitle)">Request these pieces for your event →</button>
+      </div>`).join('');
+}
+async function loadSiteContent(){
+  try{
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/gallery?id=eq.site_content&select=data`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+    const rows = r.ok ? await r.json() : [];
+    siteContent = (rows && rows[0] && rows[0].data) || {};
+    applySiteContent(siteContent);
+  }catch(e){}
+}
+
 // ── AUTO REFRESH ──
 setInterval(async()=>{
   const oldLayout=JSON.stringify(shopLayout);
@@ -3216,6 +3284,7 @@ setInterval(async()=>{
   allPieces=await fetchPieces()||[];
   allClasses=await fetchClasses()||[];
   goTo('home');
+  loadSiteContent();
   // Render version stamp in footer
   const vs = document.getElementById('site-version-stamp');
   if (vs) vs.textContent = `Website ${SITE_VERSION} · ${SITE_BUILD}`;
