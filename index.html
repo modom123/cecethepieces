@@ -8,7 +8,7 @@
 <!--
   ────────────────────────────────────────────────────────────────
   FILE: index.html  (cecespieces — public website)
-  LAST UPDATED: 2026-10-21_1830 UTC
+  LAST UPDATED: 2026-10-22_2149 UTC
   CHANGE: 2026-10-21_1830 — Gallery Walk splash: a cinematic, letterboxed
           entry where visitors walk a dark, spot-lit museum corridor past ten
           framed pieces (brass placards, gilded doors, film grain, auto-tour)
@@ -44,6 +44,10 @@
           Cece marks it paid in the hub. Venmo/Zelle details come from the hub.
   CHANGE: 2026-10-21_2110 — Home page shows no prices or Buy buttons — Featured
           Works is a pure showcase (View Piece only); pricing lives in the shop.
+  CHANGE: 2026-10-22_2149 — Shop order & layout come from the hub (Collection →
+          Arrange & Layout, public `gallery` row "shop_layout"): piece order,
+          category order, columns (auto/2/3/4), centered or full-width grid,
+          tight or roomy spacing. Desktop only; phones keep 2/1 columns.
   CHANGE: 2026-09-23_0215 — About the Artist: placed Cece's real bio (dancer →
           resin, Chicago → Renton, pandemic healing, memorial mission) and a
           "From the Stage to the Studio" Concept blurb; corrected location to
@@ -341,6 +345,17 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1000;
 @keyframes scrollPulse{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
 .pieces-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px}
+/* Shop layout picked in the hub (Collection → Arrange & Layout). Desktop only. */
+@media(min-width:901px){
+  .pieces-grid.lay-roomy{gap:22px}
+  .pieces-grid.lay-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pieces-grid.lay-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pieces-grid.lay-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .pieces-grid.lay-center{grid-template-columns:repeat(auto-fit,minmax(280px,340px));justify-content:center}
+  .pieces-grid.lay-center.lay-cols-2{grid-template-columns:repeat(2,minmax(0,420px))}
+  .pieces-grid.lay-center.lay-cols-3{grid-template-columns:repeat(3,minmax(0,360px))}
+  .pieces-grid.lay-center.lay-cols-4{grid-template-columns:repeat(4,minmax(0,300px))}
+}
 .piece-card{background:var(--light);overflow:hidden;display:flex;flex-direction:column;transition:transform .35s cubic-bezier(.25,.46,.45,.94),box-shadow .35s;border:1px solid var(--lav-border2)}
 .piece-card:hover{transform:translateY(-4px);z-index:2;box-shadow:0 12px 40px rgba(124,92,191,.14)}
 .piece-img-wrap{aspect-ratio:1;overflow:hidden;background:var(--light3);position:relative}
@@ -1825,14 +1840,36 @@ let allClasses = [], activeClass = null, enrollClass = null, _cf = 'all';
 let crStudent = null, crClasses = [], crActiveId = null, crActiveLesson = 0, crTimer = null;
 
 // ── DATA ──
+// Shop layout + product order arranged in the hub (public `gallery` row
+// "shop_layout": {order:[piece ids], cats:[categories], cols, align, gap}).
+let shopLayout = {};
+async function fetchShopLayout() {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/gallery?id=eq.shop_layout&select=data`,
+      {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+    const rows = r.ok ? await r.json() : [];
+    shopLayout = (rows && rows[0] && rows[0].data) || {};
+  } catch(e) {}
+}
+// Pieces Cece placed keep her order; newer pieces she hasn't placed yet come
+// first (newest first), as before.
+function applyShopOrder(rows) {
+  const ord = shopLayout.order || []; if (!ord.length) return rows;
+  const pos = new Map(ord.map((id,i)=>[String(id),i]));
+  return rows.map((p,i)=>({p,i,k:pos.has(String(p.id))?pos.get(String(p.id)):-1}))
+    .sort((a,b)=>(a.k-b.k)||(a.i-b.i)).map(x=>x.p);
+}
 async function fetchPieces() {
   try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/pieces?select=*&order=created_at.desc`,
-      {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+    const [r] = await Promise.all([
+      fetch(`${SUPABASE_URL}/rest/v1/pieces?select=*&order=created_at.desc`,
+        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}}),
+      fetchShopLayout()
+    ]);
     if (!r.ok) throw new Error();
     const rows = await r.json();
     // Show the curated catalog until the database has its own pieces.
-    return (rows && rows.length) ? rows : sampleData();
+    return (rows && rows.length) ? applyShopOrder(rows) : sampleData();
   } catch(e) { return sampleData(); }
 }
 
@@ -2114,7 +2151,7 @@ function renderHome(){
 const CAT_ORDER=['Memorial Piece','Preservation','Resin Art','Statement Panel','Mixed Media','Painting','Seasonal Gift','Drawing','Sculpture','Photography'];
 const CAT_LABEL={'Resin Art':'Resin Art','Statement Panel':'Statement Panels','Memorial Piece':'Memorial Pieces','Preservation':'Preservation','Seasonal Gift':'Seasonal & Gifts','Painting':'Paintings','Mixed Media':'Mixed Media','Drawing':'Drawings','Sculpture':'Sculpture','Photography':'Photography','Original Gallery':'Original Gallery Works','Limited Edition Print':'Limited-Edition Prints','Small Piece':'Small Pieces & Grounding'};
 function catKey(p){return p.type==='Decorative Urn'?'Memorial Piece':(p.type||'Other');}
-function catRank(t){const i=CAT_ORDER.indexOf(t);return i<0?CAT_ORDER.length:i;}
+function catRank(t){const o=(shopLayout.cats&&shopLayout.cats.length)?shopLayout.cats:CAT_ORDER;const i=o.indexOf(t);return i<0?o.length+(CAT_ORDER.indexOf(t)<0?CAT_ORDER.length:CAT_ORDER.indexOf(t)):i;}
 function catHeadHTML(label){return `<div class="shop-cat-head" style="grid-column:1/-1;font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--ink2);margin:26px 0 8px;padding-bottom:10px;border-bottom:1px solid var(--light-border);text-align:center">${label}</div>`;}
 function renderShop(){
   let list=allPieces;
@@ -2126,6 +2163,8 @@ function renderShop(){
   }
   document.getElementById('shop-count').textContent=list.length+' piece'+(list.length!==1?'s':'');
   const grid=document.getElementById('shop-grid');
+  const L=shopLayout||{};
+  grid.className='pieces-grid'+(L.align==='center'?' lay-center':'')+([2,3,4].includes(+L.cols)?' lay-cols-'+(+L.cols):'')+(L.gap==='roomy'?' lay-roomy':'');
   if(!list.length){ grid.innerHTML=`<div class="empty-state"><div class="empty-icon">🎨</div><div class="empty-h">No pieces found</div><div class="empty-sub">Try a different filter, or check back soon.</div></div>`; return; }
   // A single category selected → flat grid; otherwise group under category headings.
   if(_st && !String(_st).startsWith('series:')){ grid.innerHTML=list.map(pieceCardHTML).join(''); return; }
@@ -3155,8 +3194,9 @@ document.getElementById('hubLoginForm').addEventListener('submit',onHubLoginSubm
 
 // ── AUTO REFRESH ──
 setInterval(async()=>{
+  const oldLayout=JSON.stringify(shopLayout);
   const fresh=await fetchPieces();
-  if(JSON.stringify(fresh)!==JSON.stringify(allPieces)){
+  if(JSON.stringify(fresh)!==JSON.stringify(allPieces)||oldLayout!==JSON.stringify(shopLayout)){
     allPieces=fresh;
     if(currentPage==='home')    renderHome();
     if(currentPage==='shop')    renderShop();
